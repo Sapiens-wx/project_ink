@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc05bac6045f9db49aa464c0d8d06bd9, type: 3}
   m_Name: connect
   m_EditorClassIdentifier: 
-  image: {fileID: 0}
+  image: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   damage: 0
