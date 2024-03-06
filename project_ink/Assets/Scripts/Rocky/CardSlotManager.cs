@@ -6,14 +6,16 @@ public class CardSlotManager : Singleton<CardSlotManager>
 {
     [SerializeField] int numSlots;
     [SerializeField] CardInventory inventory;
-    [SerializeField] Transform cardSlotGridLayoutGroup;
+    [SerializeField] Transform cardSlotGridLayoutGroup,slotPointer;
     [SerializeField] GameObject cardSlotPrefab;
 
     CardSlot[] cardSlots;
     [HideInInspector] public CardPool cardPool;
+    private int curSlot;
 
     private void Start()
     {
+        curSlot = 0;
         cardSlots = new CardSlot[numSlots];
         for(int i = 0; i < numSlots; ++i)
         {
@@ -23,6 +25,13 @@ public class CardSlotManager : Singleton<CardSlotManager>
         }
         cardPool = new CardPool(inventory.cards);
         DistributeCard();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Shoot();
+        }
     }
     private void DistributeCard()
     {
@@ -37,6 +46,25 @@ public class CardSlotManager : Singleton<CardSlotManager>
         {
             cardSlots[i].SetCard(null);
         }
+        curSlot = 0;
+        UpdateCurSlot();
+    }
+    private void UpdateCurSlot()
+    {
+        slotPointer.position = cardSlots[curSlot].transform.position;
+    }
+    public Card Shoot()
+    {
+        Card card = cardSlots[curSlot].card;
+        cardSlots[curSlot].SetCard(null);
+
+        ++curSlot;
+        if (curSlot == numSlots || cardSlots[curSlot].card == null)
+            DistributeCard();
+        UpdateCurSlot();
+
+        card.OnShot();
+        return card;
     }
 }
 
