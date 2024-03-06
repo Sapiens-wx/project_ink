@@ -922,8 +922,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1280119758}
-  cameraOffset: {x: 0, y: 3, z: -10}
-  followSpeed: 2
+  cameraOffset: {x: 0, y: 2.6, z: -10}
+  followSpeed: 1
   xMin: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
