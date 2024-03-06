@@ -14,6 +14,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
 
     private void Start()
     {
+        cardSlots = new CardSlot[numSlots];
         for(int i = 0; i < numSlots; ++i)
         {
             CardSlot slot = Instantiate(cardSlotPrefab).GetComponent<CardSlot>();
@@ -21,14 +22,20 @@ public class CardSlotManager : Singleton<CardSlotManager>
             cardSlots[i] = slot;
         }
         cardPool = new CardPool(inventory.cards);
+        DistributeCard();
     }
     private void DistributeCard()
     {
         List<Card> cards = cardPool.GetCards(numSlots);
-        for(int i = 0; i < cards.Count; ++i)
+        int i;
+        for(i = 0; i < cards.Count; ++i)
         {
             cardSlots[i].SetCard(cards[i]);
             cards[i].OnEnterSlot();
+        }
+        for (; i < numSlots; ++i)
+        {
+            cardSlots[i].SetCard(null);
         }
     }
 }
@@ -41,11 +48,13 @@ public class CardPool
     public CardPool(List<Card> initialCards)
     {
         this.initialCards = initialCards;
+        queue = new Queue<Card>();
+        Shuffle();
     }
     public List<Card> GetCards(int num)
     {
         List<Card> ret = new List<Card>(num);
-        int max = Mathf.Max(queue.Count, num);
+        int max = Mathf.Min(queue.Count, num);
         for (int i = 0; i < max; ++i)
         {
             ret.Add(queue.Dequeue());
@@ -59,7 +68,7 @@ public class CardPool
     private void Shuffle()
     {
         List<int> indices = new List<int>(initialCards.Count);
-        for(int i=0; i < indices.Count; ++i)
+        for(int i=0; i < initialCards.Count; ++i)
         {
             indices.Add(i);
         }

@@ -12,6 +12,12 @@ public class CardSlot : MonoBehaviour
     public void SetCard(Card _card)
     {
         card = _card;
-        image.sprite = card.image;
+        if (_card == null)
+            image.gameObject.SetActive(false);
+        else
+        {
+            image.gameObject.SetActive(true);
+            image.sprite = card.image;
+        }
     }
 }
