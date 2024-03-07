@@ -118,7 +118,14 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         float originalGravity = myRigidbody.gravityScale;
         myRigidbody.gravityScale = 0;
-        myRigidbody.velocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+        if (transform.localRotation == Quaternion.Euler(0, 0, 0))
+        {
+            myRigidbody.velocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+        }
+        else
+        {
+            myRigidbody.velocity = new Vector2(transform.localScale.x * -dashSpeed, 0f);
+        }
         yield return new WaitForSeconds(dashTime);
         myRigidbody.gravityScale = originalGravity;
         isDashing = false;
