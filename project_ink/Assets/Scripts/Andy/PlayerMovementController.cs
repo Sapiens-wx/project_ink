@@ -5,9 +5,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    //adjustables
     public float runSpeed;
     public float jumpSpeed;
+    public float dashSpeed;
+    public float dashTime;
+    public float doubleClickInterval;
+    public float dashCoolDown;
     //--public float invincibilityTime;
+
+    //booleans
+    private bool isGround;
+    private bool isDashing = false;
+    private bool canDash = true;
 
     //health
     //--public int playerCurrentHealth;
@@ -16,7 +26,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D myRigidbody;
     private Animator myAnim;
     private BoxCollider2D myFeet;
-    private bool isGround;
     //--private bool isInvincible = false;
     //--private float invincibilityTimer = 0.0f;
 
@@ -32,6 +41,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
         //if (isInvincible)
         //{
         //    invincibilityTimer -= Time.deltaTime;
@@ -79,6 +92,10 @@ public class PlayerController : MonoBehaviour
         myRigidbody.velocity = playerVel;
         bool playerHasXAxisSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         myAnim.SetBool("Running", playerHasXAxisSpeed);
+        if (Input.GetKeyDown(KeyCode.LeftShift)&&canDash)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     void Jump()
@@ -93,6 +110,23 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator Dash()
+    {
+        myAnim.SetBool("Dash", true);
+        canDash = false;
+        isDashing = true;
+        float originalGravity = myRigidbody.gravityScale;
+        myRigidbody.gravityScale = 0;
+        myRigidbody.velocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+        yield return new WaitForSeconds(dashTime);
+        myRigidbody.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashCoolDown);
+        canDash = true;
+        myAnim.SetBool("Dash", false);
+    }
+
     void SwitchAnimation()
     {
         if (myRigidbody.velocity.y < 0.0f)
