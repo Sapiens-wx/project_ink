@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     //--public float invincibilityTime;
 
     //booleans
-    private bool isGround;
+    public bool isGround;
     private bool isDashing = false;
     private bool canDash = true;
 
