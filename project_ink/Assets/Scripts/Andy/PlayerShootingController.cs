@@ -27,6 +27,8 @@ public class PlayerShootingController : MonoBehaviour
                 if (index >= cards.Length)
                 {
                     //shuffle if card used all
+                    //Card card=CardSlotManager.GetCard();
+                    //Shoot(card);
                     index = 0;
                 }
 
@@ -39,8 +41,8 @@ public class PlayerShootingController : MonoBehaviour
         }
     }
 
-    public void Shoot()
+    public void Shoot(Card card)
     {
-        
+        //card.
     }
 }
