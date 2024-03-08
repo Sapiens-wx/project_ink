@@ -5,11 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "freeze", menuName = "Inventory/Cards/Freeze")]
 public class Card_Freeze : Card
 {
-    public override void OnEnterSlot()
+    public override void OnEnterSlot(CardSlot slot)
     {
     }
 
-    public override void OnShot()
+    public override void OnShot(CardSlot slot)
     {
     }
 

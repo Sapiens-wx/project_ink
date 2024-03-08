@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardSlotManager : Singleton<CardSlotManager>
 {
-    [SerializeField] int numSlots;
+    public int numSlots;
     [SerializeField] CardInventory inventory;
     [SerializeField] Transform cardSlotGridLayoutGroup,slotPointer;
     [SerializeField] GameObject cardSlotPrefab;
@@ -22,6 +22,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
             CardSlot slot = Instantiate(cardSlotPrefab).GetComponent<CardSlot>();
             slot.transform.SetParent(cardSlotGridLayoutGroup, false);
             cardSlots[i] = slot;
+            slot.index = i;
         }
         cardPool = new CardPool(inventory.cards);
         DistributeCard();
@@ -40,10 +41,14 @@ public class CardSlotManager : Singleton<CardSlotManager>
         for(i = 0; i < numSlots; ++i)
         {
             cardSlots[i].SetCard(cards[i]);
-            cards[i].OnEnterSlot();
+            cards[i].OnEnterSlot(cardSlots[i]);
         }
         curSlot = 0;
         UpdateCurSlot();
+    }
+    public int GetCurSlot()
+    {
+        return curSlot;
     }
     private void UpdateCurSlot()
     {
@@ -51,15 +56,17 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     public Card Shoot()
     {
-        Card card = cardSlots[curSlot].card;
+        CardSlot slot = cardSlots[curSlot];
+        Card card = slot.card;
         cardSlots[curSlot].SetCard(null);
 
         ++curSlot;
-        if (curSlot == numSlots || cardSlots[curSlot].card == null)
+        if (curSlot >= numSlots)
             DistributeCard();
         UpdateCurSlot();
 
-        card.OnShot();
+        card.OnShot(slot);
+
         return card;
     }
 }
@@ -105,7 +112,6 @@ public class CardPool
     }
     private void Shuffle()
     {
-        Debug.Log("shuffle card");
         List<int> indices = new List<int>(cardPool.Count);
         for(int i=0; i < cardPool.Count; ++i)
         {
@@ -116,7 +122,6 @@ public class CardPool
         {
             j = Random.Range(0, indices.Count - 1);
             queue.Enqueue(cardPool[indices[j]]);
-            Debug.Log(indices[j].ToString());
             indices.RemoveAt(j);
         }
         cardPool.Clear();
