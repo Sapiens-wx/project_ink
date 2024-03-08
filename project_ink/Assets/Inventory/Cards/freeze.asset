@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc05bac6045f9db49aa464c0d8d06bd9, type: 3}
-  m_Name: connect
+  m_Script: {fileID: 11500000, guid: 2d0504991b33fb7408da48c4efa412c1, type: 3}
+  m_Name: freeze
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 4b60599cca2f6f447a82b02dc6c1bafc, type: 3}
-  damage: 0
+  image: {fileID: 21300000, guid: f21687871fd08cc4f81ee7cc80634c69, type: 3}
+  damage: 3

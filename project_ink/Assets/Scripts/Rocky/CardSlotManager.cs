@@ -37,14 +37,10 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         List<Card> cards = cardPool.GetCards(numSlots);
         int i;
-        for(i = 0; i < cards.Count; ++i)
+        for(i = 0; i < numSlots; ++i)
         {
             cardSlots[i].SetCard(cards[i]);
             cards[i].OnEnterSlot();
-        }
-        for (; i < numSlots; ++i)
-        {
-            cardSlots[i].SetCard(null);
         }
         curSlot = 0;
         UpdateCurSlot();
@@ -70,33 +66,48 @@ public class CardSlotManager : Singleton<CardSlotManager>
 
 public class CardPool
 {
-    public List<Card> initialCards;
+	public List<Card> cardPool;
     public Queue<Card> queue;
+	
+	public List<Card> pendingCards; //waiting to be added into cardPool
 
     public CardPool(List<Card> initialCards)
     {
-        this.initialCards = initialCards;
+        cardPool=new List<Card>(initialCards);
         queue = new Queue<Card>();
+        pendingCards = new List<Card>();
         Shuffle();
     }
     public List<Card> GetCards(int num)
     {
         List<Card> ret = new List<Card>(num);
         int max = Mathf.Min(queue.Count, num);
-        for (int i = 0; i < max; ++i)
+		foreach(Card c in pendingCards){
+			cardPool.Add(c);
+		}
+		int i;
+        for (i = 0; i < max; ++i)
         {
             ret.Add(queue.Dequeue());
         }
+		if(i!=num){
+			Shuffle();
+			for(;i<num;++i){
+				ret.Add(queue.Dequeue());
+			}
+		}
         if (queue.Count == 0)
         {
             Shuffle();
         }
+		pendingCards=new List<Card>(ret);
         return ret;
     }
     private void Shuffle()
     {
-        List<int> indices = new List<int>(initialCards.Count);
-        for(int i=0; i < initialCards.Count; ++i)
+        Debug.Log("shuffle card");
+        List<int> indices = new List<int>(cardPool.Count);
+        for(int i=0; i < cardPool.Count; ++i)
         {
             indices.Add(i);
         }
@@ -104,8 +115,10 @@ public class CardPool
         while(indices.Count>0)
         {
             j = Random.Range(0, indices.Count - 1);
-            queue.Enqueue(initialCards[j]);
+            queue.Enqueue(cardPool[indices[j]]);
+            Debug.Log(indices[j].ToString());
             indices.RemoveAt(j);
         }
+        cardPool.Clear();
     }
 }
