@@ -40,4 +40,36 @@ public class CardSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             image.sprite = card.image;
         }
     }
+    public IEnumerator SetCard_Anim(Card _card)
+    {
+        card = _card;
+        if (_card == null)
+        {
+            float interval = .4f;
+            int cnt = (int)(interval / Time.fixedDeltaTime);
+            WaitForFixedUpdate wffu = new WaitForFixedUpdate();
+            image.transform.localScale = Vector3.one;
+            for(int i = 0; i < cnt; ++i)
+            {
+                image.transform.localScale = Vector3.Lerp(image.transform.localScale, Vector3.zero, .2f);
+                yield return wffu;
+            }
+            image.gameObject.SetActive(false);
+        }
+        else
+        {
+            float interval = 1;
+            int cnt = (int)(interval / Time.fixedDeltaTime);
+            WaitForFixedUpdate wffu = new WaitForFixedUpdate();
+            image.transform.localScale = Vector3.zero;
+            image.sprite = card.image;
+            image.gameObject.SetActive(true);
+            for(int i = 0; i < cnt; ++i)
+            {
+                image.transform.localScale = Vector3.Lerp(image.transform.localScale, Vector3.one, .1f);
+                yield return wffu;
+            }
+            image.transform.localScale = Vector3.one;
+        }
+    }
 }

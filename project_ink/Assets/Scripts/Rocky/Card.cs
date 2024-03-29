@@ -5,10 +5,21 @@ using UnityEngine.UI;
 
 public abstract class Card : ScriptableObject
 {
+    public CardType type;
     public Sprite image;
     public int damage;
 
-    public abstract void OnEnterSlot(CardSlot slot);
-    public abstract void OnShot(CardSlot slot);
-    public abstract void SetInk();
+    public virtual void OnEnterSlot(CardSlot slot) { }
+    public virtual void OnShot(CardSlot slot) { }
+    public virtual void SetInk() { }
+    public enum CardType
+    {
+        Attack,
+        CriticalHit,
+        Fast,
+        Freeze,
+        BreakThrough,
+        Hurricane,
+        Connect
+    }
 }

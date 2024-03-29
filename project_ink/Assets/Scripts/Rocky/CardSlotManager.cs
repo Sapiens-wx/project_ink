@@ -36,7 +36,8 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     private void DistributeCard()
     {
-        List<Card> cards = cardPool.GetCards(numSlots);
+        StartCoroutine(DistributeCard_Anim());
+        /*List<Card> cards = cardPool.GetCards(numSlots);
         int i;
         for(i = 0; i < numSlots; ++i)
         {
@@ -44,7 +45,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
             cards[i].OnEnterSlot(cardSlots[i]);
         }
         curSlot = 0;
-        UpdateCurSlot();
+        UpdateCurSlot();*/
     }
     public int GetCurSlot()
     {
@@ -58,16 +59,30 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         CardSlot slot = cardSlots[curSlot];
         Card card = slot.card;
-        cardSlots[curSlot].SetCard(null);
+        StartCoroutine(cardSlots[curSlot].SetCard_Anim(null));
 
         ++curSlot;
         if (curSlot >= numSlots)
             DistributeCard();
-        UpdateCurSlot();
+        else
+            UpdateCurSlot();
 
         card.OnShot(slot);
 
         return card;
+    }
+    IEnumerator DistributeCard_Anim()
+    {
+        List<Card> cards = cardPool.GetCards(numSlots);
+        int i;
+        for(i = 0; i < numSlots; ++i)
+        {
+            StartCoroutine(cardSlots[i].SetCard_Anim(cards[i]));
+            cards[i].OnEnterSlot(cardSlots[i]);
+            yield return new WaitForSeconds(0.2f);
+        }
+        curSlot = 0;
+        UpdateCurSlot();
     }
 }
 
