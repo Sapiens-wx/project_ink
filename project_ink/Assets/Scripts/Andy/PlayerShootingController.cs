@@ -10,6 +10,17 @@ public class PlayerShootingController : MonoBehaviour
     private float timeBtwShots;
     public float startTimeBtwShots;
 
+    public enum LOOKING_DIRECTION
+    {
+        UP,
+        FORWARD_UP,
+        FORWARD,
+        FORWARD_DOWN,
+        DOWN,
+    }
+
+
+
     private int index; 
     private Animator myAnim;
     private PlayerController playerController;
@@ -28,16 +39,9 @@ public class PlayerShootingController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Instantiate(cards[index], shotPoint.position, transform.rotation);
-                index++;
-                if (index >= cards.Length)
-                {
-                    attackAnim = true;
-                    //shuffle if card used all
-                    //Card card=CardSlotManager.GetCard();
-                    //Shoot(card);
-                    index = 0;
-                }
+                print(GetCurrentLookingDirection());
+                //Instantiate(cards[index], shotPoint.position, transform.rotation);
+                attackAnim = true;
 
                 timeBtwShots = startTimeBtwShots;
             }
@@ -49,16 +53,76 @@ public class PlayerShootingController : MonoBehaviour
 
         if (attackAnim)
         {
+            Debug.Log("Attacked");
+            LOOKING_DIRECTION direction = GetCurrentLookingDirection();
             if (playerController.isGround)
             {
-                myAnim.SetBool("Attack", true);
+                if (direction == LOOKING_DIRECTION.UP)
+                {
+                    myAnim.SetTrigger("Attack_U");
+                }
+                else if (direction == LOOKING_DIRECTION.FORWARD_UP)
+                {
+                    myAnim.SetTrigger("Attack_FU");
+                }
+                else if (direction == LOOKING_DIRECTION.FORWARD)
+                {
+                    myAnim.SetTrigger("Attack_F");
+                }
+                else if (direction == LOOKING_DIRECTION.FORWARD_DOWN)
+                {
+                    myAnim.SetTrigger("Attack_FD");
+                }
+                else if (direction == LOOKING_DIRECTION.DOWN)
+                {
+                    myAnim.SetTrigger("Attack_D");
+                }
             }
             else
             {
-                myAnim.SetBool("AttackInAir", true);
+                if (direction == LOOKING_DIRECTION.UP)
+                {
+                    myAnim.SetTrigger("AttackInAir_U");
+                }
+                else if (direction == LOOKING_DIRECTION.FORWARD_UP)
+                {
+                    myAnim.SetTrigger("AttackInAir_FU");
+                }
+                else if (direction == LOOKING_DIRECTION.FORWARD)
+                {
+                    myAnim.SetTrigger("AttackInAir_F");
+                }
+                else if (direction == LOOKING_DIRECTION.FORWARD_DOWN)
+                {
+                    myAnim.SetTrigger("AttackInAir_FD");
+                }
+                else if (direction == LOOKING_DIRECTION.DOWN)
+                {
+                    myAnim.SetTrigger("AttackInAir_D");
+                }
             }
-            myAnim.SetBool("Attack", false);
-            myAnim.SetBool("AttackInAir", false);
+           // myAnim.SetBool("Attack", false);
+            //myAnim.SetBool("AttackInAir", false);
+            attackAnim = false;
+        }
+    }
+
+    public LOOKING_DIRECTION GetCurrentLookingDirection()
+    {
+        Vector2 mouseDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
+        Vector2 forward = PlayerController.CurrentFacingDirection == PlayerController.FACING_DIRECTION.LEFT? Vector2.left : Vector2.right;
+        float angle = Vector2.Angle(forward, mouseDirection);
+        if(angle<=22.5f)
+        {
+            return LOOKING_DIRECTION.FORWARD;
+        }
+        else if(angle<=67.5)
+        {
+            return mouseDirection.y < 0 ? LOOKING_DIRECTION.FORWARD_DOWN : LOOKING_DIRECTION.FORWARD_UP;
+        }
+        else
+        {
+            return mouseDirection.y < 0 ? LOOKING_DIRECTION.DOWN : LOOKING_DIRECTION.UP;
         }
     }
 
