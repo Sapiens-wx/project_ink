@@ -4,21 +4,38 @@ using UnityEngine;
 
 public class B_RolfChase : StateMachineBehaviour
 {
-    public float count; 
+    public float chaseDuration ;
+    public float chaseSpeed;
+    private Transform player;
+    private float chaseTimer;
+    private Rigidbody2D rb;
+    private B_RolfController rolfController;
+
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("Enter boss wolf chase");
-        count = 0;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        chaseTimer = chaseDuration;
+        rb = animator.GetComponent<Rigidbody2D>();
+        rolfController = animator.GetComponent<B_RolfController>();
     }
 
      //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        count+= Time.deltaTime;
-        if (count >= 5)
+        chaseTimer -= Time.deltaTime;
+
+        if (chaseTimer > 0)
         {
-            animator.SetBool("Dash", false);
+            Vector2 target = new Vector2 (player.position.x, rb.position.y);
+            Vector2 newPos = Vector2.MoveTowards(rb.position, target, chaseSpeed);
+            //flipping function
+            rb.MovePosition(newPos);
+        }
+        else
+        {
+            Debug.Log("Chasing stop");
+            //rolfController.RandomState();
         }
     }
 
