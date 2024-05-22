@@ -5,17 +5,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public enum FACING_DIRECTION
+    {
+        LEFT,
+        RIGHT,
+    }
+    public static FACING_DIRECTION CurrentFacingDirection;
     //adjustables
     public float runSpeed;
     public float jumpSpeed;
     public float dashSpeed;
     public float dashTime;
-    public float doubleClickInterval;
     public float dashCoolDown;
     //--public float invincibilityTime;
 
     //booleans
     public bool isGround;
+
     private bool isDashing = false;
     private bool canDash = true;
 
@@ -35,7 +41,7 @@ public class PlayerController : MonoBehaviour
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
         myFeet = GetComponent<BoxCollider2D>();
-
+        CurrentFacingDirection = FACING_DIRECTION.RIGHT;
     }
 
     // Update is called once per frame
@@ -67,6 +73,7 @@ public class PlayerController : MonoBehaviour
         isGround = myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"));
     }
 
+
     void Flip()
     {
         bool playerHasXAxisSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
@@ -76,11 +83,13 @@ public class PlayerController : MonoBehaviour
             if (myRigidbody.velocity.x > 0.1f)
             {
                 transform.localRotation = Quaternion.Euler(0, 0, 0);
+                CurrentFacingDirection = FACING_DIRECTION.RIGHT;
             }
 
             if (myRigidbody.velocity.x < -0.1f)
             {
                 transform.localRotation = Quaternion.Euler(0, 180, 0);
+                CurrentFacingDirection = FACING_DIRECTION.LEFT;
             }
         }
     }
@@ -100,6 +109,8 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        //float currentVelX = myRigidbody.velocity.x;
+        //myRigidbody.velocity = new Vector2(currentVelX, -2f);
         if (Input.GetButtonDown("Jump") || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
         {
             if (isGround)
@@ -129,9 +140,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(dashTime);
         myRigidbody.gravityScale = originalGravity;
         isDashing = false;
+        myAnim.SetBool("Dash", false);
         yield return new WaitForSeconds(dashCoolDown);
         canDash = true;
-        myAnim.SetBool("Dash", false);
+        
     }
 
     void SwitchAnimation()
