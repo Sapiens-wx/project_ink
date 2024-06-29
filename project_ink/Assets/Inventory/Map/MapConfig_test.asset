@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3fabdadb835c1f45a0373d2528e3480, type: 3}
+  m_Name: MapConfig_test
+  m_EditorClassIdentifier: 
+  initialTiless: 0,1,2,3
+  ltTopTiless: 0,1
+  midTopTiless: 0,1,2,3
+  rtTopTiless: 0,3
+  ltMidTiless: 0,1,2,3
+  rtMidTiless: 0,3
+  ltBotTiless: 0,1
+  midBotTiless: 0,1,2,3
+  rtBotTiless: 0,3
+  arr:
+  - name: 0
+    maxAmount: 0
+    sltTop: 0,1,2,3
+    smidTop: 0,1,2,3
+    srtTop: 0,1,2,3
+    sltMid: 0,3
+    srtMid: 0,1
+    sltBot: 0,1,2,3
+    smidBot: 0,1,2,3
+    srtBot: 0,1,2,3
+    ltTop: 00000000010000000200000003000000
+    midTop: 00000000010000000200000003000000
+    rtTop: 00000000010000000200000003000000
+    ltMid: 0000000003000000
+    midMid: 
+    rtMid: 0000000001000000
+    ltBot: 00000000010000000200000003000000
+    midBot: 00000000010000000200000003000000
+    rtBot: 00000000010000000200000003000000
+  - name: 
+    maxAmount: 3
+    sltTop: 0,1,2,3
+    smidTop: 0,1,2,3
+    srtTop: 0,1,2,3
+    sltMid: 0,3
+    srtMid: 2
+    sltBot: 0,1,2,3
+    smidBot: 0,1,2,3
+    srtBot: 0,1,2,3
+    ltTop: 00000000010000000200000003000000
+    midTop: 00000000010000000200000003000000
+    rtTop: 00000000010000000200000003000000
+    ltMid: 0000000003000000
+    midMid: 
+    rtMid: 02000000
+    ltBot: 00000000010000000200000003000000
+    midBot: 00000000010000000200000003000000
+    rtBot: 00000000010000000200000003000000
+  - name: 
+    maxAmount: 3
+    sltTop: 0,1,2,3
+    smidTop: 0,1,2,3
+    srtTop: 0,1,2,3
+    sltMid: 1
+    srtMid: 3
+    sltBot: 0,1,2,3
+    smidBot: 0,1,2,3
+    srtBot: 0,1,2,3
+    ltTop: 00000000010000000200000003000000
+    midTop: 00000000010000000200000003000000
+    rtTop: 00000000010000000200000003000000
+    ltMid: 01000000
+    midMid: 
+    rtMid: 03000000
+    ltBot: 00000000010000000200000003000000
+    midBot: 00000000010000000200000003000000
+    rtBot: 00000000010000000200000003000000
+  - name: 
+    maxAmount: 3
+    sltTop: 0,1,2,3
+    smidTop: 0,1,2,3
+    srtTop: 0,1,2,3
+    sltMid: 2
+    srtMid: 0,1
+    sltBot: 0,1,2,3
+    smidBot: 0,1,2,3
+    srtBot: 0,1,2,3
+    ltTop: 00000000010000000200000003000000
+    midTop: 00000000010000000200000003000000
+    rtTop: 00000000010000000200000003000000
+    ltMid: 02000000
+    midMid: 
+    rtMid: 0000000001000000
+    ltBot: 00000000010000000200000003000000
+    midBot: 00000000010000000200000003000000
+    rtBot: 00000000010000000200000003000000
+  initialTiles: 00000000010000000200000003000000
+  ltTopTiles: 0000000001000000
+  midTopTiles: 00000000010000000200000003000000
+  rtTopTiles: 0000000003000000
+  ltMidTiles: 00000000010000000200000003000000
+  rtMidTiles: 0000000003000000
+  ltBotTiles: 0000000001000000
+  midBotTiles: 00000000010000000200000003000000
+  rtBotTiles: 0000000003000000
