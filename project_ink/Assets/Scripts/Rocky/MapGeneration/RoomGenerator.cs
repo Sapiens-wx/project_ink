@@ -3,8 +3,6 @@ using System.Text;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
-using System.Threading;
 
 /// <summary>
 /// Generate a tree of rooms. Does not generate things inside the rooms
@@ -18,7 +16,7 @@ public class RoomGenerator : MonoBehaviour
     public Sprite spr_door;
     [Range(0f, 1f)]
     public float doorRatio; //ratio to the size of a grid. 0-1
-    public Transform mapContainer;
+    public Transform mapContainer, doorsParent;
     private void PrintGrid(Room[][] grid)
     {
         StringBuilder sb = new StringBuilder();
@@ -64,16 +62,53 @@ public class RoomGenerator : MonoBehaviour
                         q.Enqueue(curRoom.children[j]);
                 }
             }
-            n = q.Count();
+            n = q.Count;
             ++count;
         }
     }
+    /// <summary>
+    /// Generate a door HUD
+    /// </summary>
+    /// <param name="door"></param>
+    /// <param name="parent">parent of the instantiated door HUD</param>
+    /// <param name="doorWidth">size of a door (actual size)</param>
+    /// <param name="roomWidth">size of a room (actual size, not 1x1 or 1x2)</param>
+    /// <returns></returns>
+    private GameObject GenerateDoorMap(Door door, Transform parent, float doorWidth, float roomWidth)
+    {
+        GameObject go = Instantiate(img_prefab, parent);
+        go.name = $"door(dir: {door.dir}, from room ({door.fromRoom.x},{door.fromRoom.y}))";
+        go.GetComponent<Image>().sprite = spr_door;
+        RectTransform rectTransform = go.GetComponent<RectTransform>();
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        rectTransform.sizeDelta = new Vector2(doorWidth, doorWidth);
+        //switch direction
+        Vector2 doorOffset = Vector2.zero;
+        float halfRoomWidth = roomWidth / 2;
+        switch (door.dir)
+        {
+            case 0: doorOffset = new Vector2(0, -halfRoomWidth); break; //up
+            case 1: doorOffset = new Vector2(-halfRoomWidth, 0); break; //right
+            case 2: doorOffset = new Vector2(0, halfRoomWidth); break; //down
+            case 3: doorOffset = new Vector2(halfRoomWidth, 0); break; //left
+        }
+        //+halfRoomWidth: the pivot of the rooms is at the left bottom of each recttransform. add (halfRoomWidth, halfRoomWidth) to make sure the door is generated on the sides of a room correctly
+        rectTransform.position = new Vector2(door.x*roomWidth+doorOffset.x+halfRoomWidth, door.y*roomWidth+doorOffset.y+halfRoomWidth);
+        rectTransform.SetParent(parent);
+        return go;
+    }
+    /// <summary>
+    /// generate room map HUD
+    /// </summary>
+    /// <param name="root"></param>
+    /// <param name="parent"></param>
     public void GenerateRoomMap(Room root, Transform parent)
     {
-        float wFactor = mapWidth / 23.0f;
-        float hFactor = mapHeight / 45.0f;
+        float wFactor = mapWidth / 23.0f; //grid width
+        float hFactor = mapHeight / 45.0f; //grid height
         float doorWidth = wFactor * doorRatio;
 
+        List<Transform> needsToBeCenteredObjects = new List<Transform>();
         Vector3 center = Vector3.zero; //for aligning the rooms. 
         int roomsCount = 0;
 
@@ -89,6 +124,7 @@ public class RoomGenerator : MonoBehaviour
             go.transform.SetParent(parent);
             Image img = go.GetComponent<Image>();
             RectTransform rectTransform = go.GetComponent<RectTransform>();
+            needsToBeCenteredObjects.Add(go.transform);
             img.sprite = mapTiles[(curRoom.w << 1) + curRoom.h - 3];
             go.transform.position = new Vector3(curRoom.x * wFactor, curRoom.y * hFactor);
             center += go.transform.position; //add this room's position to center (Vector3), then calculate actual center after the loop
@@ -98,14 +134,27 @@ public class RoomGenerator : MonoBehaviour
                 if (curRoom.children[i] != null)
                     q.Enqueue(curRoom.children[i]);
             }
+            for (int i = 0; i < curRoom.doors.Length; ++i)
+            {
+                if (curRoom.doors[i] != null)
+                    needsToBeCenteredObjects.Add(GenerateDoorMap(curRoom.doors[i], doorsParent, doorWidth, wFactor).transform);
+            }
             ++roomsCount;
         }
         center = center / roomsCount - parent.position;
-        for(int i = 0; i<parent.childCount; ++i)
+        for(int i = 0; i<needsToBeCenteredObjects.Count; ++i)
         {
-            parent.GetChild(i).position -= center; //make the rooms images center around their parent
+            needsToBeCenteredObjects[i].position -= center; //make the rooms images center around their parent
         }
     }
+    public void GenerateRoomScene(Room root)
+    {
+
+    }
+    /// <summary>
+    /// generate a tree of Rooms.
+    /// </summary>
+    /// <returns>root of the tree</returns>
     public Room GenerateRoom()
     {
         //initialize grid
@@ -128,7 +177,7 @@ public class RoomGenerator : MonoBehaviour
 
         Room root = new Room(1, 1, 0, 23);
         Queue<Door> q=new Queue<Door>();
-        RandomlyEnqueue(q, Door.GetDoorsFromRoom(root, 3));
+        RandomlyEnqueue(q, root.GenerateDoorsRandomly(3));
         RegisterRoomOnGrid(roomGrid, root);
 
         List<Vector3Int> roomList_position = new List<Vector3Int>();
@@ -315,7 +364,9 @@ public class Door
 // width[00]height[00]up[0]right[0]down[0]left[0]
 // exampmle: 1x2 width up, right, down doors: 01 10 1 1 1 0
 /// <summary>
-/// based on the size of the room and the number and position of its doors
+/// first four digits: size of the room.
+/// last four digits: does the room have door on its up, right, down, left side respectively.
+/// bit digit (from left to right): width[00] height [00] up[0] right[0] down[0] left[0].
 /// </summary>
 public enum RoomType
 {
