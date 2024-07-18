@@ -136,7 +136,7 @@ public class RoomGenerator : MonoBehaviour
             }
             for (int i = 0; i < curRoom.doors.Length; ++i)
             {
-                if (curRoom.doors[i] != null)
+                if (curRoom.doors[i] != null && curRoom.doors[i].toRoom!=null)
                     needsToBeCenteredObjects.Add(GenerateDoorMap(curRoom.doors[i], doorsParent, doorWidth, wFactor).transform);
             }
             ++roomsCount;
