@@ -11,7 +11,7 @@ public class RoomGenerator : MonoBehaviour
 {
     [Header("Generate Map")]
     public GameObject img_prefab;
-    public Sprite[] mapTiles;
+    public Sprite spr_room1x1, spr_room1x2, spr_room2x1, spr_room2x2, spr_roomBoss;
     public int mapWidth, mapHeight;
     public Sprite spr_door;
     [Range(0f, 1f)]
@@ -66,6 +66,7 @@ public class RoomGenerator : MonoBehaviour
             ++count;
         }
     }
+    #region HUD map
     /// <summary>
     /// Generate a door HUD
     /// </summary>
@@ -125,7 +126,15 @@ public class RoomGenerator : MonoBehaviour
             Image img = go.GetComponent<Image>();
             RectTransform rectTransform = go.GetComponent<RectTransform>();
             needsToBeCenteredObjects.Add(go.transform);
-            img.sprite = mapTiles[(curRoom.w << 1) + curRoom.h - 3];
+            RoomType roomSizeInfo=curRoom.GetRoomType()&RoomType.OnlySizeInfo;
+            switch (roomSizeInfo)
+            {
+                case RoomType.S1x1: img.sprite = spr_room1x1; break;
+                case RoomType.S1x2: img.sprite = spr_room1x2; break;
+                case RoomType.S2x1: img.sprite = spr_room2x1; break;
+                case RoomType.S2x2: img.sprite = spr_room2x2; break;
+                case RoomType.S4x4: img.sprite = spr_roomBoss; break;
+            }
             go.transform.position = new Vector3(curRoom.x * wFactor, curRoom.y * hFactor);
             center += go.transform.position; //add this room's position to center (Vector3), then calculate actual center after the loop
             rectTransform.sizeDelta = new Vector2(curRoom.w*wFactor, curRoom.h*hFactor);
@@ -134,10 +143,13 @@ public class RoomGenerator : MonoBehaviour
                 if (curRoom.children[i] != null)
                     q.Enqueue(curRoom.children[i]);
             }
-            for (int i = 0; i < curRoom.doors.Length; ++i)
+            if (curRoom.doors != null)
             {
-                if (curRoom.doors[i] != null && curRoom.doors[i].toRoom!=null)
-                    needsToBeCenteredObjects.Add(GenerateDoorMap(curRoom.doors[i], doorsParent, doorWidth, wFactor).transform);
+                for (int i = 0; i < curRoom.doors.Length; ++i)
+                {
+                    if (curRoom.doors[i] != null && curRoom.doors[i].toRoom != null)
+                        needsToBeCenteredObjects.Add(GenerateDoorMap(curRoom.doors[i], doorsParent, doorWidth, wFactor).transform);
+                }
             }
             ++roomsCount;
         }
@@ -147,9 +159,37 @@ public class RoomGenerator : MonoBehaviour
             needsToBeCenteredObjects[i].position -= center; //make the rooms images center around their parent
         }
     }
+    #endregion
     public void GenerateRoomScene(Room root)
     {
 
+    }
+    #region Room tree
+    /// <summary>
+    /// Generates a boss room after all normal rooms are generated
+    /// </summary>
+    private void GenerateBossRoom(Room[][] roomGrid, Queue<Door> doorCandidates)
+    {
+        Room bossRoom = new Room(4, 4);
+        while (true)
+        {
+            Door curDoor = doorCandidates.Dequeue();
+            if(UnityEngine.Random.Range(0,3)>0)
+            {
+                doorCandidates.Enqueue(curDoor);
+                continue;
+            }
+            List<Vector3Int> positions = curDoor.GetPossibleBossRooms(roomGrid, bossRoom);
+            if (positions == null || positions.Count == 0)
+                continue;
+            Vector3Int selectedPosition = positions[UnityEngine.Random.Range(0, positions.Count)];
+            curDoor.toRoom = bossRoom;
+            curDoor.fromRoom.children[curDoor.fromRoomChildIndex] = bossRoom;
+            bossRoom.x = selectedPosition.x;
+            bossRoom.y = selectedPosition.y;
+            RegisterRoomOnGrid(roomGrid, bossRoom);
+            break;
+        }
     }
     /// <summary>
     /// generate a tree of Rooms.
@@ -204,6 +244,7 @@ public class RoomGenerator : MonoBehaviour
             --totalCount;
             RandomlyEnqueue(q, selectedRoom.GenerateDoorsRandomly(position.z));
         }
+        GenerateBossRoom(roomGrid, q);
         return root;
     }
     private void RegisterRoomOnGrid(Room[][] grid, Room room)
@@ -231,6 +272,7 @@ public class RoomGenerator : MonoBehaviour
             q.Enqueue(doors[i]);
         }
     }
+    #endregion
 }
 
 public class Door
@@ -359,81 +401,125 @@ public class Door
         }
         return ret;
     }
+    /// <summary>
+    /// Called by RoomGenerator::GenerateBossRoom. different from GetPossibleRooms because boss room can only be connected horizontally.
+    /// </summary>
+    /// <param name="grid"></param>
+    /// <param name="bossRoom"></param>
+    /// <returns></returns>
+    public List<Vector3Int> GetPossibleBossRooms(Room[][] grid, Room bossRoom)
+    {
+        if (dir == 0 || dir == 2) return null;
+        if (x < 0 || y < 0 || x >= grid.Length || y >= grid[0].Length) return null;
+        if (grid[x][y] != null) return null;
+        List<Vector3Int> ret = new List<Vector3Int>();
+        Vector3Int position;
+        if (bossRoom.CheckOverlaps(this, grid, 0, out position))
+            ret.Add(position);
+        if (bossRoom.CheckOverlaps(this, grid, 1, out position))
+            ret.Add(position);
+        return ret;
+    }
 }
 // how is the size and door position matched to a binary number?
-// width[00]height[00]up[0]right[0]down[0]left[0]
-// exampmle: 1x2 width up, right, down doors: 01 10 1 1 1 0
+// width[000]height[000]up[0]right[0]down[0]left[0]
+// exampmle: 1x2 width up, right, down doors: 001 010 1 1 1 0
 /// <summary>
 /// first four digits: size of the room.
 /// last four digits: does the room have door on its up, right, down, left side respectively.
-/// bit digit (from left to right): width[00] height [00] up[0] right[0] down[0] left[0].
+/// bit digit (from left to right): width[000] height [000] up[0] right[0] down[0] left[0].
 /// </summary>
 public enum RoomType
 {
-    S1x1URD=0b01011110,
-    S1x1RDL=0b01010111,
-    S1x1UDL=0b01011011,
-    S1x1URL=0b01011101,
-    S1x1UR=0b01011100,
-    S1x1UD=0b01011010,
-    S1x1UL=0b01011001,
-    S1x1RD=0b01010110,
-    S1x1RL=0b01010101,
-    S1x1DL=0b01010011,
-    S1x1U=0b01011000,
-    S1x1R=0b01010100,
-    S1x1D=0b01010010,
-    S1x1L=0b01010001,
+    S1x1URD=0b0010011110,
+    S1x1RDL=0b0010010111,
+    S1x1UDL=0b0010011011,
+    S1x1URL=0b0010011101,
+    S1x1UR=0b0010011100,
+    S1x1UD=0b0010011010,
+    S1x1UL=0b0010011001,
+    S1x1RD=0b0010010110,
+    S1x1RL=0b0010010101,
+    S1x1DL=0b0010010011,
+    S1x1U=0b0010011000,
+    S1x1R=0b0010010100,
+    S1x1D=0b0010010010,
+    S1x1L=0b0010010001,
 
-    S1x2URD=0b01101110,
-    S1x2RDL=0b01100111,
-    S1x2UDL=0b01101011,
-    S1x2URL=0b01101101,
-    S1x2UR=0b01101100,
-    S1x2UD=0b01101010,
-    S1x2UL=0b01101001,
-    S1x2RD=0b01100110,
-    S1x2RL=0b01100101,
-    S1x2DL=0b01100011,
-    S1x2U=0b01101000,
-    S1x2R=0b01100100,
-    S1x2D=0b01100010,
-    S1x2L=0b01100001,
+    S1x2URD=0b0010101110,
+    S1x2RDL=0b0010100111,
+    S1x2UDL=0b0010101011,
+    S1x2URL=0b0010101101,
+    S1x2UR=0b0010101100,
+    S1x2UD=0b0010101010,
+    S1x2UL=0b0010101001,
+    S1x2RD=0b0010100110,
+    S1x2RL=0b0010100101,
+    S1x2DL=0b0010100011,
+    S1x2U=0b0010101000,
+    S1x2R=0b0010100100,
+    S1x2D=0b0010100010,
+    S1x2L=0b0010100001,
 
-    S2x1URD=0b10011110,
-    S2x1RDL=0b10010111,
-    S2x1UDL=0b10011011,
-    S2x1URL=0b10011101,
-    S2x1UR=0b10011100,
-    S2x1UD=0b10011010,
-    S2x1UL=0b10011001,
-    S2x1RD=0b10010110,
-    S2x1RL=0b10010101,
-    S2x1DL=0b10010011,
-    S2x1U=0b10011000,
-    S2x1R=0b10010100,
-    S2x1D=0b10010010,
-    S2x1L=0b10010001,
+    S2x1URD=0b0100011110,
+    S2x1RDL=0b0100010111,
+    S2x1UDL=0b0100011011,
+    S2x1URL=0b0100011101,
+    S2x1UR=0b0100011100,
+    S2x1UD=0b0100011010,
+    S2x1UL=0b0100011001,
+    S2x1RD=0b0100010110,
+    S2x1RL=0b0100010101,
+    S2x1DL=0b0100010011,
+    S2x1U=0b0100011000,
+    S2x1R=0b0100010100,
+    S2x1D=0b0100010010,
+    S2x1L=0b0100010001,
 
-    S2x2URD=0b10101110,
-    S2x2RDL=0b10100111,
-    S2x2UDL=0b10101011,
-    S2x2URL=0b10101101,
-    S2x2UR=0b10101100,
-    S2x2UD=0b10101010,
-    S2x2UL=0b10101001,
-    S2x2RD=0b10100110,
-    S2x2RL=0b10100101,
-    S2x2DL=0b10100011,
-    S2x2U=0b10101000,
-    S2x2R=0b10100100,
-    S2x2D=0b10100010,
-    S2x2L=0b10100001,
-    //debug usage, without doors, don't use when configuring rooms
-    S1x1=0b01010000,
-    S1x2=0b01100000,
-    S2x1=0b10010000,
-    S2x2=0b10100000
+    S2x2URD=0b0100101110,
+    S2x2RDL=0b0100100111,
+    S2x2UDL=0b0100101011,
+    S2x2URL=0b0100101101,
+    S2x2UR=0b0100101100,
+    S2x2UD=0b0100101010,
+    S2x2UL=0b0100101001,
+    S2x2RD=0b0100100110,
+    S2x2RL=0b0100100101,
+    S2x2DL=0b0100100011,
+    S2x2U=0b0100101000,
+    S2x2R=0b0100100100,
+    S2x2D=0b0100100010,
+    S2x2L=0b0100100001,
+
+    S3x3L=0b0110110001,
+    S3x3R=0b0110110100,
+    S4x4L=0b1001000001,
+    S4x4R=0b1001000100,
+    //debug purposes, without doors, don't use when configuring rooms
+    S1x1=0b0010010000,
+    S1x2=0b0010100000,
+    S2x1=0b0100010000,
+    S2x2=0b0100100000,
+    S3x3=0b0110110000,
+    S4x4=0b1001000000,
+
+    SURD=0b1110,
+    SRDL=0b0111,
+    SUDL=0b1011,
+    SURL=0b1101,
+    SUR=0b1100,
+    SUD=0b1010,
+    SUL=0b1001,
+    SRD=0b0110,
+    SRL=0b0101,
+    SDL=0b0011,
+    SU=0b1000,
+    SR=0b0100,
+    SD=0b0010,
+    SL=0b0001,
+
+    OnlySizeInfo=0b1111110000,
+    OnlyDoorsInfo=0b1111
 }
 public class Room
 {
@@ -505,32 +591,20 @@ public class Room
             switch (door.dir)
             {
                 case 0: //up
-                    l = door.x; r = l + w;
+                    r = door.x + 1; l = r - w;
                     b = door.y - 1; t = b + h;
-                    if (w == 2) {
-                        --l;--r;
-                    }
                     break;
                 case 1: //right
                     l = door.x; r = l + w;
-                    t = door.y; b = t - h;
-                    if (h == 2) {
-                        ++t;++b;
-                    }
+                    b = door.y - 1; t = b + h;
                     break;
                 case 2: //down
-                    l = door.x; r = l + w;
+                    r = door.x + 1; l = r - w;
                     t = door.y; b = t - h;
-                    if (w == 2) {
-                        --l;--r;
-                    }
                     break;
                 case 3: //left
                     r = door.x + 1; l = r - w;
-                    t = door.y; b = t - h;
-                    if (h == 2) {
-                        ++t;++b;
-                    }
+                    b = door.y - 1; t = b + h;
                     break;
                 default: return false;
             }
@@ -566,7 +640,6 @@ public class Room
         Door[] doors = new Door[4];
         if (w == 1) {
             if (h == 1) {
-                doors = new Door[4];
                 for (int i = 0; i < 4; ++i)
                     doors[i] = new Door(this, i, i);
                 doors[0].SetPosition(x, y + 1);
@@ -575,7 +648,6 @@ public class Room
                 doors[3].SetPosition(x - 1, y);
             }
             else {
-                doors = new Door[4];
                 doors[0] = new Door(this, 0, x, y+2,0);
                 if (UnityEngine.Random.Range(0, 2) == 0)
                     doors[1] = new Door(this, 1, x+1, y+1,1);
@@ -590,7 +662,6 @@ public class Room
         }
         else {
             if (h == 2) {
-                doors = new Door[4];
                 if (UnityEngine.Random.Range(0, 2) == 0)
                     doors[0] = new Door(this, 0, x, y+2, 0);
                 else
@@ -609,7 +680,6 @@ public class Room
                     doors[3] = new Door(this, 3, x-1, y+1, 7);
             }
             else {
-                doors = new Door[4];
                 if(UnityEngine.Random.Range(0,2)==0)
                     doors[0] = new Door(this, 0, x, y+1,0);
                 else
@@ -626,9 +696,9 @@ public class Room
         this.doors = DeleteFromArray(DeleteFromArray(doors, except), UnityEngine.Random.Range(0, 3));
         return this.doors;
     }
-    public RoomType GetRoomtType()
+    public RoomType GetRoomType()
     {
-        int ret = (w << 6) | (h << 4);
+        int ret = (w << 7) | (h << 4);
         switch ((RoomType)ret)
         {
             case RoomType.S1x1:
@@ -662,6 +732,21 @@ public class Room
                 ret |= (children[5] == null) ? 0 : (int)RoomType.S2x2D;
                 ret |= (children[6] == null) ? 0 : (int)RoomType.S2x2L;
                 ret |= (children[7] == null) ? 0 : (int)RoomType.S2x2L;
+                break;
+            case RoomType.S3x3:
+                ret |= (children[3] == null) ? 0 : (int)RoomType.S3x3R;
+                ret |= (children[4] == null) ? 0 : (int)RoomType.S3x3R;
+                ret |= (children[5] == null) ? 0 : (int)RoomType.S3x3R;
+                if (ret != (int)RoomType.S3x3R)
+                    ret = (int)RoomType.S3x3L;
+                break;
+            case RoomType.S4x4:
+                ret |= (children[4] == null) ? 0 : (int)RoomType.S4x4R;
+                ret |= (children[5] == null) ? 0 : (int)RoomType.S4x4R;
+                ret |= (children[6] == null) ? 0 : (int)RoomType.S4x4R;
+                ret |= (children[7] == null) ? 0 : (int)RoomType.S4x4R;
+                if (ret != (int)RoomType.S4x4R)
+                    ret = (int)RoomType.S4x4L;
                 break;
             default: throw new System.Exception("Wrong Room Type");
         }
