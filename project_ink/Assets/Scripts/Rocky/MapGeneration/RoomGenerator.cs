@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// </summary>
 public class RoomGenerator : MonoBehaviour
 {
-    [Header("Generate Map")]
+    [Header("Generate HUD Map")]
     public GameObject img_prefab;
     public Sprite spr_room1x1, spr_room1x2, spr_room2x1, spr_room2x2, spr_roomBoss;
     public int mapWidth, mapHeight;
@@ -17,6 +17,19 @@ public class RoomGenerator : MonoBehaviour
     [Range(0f, 1f)]
     public float doorRatio; //ratio to the size of a grid. 0-1
     public Transform mapContainer, doorsParent;
+    /// <summary>
+    /// stores room prefabs with a dictionary<RoomType, List<GameObect>>
+    /// </summary>
+    [Header("Generate Room Scene")]
+    public RoomSceneConfig roomSceneConfig;
+    /// <summary>
+    /// the width of a 1x1 room
+    /// </summary>
+    public float roomSceneWidth;
+    /// <summary>
+    /// parent of the room gameobects
+    /// </summary>
+    public Transform roomSceneParent;
     private void PrintGrid(Room[][] grid)
     {
         StringBuilder sb = new StringBuilder();
@@ -160,9 +173,54 @@ public class RoomGenerator : MonoBehaviour
         }
     }
     #endregion
+    private List<GameObject> GetRoomPrefabs(Room room)
+    {
+        RoomType type = room.GetRoomType();
+        return roomSceneConfig.roomPrefabs_dictionary[type];
+    }
     public void GenerateRoomScene(Room root)
     {
+        roomSceneConfig.InitializeDictionary();
+        List<Transform> needsToBeCenteredObjects = new List<Transform>();
+        Vector3 center = Vector3.zero; //for aligning the rooms. 
+        int roomsCount = 0;
 
+        Queue<Room> q = new Queue<Room>();
+        Room curRoom;
+        q.Enqueue(root);
+        while (q.Count > 0)
+        {
+            curRoom = q.Dequeue();
+            //generate map
+            List<GameObject> roomPrefabs = GetRoomPrefabs(curRoom);
+            GameObject roomScene = Instantiate(roomPrefabs[UnityEngine.Random.Range(0, roomPrefabs.Count)], roomSceneParent); //randomly selected one
+            roomScene.name = $"{curRoom.w}x{curRoom.h} ({curRoom.x},{curRoom.y})";
+            roomScene.transform.position = new Vector3(curRoom.x * roomSceneWidth, curRoom.y * roomSceneWidth, 0);
+            needsToBeCenteredObjects.Add(roomScene.transform);
+            center += roomScene.transform.position; //add this room's position to center (Vector3), then calculate actual center after the loop
+            for(int i = 0; i < curRoom.children.Length; ++i)
+            {
+                if (curRoom.children[i] != null)
+                    q.Enqueue(curRoom.children[i]);
+            }
+            //generate doors.
+            /*
+            if (curRoom.doors != null)
+            {
+                for (int i = 0; i < curRoom.doors.Length; ++i)
+                {
+                    if (curRoom.doors[i] != null && curRoom.doors[i].toRoom != null)
+                        needsToBeCenteredObjects.Add(GenerateDoorMap(curRoom.doors[i], doorsParent, doorWidth, wFactor).transform);
+                }
+            }
+            */
+            ++roomsCount;
+        }
+        center = center / roomsCount - roomSceneParent.position;
+        for(int i = 0; i<needsToBeCenteredObjects.Count; ++i)
+        {
+            needsToBeCenteredObjects[i].position -= center; //make the rooms images center around their parent
+        }
     }
     #region Room tree
     /// <summary>
