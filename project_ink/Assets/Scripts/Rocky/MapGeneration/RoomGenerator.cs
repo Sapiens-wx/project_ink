@@ -489,95 +489,176 @@ public class Door
 /// </summary>
 public enum RoomType
 {
-    S1x1URD=0b0010011110,
-    S1x1RDL=0b0010010111,
-    S1x1UDL=0b0010011011,
-    S1x1URL=0b0010011101,
-    S1x1UR=0b0010011100,
-    S1x1UD=0b0010011010,
-    S1x1UL=0b0010011001,
-    S1x1RD=0b0010010110,
-    S1x1RL=0b0010010101,
-    S1x1DL=0b0010010011,
-    S1x1U=0b0010011000,
-    S1x1R=0b0010010100,
-    S1x1D=0b0010010010,
-    S1x1L=0b0010010001,
+    S1x1U1R1D1=0b1001001001001000,
+    S1x1R1D1L1=0b1001000001001001,
+    S1x1U1D1L1=0b1001001000001001,
+    S1x1U1R1L1=0b1001001001000001,
+    S1x1U1R1=0b1001001001000000,
+    S1x1U1D1=0b1001001000001000,
+    S1x1U1L1=0b1001001000000001,
+    S1x1R1D1=0b1001000001001000,
+    S1x1R1L1=0b1001000001000001,
+    S1x1D1L1=0b1001000000001001,
+    S1x1U1=0b1001001000000000,
+    S1x1R1=0b1001000001000000,
+    S1x1D1=0b1001000000001000,
+    S1x1L1=0b1001000000000001,
 
-    S1x2URD=0b0010101110,
-    S1x2RDL=0b0010100111,
-    S1x2UDL=0b0010101011,
-    S1x2URL=0b0010101101,
-    S1x2UR=0b0010101100,
-    S1x2UD=0b0010101010,
-    S1x2UL=0b0010101001,
-    S1x2RD=0b0010100110,
-    S1x2RL=0b0010100101,
-    S1x2DL=0b0010100011,
-    S1x2U=0b0010101000,
-    S1x2R=0b0010100100,
-    S1x2D=0b0010100010,
-    S1x2L=0b0010100001,
+    S1x2U1R1D1=0b1010001001001000,
+    S1x2U1R2D1=0b1010001010001000,
+    S1x2R1D1L1=0b1010000001001001,
+    S1x2R1D1L2=0b1010000001001010,
+    S1x2R2D1L1=0b1010000010001001,
+    S1x2R2D1L2=0b1010000010001010,
+    S1x2U1D1L1=0b1010001000001001,
+    S1x2U1D1L2=0b1010001000001010,
+    S1x2U1R1L1=0b1010001001000001,
+    S1x2U1R1L2=0b1010001001000010,
+    S1x2U1R2L1=0b1010001010000001,
+    S1x2U1R2L2=0b1010001010000010,
+    S1x2U1R1=0b1010001001000000,
+    S1x2U1R2=0b1010001010000000,
+    S1x2U1D1=0b1010001000001000,
+    S1x2U1L1=0b1010001000000001,
+    S1x2U1L2=0b1010001000000010,
+    S1x2R1D1=0b1010000001001000,
+    S1x2R2D1=0b1010000010001000,
+    S1x2R1L1=0b1010000001000001,
+    S1x2R1L2=0b1010000001000010,
+    S1x2R2L1=0b1010000010000001,
+    S1x2R2L2=0b1010000010000010,
+    S1x2D1L1=0b1010000000001001,
+    S1x2D1L2=0b1010000000001010,
+    S1x2U1=0b1010001000000000,
+    S1x2R1=0b1010000001000000,
+    S1x2R2=0b1010000010000000,
+    S1x2D1=0b1010000000001000,
+    S1x2L1=0b1010000000000001,
+    S1x2L2=0b1010000000000010,
 
-    S2x1URD=0b0100011110,
-    S2x1RDL=0b0100010111,
-    S2x1UDL=0b0100011011,
-    S2x1URL=0b0100011101,
-    S2x1UR=0b0100011100,
-    S2x1UD=0b0100011010,
-    S2x1UL=0b0100011001,
-    S2x1RD=0b0100010110,
-    S2x1RL=0b0100010101,
-    S2x1DL=0b0100010011,
-    S2x1U=0b0100011000,
-    S2x1R=0b0100010100,
-    S2x1D=0b0100010010,
-    S2x1L=0b0100010001,
+    S2x1U1R1D1=0b10001001001001000,
+    S2x1U1R1D2=0b10001001001010000,
+    S2x1U2R1D1=0b10001010001001000,
+    S2x1U2R1D2=0b10001010001010000,
+    S2x1R1D1L1=0b10001000001001001,
+    S2x1R1D2L1=0b10001000001010001,
+    S2x1U1D1L1=0b10001001000001001,
+    S2x1U1D2L1=0b10001001000010001,
+    S2x1U2D1L1=0b10001010000001001,
+    S2x1U2D2L1=0b10001010000010001,
+    S2x1U1R1L1=0b10001001001000001,
+    S2x1U2R1L1=0b10001010001000001,
+    S2x1U1R1=0b10001001001000000,
+    S2x1U2R1=0b10001010001000000,
+    S2x1U1D1=0b10001001000001000,
+    S2x1U1D2=0b10001001000010000,
+    S2x1U2D1=0b10001010000001000,
+    S2x1U2D2=0b10001010000010000,
+    S2x1U1L1=0b10001001000000001,
+    S2x1U2L1=0b10001010000000001,
+    S2x1R1D1=0b10001000001001000,
+    S2x1R1D2=0b10001000001010000,
+    S2x1R1L1=0b10001000001000001,
+    S2x1D1L1=0b10001000000001001,
+    S2x1D2L1=0b10001000000010001,
+    S2x1U1=0b10001001000000000,
+    S2x1U2=0b10001010000000000,
+    S2x1R1=0b10001000001000000,
+    S2x1D1=0b10001000000001000,
+    S2x1D2=0b10001000000010000,
+    S2x1L1=0b10001000000000001,
 
-    S2x2URD=0b0100101110,
-    S2x2RDL=0b0100100111,
-    S2x2UDL=0b0100101011,
-    S2x2URL=0b0100101101,
-    S2x2UR=0b0100101100,
-    S2x2UD=0b0100101010,
-    S2x2UL=0b0100101001,
-    S2x2RD=0b0100100110,
-    S2x2RL=0b0100100101,
-    S2x2DL=0b0100100011,
-    S2x2U=0b0100101000,
-    S2x2R=0b0100100100,
-    S2x2D=0b0100100010,
-    S2x2L=0b0100100001,
+    S2x2U1R1D1=0b10010001001001000,
+    S2x2U1R1D2=0b10010001001010000,
+    S2x2U1R2D1=0b10010001010001000,
+    S2x2U1R2D2=0b10010001010010000,
+    S2x2U2R1D1=0b10010010001001000,
+    S2x2U2R1D2=0b10010010001010000,
+    S2x2U2R2D1=0b10010010010001000,
+    S2x2U2R2D2=0b10010010010010000,
+    S2x2R1D1L1=0b10010000001001001,
+    S2x2R1D1L2=0b10010000001001010,
+    S2x2R1D2L1=0b10010000001010001,
+    S2x2R1D2L2=0b10010000001010010,
+    S2x2R2D1L1=0b10010000010001001,
+    S2x2R2D1L2=0b10010000010001010,
+    S2x2R2D2L1=0b10010000010010001,
+    S2x2R2D2L2=0b10010000010010010,
+    S2x2U1D1L1=0b10010001000001001,
+    S2x2U1D1L2=0b10010001000001010,
+    S2x2U1D2L1=0b10010001000010001,
+    S2x2U1D2L2=0b10010001000010010,
+    S2x2U2D1L1=0b10010010000001001,
+    S2x2U2D1L2=0b10010010000001010,
+    S2x2U2D2L1=0b10010010000010001,
+    S2x2U2D2L2=0b10010010000010010,
+    S2x2U1R1L1=0b10010001001000001,
+    S2x2U1R1L2=0b10010001001000010,
+    S2x2U1R2L1=0b10010001010000001,
+    S2x2U1R2L2=0b10010001010000010,
+    S2x2U2R1L1=0b10010010001000001,
+    S2x2U2R1L2=0b10010010001000010,
+    S2x2U2R2L1=0b10010010010000001,
+    S2x2U2R2L2=0b10010010010000010,
+    S2x2U1R1=0b10010001001000000,
+    S2x2U1R2=0b10010001010000000,
+    S2x2U2R1=0b10010010001000000,
+    S2x2U2R2=0b10010010010000000,
+    S2x2U1D1=0b10010001000001000,
+    S2x2U1D2=0b10010001000010000,
+    S2x2U2D1=0b10010010000001000,
+    S2x2U2D2=0b10010010000010000,
+    S2x2U1L1=0b10010001000000001,
+    S2x2U1L2=0b10010001000000010,
+    S2x2U2L1=0b10010010000000001,
+    S2x2U2L2=0b10010010000000010,
+    S2x2R1D1=0b10010000001001000,
+    S2x2R1D2=0b10010000001010000,
+    S2x2R2D1=0b10010000010001000,
+    S2x2R2D2=0b10010000010010000,
+    S2x2R1L1=0b10010000001000001,
+    S2x2R1L2=0b10010000001000010,
+    S2x2R2L1=0b10010000010000001,
+    S2x2R2L2=0b10010000010000010,
+    S2x2D1L1=0b10010000000001001,
+    S2x2D1L2=0b10010000000001010,
+    S2x2D2L1=0b10010000000010001,
+    S2x2D2L2=0b10010000000010010,
+    S2x2U1=0b10010001000000000,
+    S2x2U2=0b10010010000000000,
+    S2x2R1=0b10010000001000000,
+    S2x2R2=0b10010000010000000,
+    S2x2D1=0b10010000000001000,
+    S2x2D2=0b10010000000010000,
+    S2x2L1=0b10010000000000001,
+    S2x2L2=0b10010000000000010,
 
-    S3x3L=0b0110110001,
-    S3x3R=0b0110110100,
-    S4x4L=0b1001000001,
-    S4x4R=0b1001000100,
+    S3x3L1=0b11011000000000001,
+    S3x3L2=0b11011000000000010,
+    S3x3L3=0b11011000000000011,
+    S3x3R1=0b11011000001000000,
+    S3x3R2=0b11011000010000000,
+    S3x3R3=0b11011000011000000,
+
+    S4x4L1=0b100100000000000001,
+    S4x4L2=0b100100000000000010,
+    S4x4L3=0b100100000000000011,
+    S4x4L4=0b100100000000000100,
+    S4x4R1=0b100100000001000000,
+    S4x4R2=0b100100000010000000,
+    S4x4R3=0b100100000011000000,
+    S4x4R4=0b100100000100000000,
+
     //debug purposes, without doors, don't use when configuring rooms
-    S1x1=0b0010010000,
-    S1x2=0b0010100000,
-    S2x1=0b0100010000,
-    S2x2=0b0100100000,
-    S3x3=0b0110110000,
-    S4x4=0b1001000000,
+    S1x1=0b001001000000000000,
+    S1x2=0b001010000000000000,
+    S2x1=0b010001000000000000,
+    S2x2=0b010010000000000000,
+    S3x3=0b011011000000000000,
+    S4x4=0b100100000000000000,
 
-    SURD=0b1110,
-    SRDL=0b0111,
-    SUDL=0b1011,
-    SURL=0b1101,
-    SUR=0b1100,
-    SUD=0b1010,
-    SUL=0b1001,
-    SRD=0b0110,
-    SRL=0b0101,
-    SDL=0b0011,
-    SU=0b1000,
-    SR=0b0100,
-    SD=0b0010,
-    SL=0b0001,
-
-    OnlySizeInfo=0b1111110000,
-    OnlyDoorsInfo=0b1111
+    OnlySizeInfo=0b111111000000000000,
+    OnlyDoorsInfo=0b111111111111,
 }
 public class Room
 {
@@ -756,57 +837,47 @@ public class Room
     }
     public RoomType GetRoomType()
     {
-        int ret = (w << 7) | (h << 4);
+        int ret = (w << 15) | (h << 12);
+        if (w == h)
+        {
+            int roomDoors = 0;
+            int childrenIdx;
+            for(int i = 0; i < 4; ++i)
+            {
+                childrenIdx = i * w;
+                for(int j = 0; j < w; ++j)
+                {
+                    if (children[childrenIdx] != null)
+                    {
+                        roomDoors = j+1; //door starts from 1
+                        break;
+                    }
+                    ++childrenIdx;
+                }
+                roomDoors <<= 3;
+            }
+            ret |= roomDoors >> 3;
+            return (RoomType)ret;
+        }
         switch ((RoomType)ret)
         {
-            case RoomType.S1x1:
-                ret |= (children[0] == null) ? 0 : (int)RoomType.S1x1U;
-                ret |= (children[1] == null) ? 0 : (int)RoomType.S1x1R;
-                ret |= (children[2] == null) ? 0 : (int)RoomType.S1x1D;
-                ret |= (children[3] == null) ? 0 : (int)RoomType.S1x1L;
-                break;
             case RoomType.S1x2:
-                ret |= (children[0] == null) ? 0 : (int)RoomType.S1x2U;
-                ret |= (children[1] == null) ? 0 : (int)RoomType.S1x2R;
-                ret |= (children[2] == null) ? 0 : (int)RoomType.S1x2R;
-                ret |= (children[3] == null) ? 0 : (int)RoomType.S1x2D;
-                ret |= (children[4] == null) ? 0 : (int)RoomType.S1x2L;
-                ret |= (children[5] == null) ? 0 : (int)RoomType.S1x2L;
+                ret |= (children[0] == null) ? 0 : (int)RoomType.S1x2U1;
+                ret |= (children[1] == null) ? 0 : (int)RoomType.S1x2R1;
+                ret |= (children[2] == null) ? 0 : (int)RoomType.S1x2R2;
+                ret |= (children[3] == null) ? 0 : (int)RoomType.S1x2D1;
+                ret |= (children[4] == null) ? 0 : (int)RoomType.S1x2L1;
+                ret |= (children[5] == null) ? 0 : (int)RoomType.S1x2L2;
                 break;
             case RoomType.S2x1:
-                ret |= (children[0] == null) ? 0 : (int)RoomType.S2x1U;
-                ret |= (children[1] == null) ? 0 : (int)RoomType.S2x1U;
-                ret |= (children[2] == null) ? 0 : (int)RoomType.S2x1R;
-                ret |= (children[3] == null) ? 0 : (int)RoomType.S2x1D;
-                ret |= (children[4] == null) ? 0 : (int)RoomType.S2x1D;
-                ret |= (children[5] == null) ? 0 : (int)RoomType.S2x1L;
+                ret |= (children[0] == null) ? 0 : (int)RoomType.S2x1U1;
+                ret |= (children[1] == null) ? 0 : (int)RoomType.S2x1U2;
+                ret |= (children[2] == null) ? 0 : (int)RoomType.S2x1R1;
+                ret |= (children[3] == null) ? 0 : (int)RoomType.S2x1D1;
+                ret |= (children[4] == null) ? 0 : (int)RoomType.S2x1D2;
+                ret |= (children[5] == null) ? 0 : (int)RoomType.S2x1L1;
                 break;
-            case RoomType.S2x2:
-                ret |= (children[0] == null) ? 0 : (int)RoomType.S2x2U;
-                ret |= (children[1] == null) ? 0 : (int)RoomType.S2x2U;
-                ret |= (children[2] == null) ? 0 : (int)RoomType.S2x2R;
-                ret |= (children[3] == null) ? 0 : (int)RoomType.S2x2R;
-                ret |= (children[4] == null) ? 0 : (int)RoomType.S2x2D;
-                ret |= (children[5] == null) ? 0 : (int)RoomType.S2x2D;
-                ret |= (children[6] == null) ? 0 : (int)RoomType.S2x2L;
-                ret |= (children[7] == null) ? 0 : (int)RoomType.S2x2L;
-                break;
-            case RoomType.S3x3:
-                ret |= (children[3] == null) ? 0 : (int)RoomType.S3x3R;
-                ret |= (children[4] == null) ? 0 : (int)RoomType.S3x3R;
-                ret |= (children[5] == null) ? 0 : (int)RoomType.S3x3R;
-                if (ret != (int)RoomType.S3x3R)
-                    ret = (int)RoomType.S3x3L;
-                break;
-            case RoomType.S4x4:
-                ret |= (children[4] == null) ? 0 : (int)RoomType.S4x4R;
-                ret |= (children[5] == null) ? 0 : (int)RoomType.S4x4R;
-                ret |= (children[6] == null) ? 0 : (int)RoomType.S4x4R;
-                ret |= (children[7] == null) ? 0 : (int)RoomType.S4x4R;
-                if (ret != (int)RoomType.S4x4R)
-                    ret = (int)RoomType.S4x4L;
-                break;
-            default: throw new System.Exception("Wrong Room Type");
+            default: throw new System.Exception("in Room.GetRoomType(): Wrong Room Type");
         }
         return (RoomType)ret;
     }
