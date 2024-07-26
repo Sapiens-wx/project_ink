@@ -14,6 +14,19 @@ public class RoomSceneConfig : ScriptableObject
     {
         public RoomType roomType;
         public List<GameObject> prefabs;
+        public Element()
+        {
+
+        }
+        public Element(RoomType roomType, params GameObject[] prefabsList)
+        {
+            this.roomType = roomType;
+            prefabs = new List<GameObject>();
+            foreach(GameObject prefab in prefabsList)
+            {
+                prefabs.Add(prefab);
+            }
+        }
     }
     /// <summary>
     /// unity cannot draw dictionary in inspector, so I use Array List instead, and use CustomEditor to convert the list into the dictionary.
