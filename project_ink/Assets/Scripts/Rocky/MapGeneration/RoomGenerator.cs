@@ -9,6 +9,9 @@ using UnityEngine.UI;
 /// </summary>
 public class RoomGenerator : MonoBehaviour
 {
+    [Header("Debug")]
+    public int testTimes;
+    private bool stop = false;
     [Header("Generate HUD Map")]
     public GameObject img_prefab;
     public Sprite spr_room1x1, spr_room1x2, spr_room2x1, spr_room2x2, spr_roomBoss;
@@ -52,8 +55,24 @@ public class RoomGenerator : MonoBehaviour
     [ContextMenu("test")]
     public void Test()
     {
-        Room root = GenerateRoom();
-        GenerateRoomMap(root, mapContainer);
+        stop = false;
+        for(int i = 0; i < testTimes && stop==false; ++i)
+        {
+            DeleteChildren();
+            Room root = GenerateRoom();
+            GenerateRoomMap(root, mapContainer);
+            GenerateRoomScene(root);
+        }
+    }
+    [ContextMenu("delete children")]
+    public void DeleteChildren()
+    {
+        for(int i = roomSceneParent.childCount; i > 0; --i) 
+            DestroyImmediate(roomSceneParent.GetChild(0).gameObject);
+        for(int i = mapContainer.childCount; i > 0; --i) 
+            DestroyImmediate(mapContainer.GetChild(0).gameObject);
+        for(int i = doorsParent.childCount; i > 0; --i) 
+            DestroyImmediate(doorsParent.GetChild(0).gameObject);
     }
     public void PrintRooms(Room root)
     {
@@ -147,6 +166,7 @@ public class RoomGenerator : MonoBehaviour
                 case RoomType.S2x1: img.sprite = spr_room2x1; break;
                 case RoomType.S2x2: img.sprite = spr_room2x2; break;
                 case RoomType.S4x4: img.sprite = spr_roomBoss; break;
+                default: throw new Exception("RoomGenerator.GenerateRoomMap(): wrong room size info"); break;
             }
             go.transform.position = new Vector3(curRoom.x * wFactor, curRoom.y * hFactor);
             center += go.transform.position; //add this room's position to center (Vector3), then calculate actual center after the loop
@@ -173,6 +193,7 @@ public class RoomGenerator : MonoBehaviour
         }
     }
     #endregion
+    #region Room Scene
     private List<GameObject> GetRoomPrefabs(Room room)
     {
         RoomType type = room.GetRoomType();
@@ -222,6 +243,7 @@ public class RoomGenerator : MonoBehaviour
             needsToBeCenteredObjects[i].position -= center; //make the rooms images center around their parent
         }
     }
+    #endregion
     #region Room tree
     /// <summary>
     /// Generates a boss room after all normal rooms are generated
@@ -229,8 +251,16 @@ public class RoomGenerator : MonoBehaviour
     private void GenerateBossRoom(Room[][] roomGrid, Queue<Door> doorCandidates)
     {
         Room bossRoom = new Room(4, 4);
+        int debug_____queueCount = doorCandidates.Count;
         while (true)
         {
+            if (doorCandidates.Count == 0)
+            {
+                //
+                Debug.LogError("doorcandidates.count==0, originalCount=" + debug_____queueCount.ToString()); ;
+                stop = true;
+                return;
+            }
             Door curDoor = doorCandidates.Dequeue();
             if(UnityEngine.Random.Range(0,3)>0)
             {
@@ -241,10 +271,11 @@ public class RoomGenerator : MonoBehaviour
             if (positions == null || positions.Count == 0)
                 continue;
             Vector3Int selectedPosition = positions[UnityEngine.Random.Range(0, positions.Count)];
-            curDoor.toRoom = bossRoom;
-            curDoor.fromRoom.children[curDoor.fromRoomChildIndex] = bossRoom;
             bossRoom.x = selectedPosition.x;
             bossRoom.y = selectedPosition.y;
+            curDoor.toRoom = bossRoom;
+            curDoor.fromRoom.children[curDoor.fromRoomChildIndex] = bossRoom;
+            curDoor.toRoom.SetParent(curDoor.fromRoom, curDoor);
             RegisterRoomOnGrid(roomGrid, bossRoom);
             break;
         }
@@ -298,6 +329,7 @@ public class RoomGenerator : MonoBehaviour
             RegisterRoomOnGrid(roomGrid, selectedRoom);
             curDoor.toRoom = selectedRoom;
             curDoor.fromRoom.children[curDoor.fromRoomChildIndex] = selectedRoom;
+            curDoor.toRoom.SetParent(curDoor.fromRoom, curDoor);
             --roomCounts[(selectedRoom.w << 1) + selectedRoom.h - 3];
             --totalCount;
             RandomlyEnqueue(q, selectedRoom.GenerateDoorsRandomly(position.z));
@@ -361,80 +393,11 @@ public class Door
         x = _x;
         y = _y;
     }
-    private static Door[] DeleteFromArray(Door[] arr, int index)
-    {
-        Door[] ret=new Door[arr.Length-1];
-        int i = 0, j = 0;
-        for (; i < arr.Length; ++i)
-        {
-            if (i != index) ret[j++] = arr[i];
-        }
-        return ret;
-    }
-    public static Door[] GetDoorsFromRoom(Room room, int except)
-    {
-        Door[] ret;
-        if (room.w == 1) {
-            if (room.h == 1) {
-                ret = new Door[4];
-                for (int i = 0; i < 4; ++i)
-                    ret[i] = new Door(room, i, i);
-                ret[0].SetPosition(room.x, room.y + 1);
-                ret[1].SetPosition(room.x + 1, room.y);
-                ret[2].SetPosition(room.x, room.y - 1);
-                ret[3].SetPosition(room.x - 1, room.y);
-            }
-            else {
-                ret = new Door[4];
-                ret[0] = new Door(room, 0, room.x, room.y+2,0);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    ret[1] = new Door(room, 1, room.x+1, room.y+1,1);
-                else
-                    ret[1] = new Door(room, 1, room.x+1, room.y,2);
-                ret[2] = new Door(room, 2, room.x, room.y-1,3);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    ret[3] = new Door(room, 3, room.x-1, room.y+1,5);
-                else
-                    ret[3] = new Door(room, 3, room.x-1, room.y,4);
-            }
-        }
-        else {
-            if (room.h == 2) {
-                ret = new Door[4];
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    ret[0] = new Door(room, 0, room.x, room.y+2, 0);
-                else
-                    ret[0] = new Door(room, 0, room.x+1, room.y+2, 1);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    ret[1] = new Door(room, 1, room.x + 2, room.y+1, 2);
-                else
-                    ret[1] = new Door(room, 1, room.x + 2, room.y, 3);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    ret[2] = new Door(room, 2, room.x + 1, room.y-1, 4);
-                else
-                    ret[2] = new Door(room, 2, room.x, room.y-1, 5);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    ret[3] = new Door(room, 3, room.x-1, room.y, 6);
-                else
-                    ret[3] = new Door(room, 3, room.x-1, room.y+1, 7);
-            }
-            else {
-                ret = new Door[4];
-                if(UnityEngine.Random.Range(0,2)==0)
-                    ret[0] = new Door(room, 0, room.x, room.y+1,0);
-                else
-                    ret[0] = new Door(room, 0, room.x+1, room.y+1,1);
-                ret[1] = new Door(room, 1, room.x+2, room.y,2);
-                if(UnityEngine.Random.Range(0,2)==0)
-                    ret[2] = new Door(room, 2, room.x+1, room.y-1,3);
-                else
-                    ret[2] = new Door(room, 2, room.x, room.y-1,4);
-                ret[3] = new Door(room, 3, room.x-1, room.y,5);
-            }
-        }
-        //先remove [except], 再随机remove一个门，因为一个房间最多三个门
-        return DeleteFromArray(DeleteFromArray(ret, except), UnityEngine.Random.Range(0, 3));
-    }
+    /// <param name="grid"></param>
+    /// <param name="counts"></param>
+    /// <param name="roomTemplates"></param>
+    /// <param name="positions">positions.z is the direction of parent room relative to the generated room</param>
+    /// <returns></returns>
     public List<Room> GetPossibleRooms(Room[][] grid, int[] counts, Room[] roomTemplates, List<Vector3Int> positions)
     {
         if (x < 0 || y < 0 || x >= grid.Length || y >= grid[0].Length) return null;
@@ -480,12 +443,16 @@ public class Door
     }
 }
 // how is the size and door position matched to a binary number?
-// width[000]height[000]up[0]right[0]down[0]left[0]
-// exampmle: 1x2 width up, right, down doors: 001 010 1 1 1 0
+// width[000]height[000]up[000]right[000]down[000]left[000]
+// exampmle: 1x2 with up, right, down doors: 001 010 001 010 001 000
+// --  --
+// |    |
+// |    |
+// |    |
+// |     
+// --  --
 /// <summary>
-/// first four digits: size of the room.
-/// last four digits: does the room have door on its up, right, down, left side respectively.
-/// bit digit (from left to right): width[000] height [000] up[0] right[0] down[0] left[0].
+/// bit (from left to right): width[000] height [000] up[000] right[000] down[000] left[000].
 /// </summary>
 public enum RoomType
 {
@@ -668,7 +635,14 @@ public class Room
     /// </summary>
     public Room[] children;
     public Door[] doors;
+    private Room parent;
+    /// <summary>
+    /// parent's would-be index in Room[] children (parent is actually not in Room[] children). useful for getting the room's type (Room.GetRoomType).
+    /// </summary>
+    private int parentIndex;
     public int x, y;
+    public Room Parent { get; }
+    public int ParentIndex { get; }
     public Room()
     {
     }
@@ -691,6 +665,23 @@ public class Room
         children = new Room[room.children.Length];
         x = room.x;
         y = room.y;
+    }
+    /// <summary>
+    /// set the parent room of this room
+    /// </summary>
+    /// <param name="door"></param>
+    public void SetParent(Room _parent, Door door)
+    {
+        parent = _parent;
+        switch (door.dir ^ 0b10)
+        {
+            case 0: parentIndex = door.x - x; break;
+            case 1: parentIndex = w + h - door.y + y - 1; break;
+            case 2: parentIndex = w + h + w - door.x + x - 1; break;
+            case 3: parentIndex = w + h + w + door.y - y; break;
+            default: throw new Exception("Room.SetParent: wrong direction");
+        }
+        if (parentIndex >= children.Length) throw new Exception($"SetParent: parentIndex outside bound: this={this}, door=({door.x},{door.y}) dir={door.dir}"); ;
     }
     /// <summary>
     /// 
@@ -777,108 +768,65 @@ public class Room
     public Door[] GenerateDoorsRandomly(int except)
     {
         Door[] doors = new Door[4];
-        if (w == 1) {
-            if (h == 1) {
-                for (int i = 0; i < 4; ++i)
-                    doors[i] = new Door(this, i, i);
-                doors[0].SetPosition(x, y + 1);
-                doors[1].SetPosition(x + 1, y);
-                doors[2].SetPosition(x, y - 1);
-                doors[3].SetPosition(x - 1, y);
-            }
-            else {
-                doors[0] = new Door(this, 0, x, y+2,0);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    doors[1] = new Door(this, 1, x+1, y+1,1);
-                else
-                    doors[1] = new Door(this, 1, x+1, y,2);
-                doors[2] = new Door(this, 2, x, y-1,3);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    doors[3] = new Door(this, 3, x-1, y+1,5);
-                else
-                    doors[3] = new Door(this, 3, x-1, y,4);
-            }
-        }
-        else {
-            if (h == 2) {
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    doors[0] = new Door(this, 0, x, y+2, 0);
-                else
-                    doors[0] = new Door(this, 0, x+1, y+2, 1);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    doors[1] = new Door(this, 1, x + 2, y+1, 2);
-                else
-                    doors[1] = new Door(this, 1, x + 2, y, 3);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    doors[2] = new Door(this, 2, x + 1, y-1, 4);
-                else
-                    doors[2] = new Door(this, 2, x, y-1, 5);
-                if (UnityEngine.Random.Range(0, 2) == 0)
-                    doors[3] = new Door(this, 3, x-1, y, 6);
-                else
-                    doors[3] = new Door(this, 3, x-1, y+1, 7);
-            }
-            else {
-                if(UnityEngine.Random.Range(0,2)==0)
-                    doors[0] = new Door(this, 0, x, y+1,0);
-                else
-                    doors[0] = new Door(this, 0, x+1, y+1,1);
-                doors[1] = new Door(this, 1, x+2, y,2);
-                if(UnityEngine.Random.Range(0,2)==0)
-                    doors[2] = new Door(this, 2, x+1, y-1,3);
-                else
-                    doors[2] = new Door(this, 2, x, y-1,4);
-                doors[3] = new Door(this, 3, x-1, y,5);
-            }
-        }
+        int randomNum = UnityEngine.Random.Range(0, w);
+        doors[0] = new Door(this, 0, x+randomNum, y + h, randomNum); //x+randomNum: pick a random position to place the door on the up side of the room
+        randomNum = UnityEngine.Random.Range(0, h);
+        doors[1] = new Door(this, 1, x + w, y + randomNum, w + h - randomNum - 1);
+        randomNum = UnityEngine.Random.Range(0, w);
+        doors[2] = new Door(this, 2, x + randomNum, y - 1, (w << 1) + h - 1 - randomNum);
+        randomNum = UnityEngine.Random.Range(0, h);
+        doors[3] = new Door(this, 3, x - 1, y + randomNum, (w << 1) + h + randomNum);
         //先remove [except], 再随机remove一个门，因为一个房间最多三个门
         this.doors = DeleteFromArray(DeleteFromArray(doors, except), UnityEngine.Random.Range(0, 3));
         return this.doors;
     }
     public RoomType GetRoomType()
     {
+        if (parent != null)
+            children[parentIndex] = parent; //temporarily add parent into the children array, to count the room's side connecting to its parent as a door
         int ret = (w << 15) | (h << 12);
-        if (w == h)
+        int childrenIdx = 0;
+        for(int i = 0; i < w; ++i) //up
         {
-            int roomDoors = 0;
-            int childrenIdx;
-            for(int i = 0; i < 4; ++i)
-            {
-                childrenIdx = i * w;
-                for(int j = 0; j < w; ++j)
-                {
-                    if (children[childrenIdx] != null)
-                    {
-                        roomDoors = j+1; //door starts from 1
-                        break;
-                    }
-                    ++childrenIdx;
-                }
-                roomDoors <<= 3;
+            if (children[childrenIdx] != null) {
+                ret |= (i + 1) << 9;
+                break;
             }
-            ret |= roomDoors >> 3;
-            return (RoomType)ret;
+            ++childrenIdx;
         }
-        switch ((RoomType)ret)
+        childrenIdx = w;
+        for(int i = 0; i < h; ++i) //right
         {
-            case RoomType.S1x2:
-                ret |= (children[0] == null) ? 0 : (int)RoomType.S1x2U1;
-                ret |= (children[1] == null) ? 0 : (int)RoomType.S1x2R1;
-                ret |= (children[2] == null) ? 0 : (int)RoomType.S1x2R2;
-                ret |= (children[3] == null) ? 0 : (int)RoomType.S1x2D1;
-                ret |= (children[4] == null) ? 0 : (int)RoomType.S1x2L1;
-                ret |= (children[5] == null) ? 0 : (int)RoomType.S1x2L2;
+            if (children[childrenIdx] != null) {
+                ret |= (i + 1) << 6;
                 break;
-            case RoomType.S2x1:
-                ret |= (children[0] == null) ? 0 : (int)RoomType.S2x1U1;
-                ret |= (children[1] == null) ? 0 : (int)RoomType.S2x1U2;
-                ret |= (children[2] == null) ? 0 : (int)RoomType.S2x1R1;
-                ret |= (children[3] == null) ? 0 : (int)RoomType.S2x1D1;
-                ret |= (children[4] == null) ? 0 : (int)RoomType.S2x1D2;
-                ret |= (children[5] == null) ? 0 : (int)RoomType.S2x1L1;
-                break;
-            default: throw new System.Exception("in Room.GetRoomType(): Wrong Room Type");
+            }
+            ++childrenIdx;
         }
+        childrenIdx = w + h;
+        for(int i = 0; i < w; ++i) //down
+        {
+            if (children[childrenIdx] != null) {
+                ret |= (i + 1) << 3;
+                break;
+            }
+            ++childrenIdx;
+        }
+        childrenIdx = (w<<1)+h;
+        for(int i = 0; i < h; ++i) //left
+        {
+            if (children[childrenIdx] != null) {
+                ret |= i + 1;
+                break;
+            }
+            ++childrenIdx;
+        }
+        if (parent != null)
+            children[parentIndex] = null; //remove parent from the children array after counting.
         return (RoomType)ret;
+    }
+    public override string ToString()
+    {
+        return $"{w}x{h}({x},{y})";
     }
 }
