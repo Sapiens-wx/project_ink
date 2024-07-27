@@ -11,7 +11,6 @@ public class RoomGenerator : MonoBehaviour
 {
     [Header("Debug")]
     public int testTimes;
-    private bool stop = false;
     [Header("Generate HUD Map")]
     public GameObject img_prefab;
     public Sprite spr_room1x1, spr_room1x2, spr_room2x1, spr_room2x2, spr_roomBoss;
@@ -55,8 +54,7 @@ public class RoomGenerator : MonoBehaviour
     [ContextMenu("test")]
     public void Test()
     {
-        stop = false;
-        for(int i = 0; i < testTimes && stop==false; ++i)
+        for(int i = 0; i < testTimes; ++i)
         {
             DeleteChildren();
             Room root = GenerateRoom();
@@ -166,7 +164,7 @@ public class RoomGenerator : MonoBehaviour
                 case RoomType.S2x1: img.sprite = spr_room2x1; break;
                 case RoomType.S2x2: img.sprite = spr_room2x2; break;
                 case RoomType.S4x4: img.sprite = spr_roomBoss; break;
-                default: throw new Exception("RoomGenerator.GenerateRoomMap(): wrong room size info"); break;
+                default: throw new Exception("RoomGenerator.GenerateRoomMap(): wrong room size info");
             }
             go.transform.position = new Vector3(curRoom.x * wFactor, curRoom.y * hFactor);
             center += go.transform.position; //add this room's position to center (Vector3), then calculate actual center after the loop
@@ -248,19 +246,14 @@ public class RoomGenerator : MonoBehaviour
     /// <summary>
     /// Generates a boss room after all normal rooms are generated
     /// </summary>
-    private void GenerateBossRoom(Room[][] roomGrid, Queue<Door> doorCandidates)
+    /// <returns>true if succeeds</returns>
+    private bool GenerateBossRoom(Room[][] roomGrid, Queue<Door> doorCandidates)
     {
         Room bossRoom = new Room(4, 4);
-        int debug_____queueCount = doorCandidates.Count;
         while (true)
         {
-            if (doorCandidates.Count == 0)
-            {
-                //
-                Debug.LogError("doorcandidates.count==0, originalCount=" + debug_____queueCount.ToString()); ;
-                stop = true;
-                return;
-            }
+            if (doorCandidates.Count == 0) //no doors can connect with the boss room. it rarely happens
+                return false;
             Door curDoor = doorCandidates.Dequeue();
             if(UnityEngine.Random.Range(0,3)>0)
             {
@@ -279,6 +272,7 @@ public class RoomGenerator : MonoBehaviour
             RegisterRoomOnGrid(roomGrid, bossRoom);
             break;
         }
+        return true;
     }
     /// <summary>
     /// generate a tree of Rooms.
@@ -334,7 +328,8 @@ public class RoomGenerator : MonoBehaviour
             --totalCount;
             RandomlyEnqueue(q, selectedRoom.GenerateDoorsRandomly(position.z));
         }
-        GenerateBossRoom(roomGrid, q);
+        if(!GenerateBossRoom(roomGrid, q))
+            root = GenerateRoom();
         return root;
     }
     private void RegisterRoomOnGrid(Room[][] grid, Room room)
