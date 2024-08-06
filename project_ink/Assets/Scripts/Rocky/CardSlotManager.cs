@@ -9,8 +9,8 @@ public class CardSlotManager : Singleton<CardSlotManager>
     [SerializeField] Transform cardSlotGridLayoutGroup,slotPointer;
     [SerializeField] GameObject cardSlotPrefab;
 
-    CardSlot[] cardSlots;
-    [HideInInspector] public CardPool cardPool;
+    [HideInInspector] public CardSlot[] cardSlots;
+    [HideInInspector] public CardDealer cardDealer;
     private int curSlot;
 
     private void Start()
@@ -24,121 +24,173 @@ public class CardSlotManager : Singleton<CardSlotManager>
             cardSlots[i] = slot;
             slot.index = i;
         }
-        cardPool = new CardPool(inventory.cards);
+        cardDealer = new CardDealer(inventory.cards);
         DistributeCard();
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Shoot();
+            Fire(Vector2.zero);
         }
+    }
+    public void Fire(Vector2 dir)
+    {
+        ShootCard(curSlot, IncCurSlot);
+        Debug.Log($"cur slot={curSlot}");
+    }
+    /// <summary>
+    /// Instantiate a projectile with parameters given in the card parameter
+    /// </summary>
+    /// <param name="card"></param>
+    /// <returns></returns>
+    public GameObject InstantiateProjectile(Card card)
+    {
+        return null;
+    }
+    /// <summary>
+    /// shoot the card given its index in the card slot
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public Card ShootCard(int index, System.Action callback)
+    {
+        Card ret = cardSlots[index].card;
+        cardSlots[index].SetCard_Anim(null);
+        Debug.Log($"Shoot card {ret.type}");
+        StartCoroutine(ret.OnShot(cardSlots[index], callback));
+        return ret;
+    }
+    public void AutoFire(int slotIndex)
+    {
+        ShootCard(slotIndex, null);
+    }
+    public Card ActivateCard(int index, System.Action callback)
+    {
+        Card ret = cardSlots[index].card;
+        cardSlots[index].card.OnActivate(cardSlots[index], callback);
+        return ret;
     }
     private void DistributeCard()
     {
         StartCoroutine(DistributeCard_Anim());
-        /*List<Card> cards = cardPool.GetCards(numSlots);
-        int i;
-        for(i = 0; i < numSlots; ++i)
-        {
-            cardSlots[i].SetCard(cards[i]);
-            cards[i].OnEnterSlot(cardSlots[i]);
-        }
-        curSlot = 0;
-        UpdateCurSlot();*/
     }
     public int GetCurSlot()
     {
         return curSlot;
     }
+    public void SetCurSlot(int cur)
+    {
+        curSlot = cur;
+        UpdateCurSlot();
+    }
     private void UpdateCurSlot()
     {
         slotPointer.position = cardSlots[curSlot].transform.position;
     }
-    public Card Shoot()
+    /// <summary>
+    /// move to the next non-empty slot
+    /// </summary>
+    public void IncCurSlot()
     {
-        CardSlot slot = cardSlots[curSlot];
-        Card card = slot.card;
-        StartCoroutine(cardSlots[curSlot].SetCard_Anim(null));
-
-        ++curSlot;
-        if (curSlot >= numSlots)
-            DistributeCard();
+        if (curSlot == numSlots - 1) DistributeCard();
         else
-            UpdateCurSlot();
-
-        card.OnShot(slot);
-
-        return card;
+        {
+            for (++curSlot; curSlot + 1 < numSlots && cardSlots[curSlot].card == null; ++curSlot) ;
+            if (cardSlots[curSlot].card == null) DistributeCard();
+            else UpdateCurSlot();
+        }
+    }
+    public void AssignCardToSlot(int slot, Card card)
+    {
+        card.OnEnterSlot(slot);
+        cardSlots[slot].SetCard_Anim(card);
+    }
+    public void DiscardCardInSlot(int index)
+    {
+        cardSlots[index].card.OnDiscard();
+    }
+    public void AssignCardToSlotRandomly(int slotIndex)
+    {
+        AssignCardToSlot(slotIndex, cardDealer.GetCard());
     }
     IEnumerator DistributeCard_Anim()
     {
-        List<Card> cards = cardPool.GetCards(numSlots);
-        int i;
-        for(i = 0; i < numSlots; ++i)
+        SetCurSlot(0);
+        for(int i = 0; i < numSlots; ++i)
         {
-            StartCoroutine(cardSlots[i].SetCard_Anim(cards[i]));
-            cards[i].OnEnterSlot(cardSlots[i]);
-            yield return new WaitForSeconds(0.2f);
+            if (cardSlots[i].card == null)
+            {
+                AssignCardToSlotRandomly(i);
+                yield return new WaitForSeconds(0.2f);
+            }
         }
-        curSlot = 0;
-        UpdateCurSlot();
     }
 }
 
-public class CardPool
+public class CardDealer
 {
-	public List<Card> cardPool;
-    public Queue<Card> queue;
-	
-	public List<Card> pendingCards; //waiting to be added into cardPool
+    /// <summary>
+    /// all the cards in this round.
+    /// </summary>
+    private List<Card> allCards;
+    /// <summary>
+    /// cards waiting to be shuffled
+    /// </summary>
+    private List<Card> discardCardPile;
+    /// <summary>
+    /// shuffled cards
+    /// </summary>
 
-    public CardPool(List<Card> initialCards)
+    public CardDealer(List<Card> initialCards)
     {
-        cardPool=new List<Card>(initialCards);
-        queue = new Queue<Card>();
-        pendingCards = new List<Card>();
-        Shuffle();
+        allCards = new List<Card>(initialCards.Count);
+        for (int i = 0; i < initialCards.Count; ++i)
+        {
+            Card card = initialCards[i].Copy();
+            card.ResetRuntimeParams(this);
+            allCards.Add(card);
+        }
+        discardCardPile = new List<Card>(allCards);
+    }
+    public Card GetCard()
+    {
+        if (discardCardPile.Count == 0) throw new System.Exception("error in CardDealer.GetCards: does not have enough cards to be dealt");
+        int rd = UnityEngine.Random.Range(0, discardCardPile.Count);
+        Card ret = discardCardPile[rd];
+        discardCardPile[rd] = discardCardPile[discardCardPile.Count - 1];
+        discardCardPile.RemoveAt(discardCardPile.Count - 1);
+        return ret;
     }
     public List<Card> GetCards(int num)
     {
         List<Card> ret = new List<Card>(num);
-        int max = Mathf.Min(queue.Count, num);
-		foreach(Card c in pendingCards){
-			cardPool.Add(c);
-		}
+        int max = Mathf.Min(discardCardPile.Count, num);
 		int i;
         for (i = 0; i < max; ++i)
         {
-            ret.Add(queue.Dequeue());
+            ret.Add(GetCard());
         }
 		if(i!=num){
-			Shuffle();
-			for(;i<num;++i){
-				ret.Add(queue.Dequeue());
-			}
+            Debug.LogError("error in CardDealer.GetCards: does not have enough cards to be dealt");
 		}
-        if (queue.Count == 0)
-        {
-            Shuffle();
-        }
-		pendingCards=new List<Card>(ret);
         return ret;
     }
-    private void Shuffle()
+    public void ReturnToCardPool(Card card)
     {
-        List<int> indices = new List<int>(cardPool.Count);
-        for(int i=0; i < cardPool.Count; ++i)
+        discardCardPile.Add(card);
+    }
+    public void ConsumeCardsOfType(Card.CardType type)
+    {
+        for(int i=0;i< allCards.Count; ++i)
         {
-            indices.Add(i);
+            while (allCards.Count>0 && allCards[i].IsConsumed)
+            {
+                allCards[i] = allCards[allCards.Count - 1];
+                allCards.RemoveAt(allCards.Count - 1);
+            }
+            if (allCards[i].type == type)
+                allCards[i].Consume();
         }
-        int j;
-        while(indices.Count>0)
-        {
-            j = Random.Range(0, indices.Count - 1);
-            queue.Enqueue(cardPool[indices[j]]);
-            indices.RemoveAt(j);
-        }
-        cardPool.Clear();
     }
 }
