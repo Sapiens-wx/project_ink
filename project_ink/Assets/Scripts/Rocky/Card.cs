@@ -29,6 +29,7 @@ public abstract class Card : ScriptableObject
     /// index in CardSlotManager.cardSlots if applicable
     /// </summary>
     protected int slotIndex;
+    private float anticipation_backup;
 
     /// <summary>
     /// reset parameters needed in runtime. For example: this is called when the player first enters a round.
@@ -63,15 +64,18 @@ public abstract class Card : ScriptableObject
     //-----------new struct begins---------------
     public virtual void Prep_Fire(List<IEnumerator> actions){
         actions.Add(Fire());
-        actions.Add(Discard());
     }
     public virtual void Prep_Discard(List<IEnumerator> actions){
         actions.Add(Discard());
     }
     internal virtual IEnumerator Fire(){
+        CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
+        ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
     internal virtual IEnumerator AutoFire(){
+        CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
+        ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
     internal virtual IEnumerator Discard(){

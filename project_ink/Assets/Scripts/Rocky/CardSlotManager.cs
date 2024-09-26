@@ -8,10 +8,16 @@ public class CardSlotManager : Singleton<CardSlotManager>
     [SerializeField] CardInventory inventory;
     [SerializeField] Transform cardSlotGridLayoutGroup,slotPointer;
     [SerializeField] GameObject cardSlotPrefab;
+    [Header("UI")]
+    [SerializeField] ProgressBar anticipationBar;
 
     [HideInInspector] public CardSlot[] cardSlots;
     [HideInInspector] public CardDealer cardDealer;
     private int curSlot;
+    private bool anticipating;
+    //-----card effects-----
+    [HideInInspector] public int anticReduceCount;
+    [HideInInspector] public float anticReduceAmount;
 
     private void Start()
     {
@@ -33,13 +39,43 @@ public class CardSlotManager : Singleton<CardSlotManager>
         {
             PrepareFire();
         }
+        else if(Input.GetKeyDown(KeyCode.F)){
+            SkipCard();
+        }
+    }
+    IEnumerator Anticipate(){
+        anticipating=true;
+        float totalTime=cardSlots[curSlot].card.anticipation;
+        //implement card1_3
+        if(anticReduceCount>0){
+            anticReduceCount--;
+            totalTime*=anticReduceAmount;
+        }
+
+        float time=totalTime;
+        WaitForFixedUpdate wait=new WaitForFixedUpdate();
+        anticipationBar.gameObject.SetActive(true);
+        while(time>0){
+            anticipationBar.SetProgress(time/totalTime);
+            time-=Time.fixedDeltaTime;
+            yield return wait;
+        }
+        anticipationBar.gameObject.SetActive(false);
+        anticipating=false;
+        yield break;
     }
     public void PrepareFire(){
+        if(anticipating) return;
         List<IEnumerator> actions=new List<IEnumerator>();
         cardSlots[curSlot].card.Prep_Fire(actions);
         StartCoroutine(Fire(actions));
     }
+    public void SkipCard(){
+        if(anticipating) return;
+        IncCurSlot();
+    }
     IEnumerator Fire(List<IEnumerator> actions){
+        anticipating=true;
         foreach(IEnumerator ienum in actions){
             while(ienum.MoveNext()){
                 yield return ienum.Current;
@@ -75,6 +111,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         curSlot = cur;
         UpdateCurSlot();
+        StartCoroutine(Anticipate()); //enter the anticipation of the card in the cardslot
     }
     private void UpdateCurSlot()
     {
@@ -90,7 +127,8 @@ public class CardSlotManager : Singleton<CardSlotManager>
         {
             for (++curSlot; curSlot + 1 < numSlots && cardSlots[curSlot].card == null; ++curSlot) ;
             if (cardSlots[curSlot].card == null) DistributeCard();
-            else UpdateCurSlot();
+            else
+                SetCurSlot(curSlot);
         }
     }
     public void AssignCardToSlot(int slot, Card card)
@@ -108,15 +146,15 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     IEnumerator DistributeCard_Anim()
     {
-        SetCurSlot(0);
         for(int i = 0; i < numSlots; ++i)
         {
             if (cardSlots[i].card == null)
             {
                 AssignCardToSlotRandomly(i);
-                yield return new WaitForSeconds(0.2f);
             }
         }
+        SetCurSlot(0);
+        yield break;
     }
 }
 
@@ -152,6 +190,7 @@ public class CardDealer
         Card ret = discardCardPile[rd];
         discardCardPile[rd] = discardCardPile[discardCardPile.Count - 1];
         discardCardPile.RemoveAt(discardCardPile.Count - 1);
+
         return ret;
     }
     public List<Card> GetCards(int num)

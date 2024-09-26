@@ -14,7 +14,6 @@ public class Card_1_1 : Card
     public override void Prep_Discard(List<IEnumerator> actions)
     {
         actions.Add(AutoFire());
-        base.Prep_Discard(actions);
         actions.Add(CardSlotManager.instance.AssignCardToSlotRandomly_ienum(slotIndex));
     }
 }

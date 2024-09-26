@@ -15,5 +15,5 @@ MonoBehaviour:
   type: 1
   image: {fileID: 21300000, guid: f6a3efae771cc0e46a1718343de2cde9, type: 3}
   damage: 3
-  anticipation: 100
-  recovery: 100
+  anticipation: 0.8
+  recovery: 0.3
