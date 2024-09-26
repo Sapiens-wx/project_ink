@@ -31,13 +31,22 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Fire(Vector2.zero);
+            PrepareFire();
         }
     }
-    public void Fire(Vector2 dir)
-    {
-        ShootCard(curSlot, IncCurSlot);
-        Debug.Log($"cur slot={curSlot}");
+    public void PrepareFire(){
+        List<IEnumerator> actions=new List<IEnumerator>();
+        cardSlots[curSlot].card.Prep_Fire(actions);
+        StartCoroutine(Fire(actions));
+    }
+    IEnumerator Fire(List<IEnumerator> actions){
+        foreach(IEnumerator ienum in actions){
+            while(ienum.MoveNext()){
+                yield return ienum.Current;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        IncCurSlot();
     }
     /// <summary>
     /// Instantiate a projectile with parameters given in the card parameter
@@ -47,23 +56,6 @@ public class CardSlotManager : Singleton<CardSlotManager>
     public GameObject InstantiateProjectile(Card card)
     {
         return null;
-    }
-    /// <summary>
-    /// shoot the card given its index in the card slot
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public Card ShootCard(int index, System.Action callback)
-    {
-        Card ret = cardSlots[index].card;
-        cardSlots[index].SetCard_Anim(null);
-        Debug.Log($"Shoot card {ret.type}");
-        StartCoroutine(ret.OnShot(cardSlots[index], callback));
-        return ret;
-    }
-    public void AutoFire(int slotIndex)
-    {
-        ShootCard(slotIndex, null);
     }
     public Card ActivateCard(int index, System.Action callback)
     {
@@ -106,13 +98,13 @@ public class CardSlotManager : Singleton<CardSlotManager>
         card.OnEnterSlot(slot);
         cardSlots[slot].SetCard_Anim(card);
     }
-    public void DiscardCardInSlot(int index)
-    {
-        cardSlots[index].card.OnDiscard();
-    }
     public void AssignCardToSlotRandomly(int slotIndex)
     {
         AssignCardToSlot(slotIndex, cardDealer.GetCard());
+    }
+    public IEnumerator AssignCardToSlotRandomly_ienum(int slotIndex){
+        AssignCardToSlot(slotIndex, cardDealer.GetCard());
+        yield break;
     }
     IEnumerator DistributeCard_Anim()
     {

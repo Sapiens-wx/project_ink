@@ -11,16 +11,15 @@ public class Card_1_2 : Card
         CopyTo(ret);
         return ret;
     }
-    public override IEnumerator OnShot(CardSlot slot, System.Action callback)
+    public override void Prep_Fire(List<IEnumerator> actions)
     {
+        base.Prep_Fire(actions);
         int n = Mathf.Min(CardSlotManager.instance.numSlots, slotIndex + 3);
         for(int i = slotIndex + 1; i < n; ++i)
         {
-            yield return new WaitForSeconds(0.3f);
-            CardSlotManager.instance.DiscardCardInSlot(i);
+            if(CardSlotManager.instance.cardSlots[i].card!=null){
+                CardSlotManager.instance.cardSlots[i].card.Prep_Discard(actions);
+            }
         }
-        callback?.Invoke();
-        ReturnToCardPool();
-        yield break;
     }
 }

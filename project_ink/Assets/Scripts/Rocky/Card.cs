@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public abstract class Card : ScriptableObject
     public CardType type;
     public Sprite image;
     public int damage;
+    public float anticipation, recovery;
 
     //Runtime variables
     /// <summary>
@@ -45,16 +47,6 @@ public abstract class Card : ScriptableObject
         slotIndex = slot;
     }
     /// <summary>
-    /// called when the card is shot
-    /// </summary>
-    /// <param name="slot"></param>
-    public virtual IEnumerator OnShot(CardSlot slot, System.Action callback) 
-    {
-        callback?.Invoke();
-        ReturnToCardPool();
-        yield break;
-    }
-    /// <summary>
     /// generates an automatic bullet flying toward an enemy
     /// </summary>
     /// <param name="slot"></param>
@@ -68,13 +60,24 @@ public abstract class Card : ScriptableObject
     {
         isConsumed = true;
     }
-    /// <summary>
-    /// Discard the card into discard card pile. the card will be dealt again in this round
-    /// </summary>
-    public virtual void OnDiscard()
-    {
-        ReturnToCardPool();
+    //-----------new struct begins---------------
+    public virtual void Prep_Fire(List<IEnumerator> actions){
+        actions.Add(Fire());
+        actions.Add(Discard());
+    }
+    public virtual void Prep_Discard(List<IEnumerator> actions){
+        actions.Add(Discard());
+    }
+    internal virtual IEnumerator Fire(){
+        yield return new WaitForSeconds(recovery);
+    }
+    internal virtual IEnumerator AutoFire(){
+        yield return new WaitForSeconds(recovery);
+    }
+    internal virtual IEnumerator Discard(){
         CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
+        ReturnToCardPool();
+        yield break;
     }
     public abstract Card Copy();
     public virtual void CopyTo(Card card)
@@ -82,6 +85,8 @@ public abstract class Card : ScriptableObject
         card.damage = damage;
         card.type = type;
         card.image = image;
+        card.anticipation=anticipation;
+        card.recovery=recovery;
     }
     public enum CardType
     {

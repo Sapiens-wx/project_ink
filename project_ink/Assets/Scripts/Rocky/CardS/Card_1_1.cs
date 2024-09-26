@@ -11,10 +11,10 @@ public class Card_1_1 : Card
         CopyTo(ret);
         return ret;
     }
-    public override void OnDiscard()
+    public override void Prep_Discard(List<IEnumerator> actions)
     {
-        CardSlotManager.instance.AutoFire(slotIndex);
-        CardSlotManager.instance.AssignCardToSlotRandomly(slotIndex);
-        ReturnToCardPool();
+        actions.Add(AutoFire());
+        base.Prep_Discard(actions);
+        actions.Add(CardSlotManager.instance.AssignCardToSlotRandomly_ienum(slotIndex));
     }
 }
