@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_1_6
   m_EditorClassIdentifier: 
   type: 5
-  image: {fileID: 21300000, guid: 82be7d227ef2791499ad05554c46d372, type: 3}
+  image: {fileID: 21300000, guid: efadb4b383fdd6446839a736fd78af18, type: 3}
   damage: 0
   anticipation: 0.5
   recovery: 0.5
