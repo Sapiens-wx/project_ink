@@ -16,8 +16,13 @@ public class CardSlotManager : Singleton<CardSlotManager>
     private int curSlot;
     private bool anticipating;
     //-----card effects-----
+    //card_1_3
     [HideInInspector] public int anticReduceCount;
     [HideInInspector] public float anticReduceAmount;
+    //card_1_6
+    [HideInInspector] public int autoActivateOnDiscard;
+    //card_1_5
+    [HideInInspector] public int effect_card1_5=0;
 
     private void Start()
     {
@@ -133,11 +138,18 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     public void AssignCardToSlot(int slot, Card card)
     {
+        if(cardSlots[slot].card!=null){
+            Debug.LogError("In assignCardToSlot(), there is already a card in the slot");
+            return;
+        }
         card.OnEnterSlot(slot);
         cardSlots[slot].SetCard_Anim(card);
     }
     public void AssignCardToSlotRandomly(int slotIndex)
     {
+        if(cardSlots[slotIndex].card!=null){
+            return;
+        }
         AssignCardToSlot(slotIndex, cardDealer.GetCard());
     }
     public IEnumerator AssignCardToSlotRandomly_ienum(int slotIndex){

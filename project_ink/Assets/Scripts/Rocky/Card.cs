@@ -79,6 +79,8 @@ public abstract class Card : ScriptableObject
         yield return new WaitForSeconds(recovery);
     }
     internal virtual IEnumerator Discard(){
+        if(CardSlotManager.instance.effect_card1_5>0)
+            Debug.Log("fire a 2-damage bullet because of card_1_5 effect");
         CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
         ReturnToCardPool();
         yield break;
@@ -98,5 +100,8 @@ public abstract class Card : ScriptableObject
         Card_1_2,
         Card_1_3,
         Card_1_4,
+        Card_1_5,
+        Card_1_6,
+        Card_1_7,
     }
 }
