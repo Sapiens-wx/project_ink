@@ -61,26 +61,36 @@ public abstract class Card : ScriptableObject
     {
         isConsumed = true;
     }
-    //-----------new struct begins---------------
     public virtual void Prep_Fire(List<IEnumerator> actions){
         actions.Add(Fire());
     }
     public virtual void Prep_Discard(List<IEnumerator> actions){
         actions.Add(Discard());
     }
-    internal virtual IEnumerator Fire(){
+    internal IEnumerator Fire(){
         CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
+        CardSlotManager.instance.InstantiateProjectile(this);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
-    internal virtual IEnumerator AutoFire(){
+    internal IEnumerator AutoFire(){
         CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
+        CardSlotManager.instance.InstantiateProjectile(this);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
-    internal virtual IEnumerator Discard(){
+    internal IEnumerator Activate(){
+        CardSlotManager.instance.InstantiateProjectile(this);
+        yield return new WaitForSeconds(recovery);
+    }
+    internal IEnumerator Discard(){
+        if(CardSlotManager.instance.effect_card1_4){
+            IEnumerator ienum=Activate();
+            while(ienum.MoveNext())
+                yield return ienum.Current;
+        }
         if(CardSlotManager.instance.effect_card1_5>0)
-            Debug.Log("fire a 2-damage bullet because of card_1_5 effect");
+            CardSlotManager.instance.InstantiateProjectile(2);
         CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
         ReturnToCardPool();
         yield break;

@@ -10,22 +10,34 @@ public class CardSlotManager : Singleton<CardSlotManager>
     [SerializeField] GameObject cardSlotPrefab;
     [Header("UI")]
     [SerializeField] ProgressBar anticipationBar;
+    [Header("Bullet")]
+    [SerializeField] GameObject projectilePrefab;
+    [SerializeField] float projectileSpeed;
 
     [HideInInspector] public CardSlot[] cardSlots;
     [HideInInspector] public CardDealer cardDealer;
     private int curSlot;
     private bool anticipating;
+    private Vector2 shootDir; //the direction to shoot the card;
     //-----card effects-----
     //card_1_3
     [HideInInspector] public int anticReduceCount;
     [HideInInspector] public float anticReduceAmount;
-    //card_1_6
-    [HideInInspector] public int autoActivateOnDiscard;
+    //card_1_4
+    /// <summary>
+    /// the first discarded card in every new round is activated
+    /// </summary>
+    [HideInInspector] public bool effect_card1_4;
     //card_1_5
     [HideInInspector] public int effect_card1_5=0;
+    //card_1_6
+    [HideInInspector] public int autoActivateOnDiscard;
 
     private void Start()
     {
+        //---temporary code---
+        shootDir=Vector2.right;
+        //---temporary code---
         curSlot = 0;
         cardSlots = new CardSlot[numSlots];
         for(int i = 0; i < numSlots; ++i)
@@ -94,9 +106,17 @@ public class CardSlotManager : Singleton<CardSlotManager>
     /// </summary>
     /// <param name="card"></param>
     /// <returns></returns>
-    public GameObject InstantiateProjectile(Card card)
+    public Projectile InstantiateProjectile(Card card)
     {
-        return null;
+        Projectile p = Instantiate(projectilePrefab, Vector2.zero, Quaternion.identity).GetComponent<Projectile>();
+        p.InitProjectile(card, shootDir*projectileSpeed);
+        return p;
+    }
+    public Projectile InstantiateProjectile(int damage)
+    {
+        Projectile p = Instantiate(projectilePrefab, Vector2.zero, Quaternion.identity).GetComponent<Projectile>();
+        p.InitProjectile(damage, shootDir*projectileSpeed);
+        return p;
     }
     public Card ActivateCard(int index, System.Action callback)
     {
@@ -158,6 +178,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     IEnumerator DistributeCard_Anim()
     {
+        effect_card1_4=true;
         for(int i = 0; i < numSlots; ++i)
         {
             if (cardSlots[i].card == null)
