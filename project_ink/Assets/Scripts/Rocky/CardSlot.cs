@@ -17,14 +17,14 @@ public class CardSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (card != null)
         {
-            image.transform.localScale = Vector3.one * 2;
+            CardSlotManager.instance.cardTips.ShowTip(card);
         }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (card != null)
         {
-            image.transform.localScale = Vector3.one;
+            CardSlotManager.instance.cardTips.HideTip();
         }
     }
     public void SetCard(Card _card)

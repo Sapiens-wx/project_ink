@@ -8,7 +8,7 @@ public class Card_1_5 : Card
 {
     public override Card Copy()
     {
-        Card_1_5 ret = new Card_1_5();
+        Card_1_5 ret = ScriptableObject.CreateInstance<Card_1_5>();
         CopyTo(ret);
         return ret;
     }
@@ -18,12 +18,7 @@ public class Card_1_5 : Card
         actions.Add(Effect());
     }
     IEnumerator Effect(){
-        CardSlotManager.instance.StartCoroutine(ActualEffect());
+        CardSlotManager.instance.buff1_5.AddBuff(5);
         yield break;
-    }
-    IEnumerator ActualEffect(){
-        CardSlotManager.instance.effect_card1_5++;
-        yield return new WaitForSeconds(6);
-        CardSlotManager.instance.effect_card1_5--;
     }
 }

@@ -7,8 +7,14 @@ public class Card_1_4 : Card
 {
     public override Card Copy()
     {
-        Card_1_4 ret = new Card_1_4();
+        Card_1_4 ret = ScriptableObject.CreateInstance<Card_1_4>();
         CopyTo(ret);
         return ret;
+    }
+    public override void Prep_Fire(List<IEnumerator> actions)
+    {
+        Consume();
+        CardSlotManager.instance.buff1_4.Enable();
+        base.Prep_Fire(actions);
     }
 }

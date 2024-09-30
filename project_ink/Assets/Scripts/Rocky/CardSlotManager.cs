@@ -10,6 +10,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     [SerializeField] GameObject cardSlotPrefab;
     [Header("UI")]
     [SerializeField] ProgressBar anticipationBar;
+    public CardTips cardTips;
     [Header("Bullet")]
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] float projectileSpeed;
@@ -21,17 +22,11 @@ public class CardSlotManager : Singleton<CardSlotManager>
     private Vector2 shootDir; //the direction to shoot the card;
     //-----card effects-----
     //card_1_3
-    [HideInInspector] public int anticReduceCount;
-    [HideInInspector] public float anticReduceAmount;
+    public Buff1_3 buff1_3;
     //card_1_4
-    /// <summary>
-    /// the first discarded card in every new round is activated
-    /// </summary>
-    [HideInInspector] public bool effect_card1_4;
+    public Buff1_4 buff1_4;
     //card_1_5
-    [HideInInspector] public int effect_card1_5=0;
-    //card_1_6
-    [HideInInspector] public int autoActivateOnDiscard;
+    public Buff1_5 buff1_5;
 
     private void Start()
     {
@@ -62,12 +57,8 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     IEnumerator Anticipate(){
         anticipating=true;
-        float totalTime=cardSlots[curSlot].card.anticipation;
         //implement card1_3
-        if(anticReduceCount>0){
-            anticReduceCount--;
-            totalTime*=anticReduceAmount;
-        }
+        float totalTime=buff1_3.Activate(cardSlots[curSlot].card.anticipation);
 
         float time=totalTime;
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
@@ -178,7 +169,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     IEnumerator DistributeCard_Anim()
     {
-        effect_card1_4=true;
+        buff1_4.firstCardOfRound=true;
         for(int i = 0; i < numSlots; ++i)
         {
             if (cardSlots[i].card == null)

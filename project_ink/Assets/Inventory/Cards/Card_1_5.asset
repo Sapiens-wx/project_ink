@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   image: {fileID: 21300000, guid: 684c482951393ca4790f2a523c00ddc0, type: 3}
+  description: "\u5982\u679C\u8FD9\u5F20\u724C\u88AB\u5F03\u6389\u540E\uFF0C\u73A9\u5BB6\u6BCF\u5F03\u6389\u4E00\u5F20\u724C\uFF0C\u4FBF\u4EA7\u751F\u4E00\u679A\u9020\u62102\u70B9\u4F24\u5BB3\u7684\u8FFD\u8E2A\u654C\u4EBA\u7684\u5C04\u5F39\uFF0C\u6301\u7EED6s"
   damage: 0
   anticipation: 0.5
   recovery: 0.5

@@ -7,7 +7,7 @@ public class Card_1_1 : Card
 {
     public override Card Copy()
     {
-        Card_1_1 ret = new Card_1_1();
+        Card_1_1 ret = ScriptableObject.CreateInstance<Card_1_1>();
         CopyTo(ret);
         return ret;
     }

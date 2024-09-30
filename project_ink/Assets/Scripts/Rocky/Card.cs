@@ -9,6 +9,7 @@ public abstract class Card : ScriptableObject
 {
     public CardType type;
     public Sprite image;
+    [TextArea] public string description;
     public int damage;
     public float anticipation, recovery;
 
@@ -84,13 +85,13 @@ public abstract class Card : ScriptableObject
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator Discard(){
-        if(CardSlotManager.instance.effect_card1_4){
-            IEnumerator ienum=Activate();
-            while(ienum.MoveNext())
-                yield return ienum.Current;
-        }
-        if(CardSlotManager.instance.effect_card1_5>0)
-            CardSlotManager.instance.InstantiateProjectile(2);
+        //buff1_4
+        IEnumerator ienum=CardSlotManager.instance.buff1_4.Activate(Activate());
+        while(ienum.MoveNext())
+            yield return ienum.Current;
+        //buff1_5
+        CardSlotManager.instance.buff1_5.Activate();
+
         CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
         ReturnToCardPool();
         yield break;
@@ -103,6 +104,7 @@ public abstract class Card : ScriptableObject
         card.image = image;
         card.anticipation=anticipation;
         card.recovery=recovery;
+        card.description=description;
     }
     public enum CardType
     {
