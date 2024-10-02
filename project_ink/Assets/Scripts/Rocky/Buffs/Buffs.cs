@@ -104,7 +104,7 @@ public class Buff1_5 : Buff{
         if(!enabled) return;
         for(int i=0;i<buffs.Count;){
             Activated();
-            CardSlotManager.instance.InstantiateProjectile(2);
+            CardSlotManager.instance.InstantiateProjectile(2).gameObject.name="buff 5";
             --buffs[i];
             if(buffs[i]==0){
                 buffs[i]=buffs[^1];
