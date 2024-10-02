@@ -12,9 +12,9 @@ public class Card_1_5 : Card
         CopyTo(ret);
         return ret;
     }
-    public override void Prep_Fire(List<IEnumerator> actions)
+    public override void Prep_Discard(List<IEnumerator> actions)
     {
-        base.Prep_Fire(actions);
+        base.Prep_Discard(actions);
         actions.Add(Effect());
     }
     IEnumerator Effect(){
