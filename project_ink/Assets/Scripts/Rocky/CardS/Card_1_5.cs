@@ -18,7 +18,7 @@ public class Card_1_5 : Card
         actions.Add(Effect());
     }
     IEnumerator Effect(){
-        CardSlotManager.instance.buff1_5.AddBuff(5);
+        CardSlotManager.inst.buff1_5.AddBuff(5);
         yield break;
     }
 }

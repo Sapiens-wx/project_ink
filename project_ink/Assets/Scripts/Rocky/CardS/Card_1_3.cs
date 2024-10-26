@@ -16,15 +16,15 @@ public class Card_1_3 : Card
     {
         base.Prep_Fire(actions);
         actions.Add(Effect());
-        int n = Mathf.Min(CardSlotManager.instance.numSlots, slotIndex + 3);
+        int n = Mathf.Min(CardSlotManager.inst.numSlots, slotIndex + 3);
         for(int i = slotIndex + 1; i < n; ++i)
         {
-            if(CardSlotManager.instance.cardSlots[i].card!=null)
-                CardSlotManager.instance.cardSlots[i].card.Prep_Discard(actions);
+            if(CardSlotManager.inst.cardSlots[i].card!=null)
+                CardSlotManager.inst.cardSlots[i].card.Prep_Discard(actions);
         }
     }
     IEnumerator Effect(){
-        CardSlotManager.instance.buff1_3.Enable(3, .5f);
+        CardSlotManager.inst.buff1_3.Enable(3, .5f);
         yield break;
     }
 }

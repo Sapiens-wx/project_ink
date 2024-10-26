@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.RenderGraphModule;
 
 public class Projectile : MonoBehaviour
 {
@@ -11,16 +11,27 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
-        Destroy(gameObject, 5);
     }
-    public void InitProjectile(Card card, Vector2 velocity){
+    void OnEnable(){
+        StartCoroutine(DelayDestroy(5));
+    }
+    public void AdjustRotation(Vector2 dir){
+        transform.rotation=Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.right, dir), Vector3.forward);
+    }
+    public void InitProjectile(Card card, Vector2 pos, Vector2 velocity){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         damage=card.damage;
         rgb.velocity=velocity;
+        transform.position=pos;
     }
-    public void InitProjectile(int damage, Vector2 velocity){
+    public void InitProjectile(int damage, Vector2 pos, Vector2 velocity){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         this.damage=damage;
         rgb.velocity=velocity;
+        transform.position=pos;
+    }
+    IEnumerator DelayDestroy(float seconds){
+        yield return new WaitForSeconds(seconds);
+        ProjectileManager.inst.ReleaseProjectile(this);
     }
 }

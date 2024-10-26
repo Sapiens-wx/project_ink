@@ -69,35 +69,35 @@ public abstract class Card : ScriptableObject
         actions.Add(Discard());
     }
     internal IEnumerator Fire(){
-        CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.instance.InstantiateProjectile(this);
+        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
+        CardSlotManager.inst.InstantiateProjectile(this);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator AutoFire(){
-        CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.instance.InstantiateProjectile(this);
+        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
+        CardSlotManager.inst.InstantiateProjectile(this);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator Activate(){
-        CardSlotManager.instance.InstantiateProjectile(this);
+        CardSlotManager.inst.InstantiateProjectile(this);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator OnDiscardBuffCheck(){
         //buff1_4
-        IEnumerator ienum=CardSlotManager.instance.buff1_4.Activate(Activate());
+        IEnumerator ienum=CardSlotManager.inst.buff1_4.Activate(Activate());
         while(ienum.MoveNext())
             yield return ienum.Current;
         //buff1_5
-        CardSlotManager.instance.buff1_5.Activate();
+        CardSlotManager.inst.buff1_5.Activate();
     }
     internal IEnumerator Discard(){
         IEnumerator ienum=OnDiscardBuffCheck();
         while(ienum.MoveNext())
             yield return ienum.Current;
 
-        CardSlotManager.instance.cardSlots[slotIndex].SetCard_Anim(null);
+        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         ReturnToCardPool();
         yield break;
     }

@@ -14,7 +14,7 @@ public class Card_1_4 : Card
     public override void Prep_Fire(List<IEnumerator> actions)
     {
         Consume();
-        CardSlotManager.instance.buff1_4.Enable();
+        CardSlotManager.inst.buff1_4.Enable();
         base.Prep_Fire(actions);
     }
 }

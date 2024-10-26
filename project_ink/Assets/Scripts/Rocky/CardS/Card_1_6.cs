@@ -14,14 +14,14 @@ public class Card_1_6 : Card
     public override void Prep_Fire(List<IEnumerator> actions)
     {
         base.Prep_Fire(actions);
-        int n = Mathf.Min(CardSlotManager.instance.numSlots, slotIndex + 4);
+        int n = Mathf.Min(CardSlotManager.inst.numSlots, slotIndex + 4);
         for(int i = slotIndex + 1; i < n; ++i)
         {
-            if(CardSlotManager.instance.cardSlots[i].card!=null)
-                CardSlotManager.instance.cardSlots[i].card.Prep_Discard(actions);
+            if(CardSlotManager.inst.cardSlots[i].card!=null)
+                CardSlotManager.inst.cardSlots[i].card.Prep_Discard(actions);
         }
         for(int i=slotIndex+1;i<n;++i){
-            actions.Add(CardSlotManager.instance.AssignCardToSlotRandomly_ienum(i));
+            actions.Add(CardSlotManager.inst.AssignCardToSlotRandomly_ienum(i));
         }
     }
 }

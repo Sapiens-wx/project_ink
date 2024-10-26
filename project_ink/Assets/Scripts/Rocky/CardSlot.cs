@@ -17,14 +17,14 @@ public class CardSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (card != null)
         {
-            CardSlotManager.instance.cardTips.ShowTip(card);
+            CardSlotManager.inst.cardTips.ShowTip(card);
         }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         if (card != null)
         {
-            CardSlotManager.instance.cardTips.HideTip();
+            CardSlotManager.inst.cardTips.HideTip();
         }
     }
     public void SetCard(Card _card)

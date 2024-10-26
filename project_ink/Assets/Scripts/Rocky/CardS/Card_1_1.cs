@@ -15,6 +15,6 @@ public class Card_1_1 : Card
     {
         actions.Add(AutoFire());
         actions.Add(OnDiscardBuffCheck());
-        actions.Add(CardSlotManager.instance.AssignCardToSlotRandomly_ienum(slotIndex));
+        actions.Add(CardSlotManager.inst.AssignCardToSlotRandomly_ienum(slotIndex));
     }
 }

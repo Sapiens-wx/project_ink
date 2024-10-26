@@ -15,7 +15,7 @@ public abstract class Buff{
         indicator.SetActive(true);
     }
     internal void Activated(){
-        CardSlotManager.instance.StartCoroutine(ActivatedAnim());
+        CardSlotManager.inst.StartCoroutine(ActivatedAnim());
     }
     IEnumerator ActivatedAnim(){
         float totalT=.3f;
@@ -102,7 +102,7 @@ public class Buff1_5 : Buff{
     }
     IEnumerator DelayShoot(){
 		yield return new WaitForSeconds(0.3f);
-		CardSlotManager.instance.InstantiateProjectile(2).gameObject.name="buff 5";
+		CardSlotManager.inst.InstantiateProjectile(2).gameObject.name="buff 5";
     }
     public void Activate(){
         if(!enabled) return;
@@ -110,7 +110,7 @@ public class Buff1_5 : Buff{
             Activated();
 			//uncomment this line after adding enemies
             //CardSlotManager.instance.InstantiateProjectile(2).gameObject.name="buff 5";
-            CardSlotManager.instance.StartCoroutine(DelayShoot());
+            CardSlotManager.inst.StartCoroutine(DelayShoot());
             --buffs[i];
             if(buffs[i]==0){
                 buffs[i]=buffs[^1];

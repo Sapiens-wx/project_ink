@@ -11,9 +11,6 @@ public class CardSlotManager : Singleton<CardSlotManager>
     [Header("UI")]
     [SerializeField] ProgressBar anticipationBar;
     public CardTips cardTips;
-    [Header("Bullet")]
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] float projectileSpeed;
 
     [HideInInspector] public CardSlot[] cardSlots;
     [HideInInspector] public CardDealer cardDealer;
@@ -49,7 +46,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            PrepareFire();
+            //PrepareFire(Vector2.right);
         }
         else if(Input.GetKeyDown(KeyCode.F)){
             SkipCard();
@@ -72,8 +69,9 @@ public class CardSlotManager : Singleton<CardSlotManager>
         anticipating=false;
         yield break;
     }
-    public void PrepareFire(){
+    public void PrepareFire(Vector2 dir){
         if(anticipating) return;
+        this.shootDir=dir;
         List<IEnumerator> actions=new List<IEnumerator>();
         cardSlots[curSlot].card.Prep_Fire(actions);
         StartCoroutine(Fire(actions));
@@ -99,14 +97,16 @@ public class CardSlotManager : Singleton<CardSlotManager>
     /// <returns></returns>
     public Projectile InstantiateProjectile(Card card)
     {
-        Projectile p = Instantiate(projectilePrefab, Vector2.zero, Quaternion.identity).GetComponent<Projectile>();
-        p.InitProjectile(card, shootDir*projectileSpeed);
+        Projectile p = ProjectileManager.inst.CreateProjectile();
+        p.AdjustRotation(shootDir);
+        p.InitProjectile(card, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed);
         return p;
     }
     public Projectile InstantiateProjectile(int damage)
     {
-        Projectile p = Instantiate(projectilePrefab, Vector2.zero, Quaternion.identity).GetComponent<Projectile>();
-        p.InitProjectile(damage, shootDir*projectileSpeed);
+        Projectile p = ProjectileManager.inst.CreateProjectile();
+        p.AdjustRotation(shootDir);
+        p.InitProjectile(damage, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed);
         return p;
     }
     public Card ActivateCard(int index, System.Action callback)
