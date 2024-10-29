@@ -32,6 +32,14 @@ public class Projectile : MonoBehaviour
     }
     IEnumerator DelayDestroy(float seconds){
         yield return new WaitForSeconds(seconds);
+        M_Destroy();
+    }
+    void M_Destroy(){
         ProjectileManager.inst.ReleaseProjectile(this);
+    }
+    void OnTriggerEnter2D(Collider2D collider){
+        EnemyBase enemy=collider.GetComponent<EnemyBase>();
+        enemy.OnHit(this);
+        M_Destroy();
     }
 }
