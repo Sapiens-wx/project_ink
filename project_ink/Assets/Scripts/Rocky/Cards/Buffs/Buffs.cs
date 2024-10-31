@@ -102,7 +102,7 @@ public class Buff1_5 : Buff{
     }
     IEnumerator DelayShoot(){
 		yield return new WaitForSeconds(0.3f);
-		CardSlotManager.inst.InstantiateProjectile(2).gameObject.name="buff 5";
+		CardSlotManager.inst.InstantiateProjectile(2, true).gameObject.name="buff 5";
     }
     public void Activate(){
         if(!enabled) return;

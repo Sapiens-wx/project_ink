@@ -70,18 +70,18 @@ public abstract class Card : ScriptableObject
     }
     internal IEnumerator Fire(){
         CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.inst.InstantiateProjectile(this);
+        CardSlotManager.inst.InstantiateProjectile(this, false);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator AutoFire(){
         CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.inst.InstantiateProjectile(this);
+        CardSlotManager.inst.InstantiateProjectile(this, true);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator Activate(){
-        CardSlotManager.inst.InstantiateProjectile(this);
+        CardSlotManager.inst.InstantiateProjectile(this, true);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator OnDiscardBuffCheck(){

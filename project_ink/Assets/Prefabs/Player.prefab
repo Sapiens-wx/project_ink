@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9012471065857797715}
   - component: {fileID: 8104300210262980806}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: InAir
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 962891448300137390}
   - component: {fileID: 6068609389876873894}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2604716849835689904}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 7900062101444724644}
   - component: {fileID: 6191695175651398277}
   - component: {fileID: 8551532553194148442}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3521447724084934508}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.012182303}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
@@ -387,7 +387,7 @@ MonoBehaviour:
   _groundCheckSize: {x: 0.49, y: 0.03}
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   isGround: 0
 --- !u!95 &6191695175651398277
 Animator:
@@ -435,7 +435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2452047648320942038}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,7 +467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 13179712279513977}
   - component: {fileID: 8481653204888852726}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Feet2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 941310139577268631}
   - component: {fileID: 3394119651008432599}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +635,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1470295394648413043}
   - component: {fileID: 8371626334638154788}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Direction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -719,7 +719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7611319907739529907}
   - component: {fileID: 2625232475399100152}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Hand2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -803,7 +803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2166187370540482649}
   - component: {fileID: 1938041768995031674}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

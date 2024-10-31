@@ -14,18 +14,19 @@ public class B1_1_Ctrller : EnemyBase
     public GameObject a4_bullet;
     [Header("Action5")]
     public GameObject a5_bullet;
-    //[Header("Action2")]
+    [Header("Stage Transit")]
+    public Vector2 st_platform1;
+    public Vector2 st_platform2;
 
     void OnDrawGizmosSelected(){
+        Gizmos.DrawWireSphere(st_platform1, .5f);
+        Gizmos.DrawWireSphere(st_platform2, .5f);
         Gizmos.DrawLine(new Vector2(-30,a1_2_jumpHeight), new Vector2(30,a1_2_jumpHeight));
     }
-    void Start(){
+    internal override void Start(){
+        base.Start();
         redHat.SetActive(false);
         a3_target.SetActive(false);
-    }
-    void Update(){
-        if(Input.GetKeyDown(KeyCode.D)){
-        }
     }
     public override void OnHit(Projectile proj)
     {

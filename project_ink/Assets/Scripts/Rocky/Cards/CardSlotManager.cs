@@ -95,18 +95,18 @@ public class CardSlotManager : Singleton<CardSlotManager>
     /// </summary>
     /// <param name="card"></param>
     /// <returns></returns>
-    public Projectile InstantiateProjectile(Card card)
+    public Projectile InstantiateProjectile(Card card, bool chase)
     {
         Projectile p = ProjectileManager.inst.CreateProjectile();
         p.AdjustRotation(shootDir);
-        p.InitProjectile(card, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed);
+        p.InitProjectile(card, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed, chase);
         return p;
     }
-    public Projectile InstantiateProjectile(int damage)
+    public Projectile InstantiateProjectile(int damage, bool chase)
     {
         Projectile p = ProjectileManager.inst.CreateProjectile();
         p.AdjustRotation(shootDir);
-        p.InitProjectile(damage, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed);
+        p.InitProjectile(damage, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed, chase);
         return p;
     }
     public Card ActivateCard(int index, System.Action callback)
