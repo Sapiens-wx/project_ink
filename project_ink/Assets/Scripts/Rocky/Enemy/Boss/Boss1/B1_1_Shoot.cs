@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class B1_1_Shoot : StateBase<B1_1_Ctrller>
 {
+    [SerializeField] float redHatShootDist, redHatShootDuration;
+    [SerializeField] float bulletSpd;
+    [SerializeField] float shootInterval;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        base.OnStateEnter(animator, stateInfo, layerIndex);
+        Action1(animator);
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -22,15 +27,25 @@ public class B1_1_Shoot : StateBase<B1_1_Ctrller>
     //    
     //}
 
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
+    void Action1(Animator animator){
+        ctrller.redHat.transform.position=ctrller.transform.position;
+        ctrller.redHat.SetActive(true);
+        Sequence s = DOTween.Sequence();
+        //shoot redhat upward
+        s.Append(ctrller.redHat.transform.DOMoveY(ctrller.redHat.transform.position.y+redHatShootDist, redHatShootDuration));
+        //shoot 3 bullets toward the player
+        for(int i=0;i<3;++i){
+            s.AppendCallback(()=>{
+                EnemyBullet bullet=Instantiate(ctrller.a4_bullet).GetComponent<EnemyBullet>();
+                bullet.transform.position=ctrller.redHat.transform.position;
+                bullet.rgb.velocity=((Vector2)PlayerShootingController.inst.transform.position-(Vector2)bullet.transform.position).normalized*bulletSpd;
+            });
+            if(i!=2) s.AppendInterval(shootInterval);
+        }
+        //redhat returns
+        s.Append(ctrller.redHat.transform.DOMove(ctrller.transform.position, redHatShootDuration));
+        s.AppendCallback(()=>ctrller.redHat.SetActive(false));
+        //return to idle state
+        s.AppendCallback(()=>animator.SetTrigger("toIdle"));
+    }
 }

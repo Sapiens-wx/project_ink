@@ -33,12 +33,14 @@ public class B1_1_Dash : StateBase<B1_1_Ctrller>
         //calculate direction
         Vector2 dir=PlayerShootingController.inst.transform.position-ctrller.redHat.transform.position;
         dir.Normalize();
-        Vector2 targetPos=(Vector2)PlayerShootingController.inst.transform.position+dir;
+        Vector2 targetPos=(Vector2)PlayerShootingController.inst.transform.position+dir*.3f;
         //create sequence
         Sequence s=DOTween.Sequence();
         //move the redhat toward the player
         s.Append(ctrller.redHat.transform.DOMove(targetPos, dashDuration));
+        //wait for 1 sec
         s.AppendInterval(waitTime);
+        //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
         s.AppendCallback(()=>{
             ctrller.redHat.SetActive(false);

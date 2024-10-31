@@ -6,17 +6,22 @@ using DG.Tweening;
 public class B1_1_Ctrller : EnemyBase
 {
     public GameObject redHat;
-    [Header("Action1_2")]
-    public Vector2 a1_2_point1;
-    public Vector2 a1_2_point2;
+    [Header("Action1")]
+    public float a1_2_jumpHeight;
+    [Header("Action3")]
+    public GameObject a3_target;
+    [Header("Action4")]
+    public GameObject a4_bullet;
+    [Header("Action5")]
+    public GameObject a5_bullet;
     //[Header("Action2")]
 
     void OnDrawGizmosSelected(){
-        Gizmos.DrawWireSphere(a1_2_point1, .5f);
-        Gizmos.DrawWireSphere(a1_2_point2, .5f);
+        Gizmos.DrawLine(new Vector2(-30,a1_2_jumpHeight), new Vector2(30,a1_2_jumpHeight));
     }
     void Start(){
         redHat.SetActive(false);
+        a3_target.SetActive(false);
     }
     void Update(){
         if(Input.GetKeyDown(KeyCode.D)){

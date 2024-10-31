@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class B1_1_Scroll : StateBase<B1_1_Ctrller>
 {
-    [SerializeField] float frq;
+    [SerializeField] float toRightMostSpeed;
+    [Header("Action1")]
+    [SerializeField] float a1_loopDuration;
+    [Header("Action2")]
+    [SerializeField] float a2_duration;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        ctrller.StartCoroutine(Scroll(animator));
+        BeginRandomAction(animator);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,27 +28,37 @@ public class B1_1_Scroll : StateBase<B1_1_Ctrller>
     //{
     //    
     //}
-    IEnumerator Scroll(Animator animator){
-        WaitForFixedUpdate wait=new WaitForFixedUpdate();
-        float timeEllapsed=0;
-
-        //calculate parameters needed for moving
-        float minX=RoomManager.CurrentRoom.RoomBounds.min.x,
-            maxX=RoomManager.CurrentRoom.RoomBounds.max.x;
-        float w=6.283f*frq;
-        float yoffset=(maxX+minX)/2;
-        float amp=(maxX-minX)/2;
-        float phase=Mathf.Asin(animator.transform.position.x/amp);
-
-        Vector3 pos=animator.transform.position;
-        //scroll lasts for 5 seconds
-        while(timeEllapsed<5){
-            pos.x=Mathf.Sin(w*timeEllapsed+phase)*amp+yoffset;
-            pos.y=animator.transform.position.y;
-            animator.transform.position=pos;
-            timeEllapsed+=Time.fixedDeltaTime;
-            yield return wait;
+    void BeginRandomAction(Animator animator){
+        float rightMost=RoomManager.CurrentRoom.RoomBounds.max.x;
+        float dist=rightMost-ctrller.transform.position.x;
+        //move to the right-most position of the room
+        Sequence s = DOTween.Sequence();
+        s.Append(ctrller.transform.DOMoveX(rightMost, dist/toRightMostSpeed));
+        if(Random.Range(0,2)==0){ //action 1 (on the ground)
+            s.AppendCallback(()=>Action1(animator));
+        } else{
+            s.AppendCallback(()=>Action2(animator));
         }
-        animator.SetTrigger("toIdle");
+    }
+    void Action1(Animator animator){
+        float leftMost=RoomManager.CurrentRoom.RoomBounds.min.x;
+        var scrollAnim = ctrller.transform.DOMoveX(leftMost, a1_loopDuration).SetEase(Ease.InOutQuad).SetLoops(-1,LoopType.Yoyo);
+        Sequence s=DOTween.Sequence();
+        s.AppendInterval(5);
+        s.AppendCallback(()=>{scrollAnim.Kill(); animator.SetTrigger("toIdle");});
+        s.Play();
+    }
+    //action 2
+    void Action2(Animator animator){
+        Vector3 originalPos=ctrller.transform.position;
+        float leftMost=RoomManager.CurrentRoom.RoomBounds.min.x;
+
+        Sequence s=DOTween.Sequence();
+        s.Append(ctrller.transform.DOMoveX(leftMost, a2_duration).SetEase(Ease.Linear));
+        s.Join(ctrller.transform.DOMoveY(ctrller.a1_2_jumpHeight, a2_duration/4).SetLoops(4, LoopType.Yoyo).SetEase(Ease.OutExpo));
+        s.AppendCallback(()=>{
+            animator.SetTrigger("toIdle");
+        });
+        s.Play();
     }
 }

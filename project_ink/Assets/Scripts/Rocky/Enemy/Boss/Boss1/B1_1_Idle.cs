@@ -14,15 +14,22 @@ public class B1_1_Idle : StateBase<B1_1_Ctrller>
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if(UnityEngine.Random.Range(0,1.0f)<.03f){
-            int actionIdx=Random.Range(0,2);
+            int actionIdx=Random.Range(0,5);
             switch(actionIdx){
                 case 0:
-                    if(B1_PlayerStatusDetector.inst.IsPlayerOnPlatform)
-                        animator.SetTrigger("toA1_1");
-                    else animator.SetTrigger("toA1_2");
+                    animator.SetTrigger("toA1");
                     break;
                 case 1:
                     animator.SetTrigger("toA2");
+                    break;
+                case 2:
+                    animator.SetTrigger("toA3");
+                    break;
+                case 3:
+                    animator.SetTrigger("toA4");
+                    break;
+                case 4:
+                    animator.SetTrigger("toA5");
                     break;
             }
         }
