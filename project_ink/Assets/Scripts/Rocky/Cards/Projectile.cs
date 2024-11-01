@@ -6,7 +6,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [HideInInspector] public Rigidbody2D rgb;
-    int damage;
+    [HideInInspector] public int damage;
     [HideInInspector] public bool chase;
     // Start is called before the first frame update
     void Start()

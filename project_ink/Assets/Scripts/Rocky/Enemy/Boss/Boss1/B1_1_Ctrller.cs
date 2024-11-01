@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class B1_1_Ctrller : EnemyBase
 {
+    public Animator animator;
     public GameObject redHat;
     [Header("Action1")]
     public float a1_2_jumpHeight;
@@ -30,5 +31,8 @@ public class B1_1_Ctrller : EnemyBase
     }
     public override void OnHit(Projectile proj)
     {
+        CurHealth-=proj.damage;
+        if(CurHealth<<1<maxHealth)
+            animator.SetTrigger("toIdle2");
     }
 }

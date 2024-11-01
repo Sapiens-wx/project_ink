@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class B1_1_Dash : StateBase<B1_1_Ctrller>
+public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
 {
-    public float redHatDashDuration, dashDuration;
-    public float waitTime;
+    [SerializeField] float redHatShootDist, redHatShootDuration;
+    [SerializeField] float redHatMoveToPlatformDuration;
+    [SerializeField] float dashDuration;
+    [SerializeField] float waitTime;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -27,9 +29,6 @@ public class B1_1_Dash : StateBase<B1_1_Ctrller>
     //}
 
     void Action2(Animator animator){
-        //reset redHat's position
-        ctrller.redHat.transform.position=ctrller.transform.position;
-        ctrller.redHat.SetActive(true);
         //calculate direction
         Vector2 dir=PlayerShootingController.inst.transform.position-ctrller.redHat.transform.position;
         dir.Normalize();
@@ -37,13 +36,15 @@ public class B1_1_Dash : StateBase<B1_1_Ctrller>
         //create sequence
         Sequence s=DOTween.Sequence();
         //move the redhat toward the player
-        s.Append(ctrller.redHat.transform.DOMove(targetPos, redHatDashDuration));
+        s.Append(ctrller.redHat.transform.DOMove(targetPos, dashDuration));
         //wait for 1 sec
         s.AppendInterval(waitTime);
         //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
+        //redhat goes back to a random platform
+        s.Append(ctrller.redHat.transform.DOMoveY(ctrller.transform.position.y+redHatShootDist, redHatShootDuration));
+        s.Append(ctrller.redHat.transform.DOMove(Random.Range(0,2)==0?ctrller.st_platform1:ctrller.st_platform2, redHatMoveToPlatformDuration));
         s.AppendCallback(()=>{
-            ctrller.redHat.SetActive(false);
             animator.SetTrigger("toIdle");
             });
     }

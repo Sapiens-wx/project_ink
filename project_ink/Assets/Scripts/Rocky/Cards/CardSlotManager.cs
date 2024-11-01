@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CardSlotManager : Singleton<CardSlotManager>
 {
@@ -17,6 +18,9 @@ public class CardSlotManager : Singleton<CardSlotManager>
     private int curSlot;
     private bool anticipating;
     private Vector2 shootDir; //the direction to shoot the card;
+    //toggle panel
+    bool toggle_panel=true;
+    float toggle_panel_ypos;
     //-----card effects-----
     //card_1_3
     public Buff1_3 buff1_3;
@@ -27,9 +31,9 @@ public class CardSlotManager : Singleton<CardSlotManager>
 
     private void Start()
     {
-        //---temporary code---
-        shootDir=Vector2.right;
-        //---temporary code---
+        //toggle card panel
+        toggle_panel_ypos=transform.position.y;
+        //initilize card slot
         curSlot = 0;
         cardSlots = new CardSlot[numSlots];
         for(int i = 0; i < numSlots; ++i)
@@ -42,16 +46,11 @@ public class CardSlotManager : Singleton<CardSlotManager>
         cardDealer = new CardDealer(inventory.cards);
         DistributeCard();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            //PrepareFire(Vector2.right);
-        }
-        else if(Input.GetKeyDown(KeyCode.F)){
-            SkipCard();
-        }
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Tab))
+            TogglePanel();
     }
+    #region Card Mechanics
     IEnumerator Anticipate(){
         anticipating=true;
         //implement card1_3
@@ -179,6 +178,13 @@ public class CardSlotManager : Singleton<CardSlotManager>
         }
         SetCurSlot(0);
         yield break;
+    }
+    #endregion
+    void TogglePanel(){
+        toggle_panel=!toggle_panel;
+        if(toggle_panel)
+            transform.DOMoveY(toggle_panel_ypos, .3f);
+        else transform.DOMoveY(toggle_panel_ypos-550, .3f);
     }
 }
 

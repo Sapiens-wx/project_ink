@@ -5,12 +5,21 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
+    [SerializeField] ProgressBar healthBar;
     [SerializeField] internal int maxHealth;
-    internal int curHealth;
+    int curHealth;
+    internal int CurHealth{
+        get=>curHealth;
+        set{
+            curHealth=value;
+            healthBar.SetProgress((float)curHealth/maxHealth);
+        }
+    }
     [HideInInspector] public int id; //id in a room
     public abstract void OnHit(Projectile proj);
     internal virtual void Start(){
         RoomManager.inst.RegisterEnemy(this);
+        CurHealth=maxHealth;
     }
     void OnDestroy(){
         RoomManager.inst.UnRegisterEnemy(this);
