@@ -863,7 +863,6 @@ GameObject:
   - component: {fileID: 1608098722830224243}
   - component: {fileID: 7462894352666796995}
   - component: {fileID: 4097344812549370014}
-  - component: {fileID: 1227150043527473326}
   m_Layer: 5
   m_Name: Card Panel
   m_TagString: Untagged
@@ -922,20 +921,6 @@ MonoBehaviour:
   m_Spacing: {x: 51.1, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &1227150043527473326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5531318904098287854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05eeacb6259af3a4aab9a85c2dc6227c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 7341412122490060521, guid: 6928f2efc79343e4f87d13f29087b79f, type: 3}
-  projectileSpeed: 17
 --- !u!1 &6339516331735325090
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2198366963604748596}
   - component: {fileID: 1983554298781702395}
+  - component: {fileID: 4576415493943712413}
   m_Layer: 5
   m_Name: Card Panel
   m_TagString: Untagged
@@ -1002,6 +988,22 @@ MonoBehaviour:
     firstCardOfRound: 0
   buff1_5:
     indicator: {fileID: 155502644632812538}
+--- !u!114 &4576415493943712413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6339516331735325090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05eeacb6259af3a4aab9a85c2dc6227c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projPrefab: {fileID: 7341412122490060521, guid: 6928f2efc79343e4f87d13f29087b79f, type: 3}
+  hitPrefab: {fileID: 8032902103068574690, guid: 726853ce698fff04c9dd22d7f6a946bc, type: 3}
+  hitAnimDuration: 0.25
+  projectileSpeed: 17
 --- !u!1 &7110395164758506167
 GameObject:
   m_ObjectHideFlags: 0

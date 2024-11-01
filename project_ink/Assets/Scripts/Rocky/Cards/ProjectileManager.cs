@@ -2,39 +2,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using DG.Tweening;
 
 public class ProjectileManager : MonoBehaviour
 {
     [Header("Bullet")]
-    [SerializeField] GameObject prefab;
+    [SerializeField] GameObject projPrefab;
+    [SerializeField] GameObject hitPrefab;
+    [SerializeField] float hitAnimDuration;
     public float projectileSpeed;
 
 
-    ObjectPool<Projectile> pool;
+    ObjectPool<Projectile> proj_pool;
+    ObjectPool<GameObject> hit_pool;
     public static ProjectileManager inst;
     void Awake(){
         inst=this;
-        pool=new ObjectPool<Projectile>(CreateFunc,OnGet, OnRelease, OnPoolObjDestroy);
+        proj_pool=new ObjectPool<Projectile>(Proj_CreateFunc, Proj_OnGet, Proj_OnRelease, Proj_OnPoolObjDestroy);
+        hit_pool=new ObjectPool<GameObject>(Hit_CreateFunc, Hit_OnGet, Hit_OnRelease, Hit_OnPoolObjDestroy);
     }
-    Projectile CreateFunc(){
-        Projectile go = Instantiate(prefab).GetComponent<Projectile>();
+    #region object pool funcs
+    Projectile Proj_CreateFunc(){
+        Projectile go = Instantiate(projPrefab).GetComponent<Projectile>();
         go.gameObject.SetActive(false);
         return go;
     }
-    static void OnGet(Projectile go){
+    static void Proj_OnGet(Projectile go){
         go.gameObject.SetActive(true);
     }
-    static void OnRelease(Projectile go){
+    static void Proj_OnRelease(Projectile go){
         go.gameObject.SetActive(false);
     }
-    static void OnPoolObjDestroy(Projectile go){
+    static void Proj_OnPoolObjDestroy(Projectile go){
         Destroy(go.gameObject);
     }
+    GameObject Hit_CreateFunc(){
+        GameObject go = Instantiate(hitPrefab);
+        go.SetActive(false);
+        return go;
+    }
+    static void Hit_OnGet(GameObject go){
+        go.SetActive(true);
+    }
+    static void Hit_OnRelease(GameObject go){
+        go.SetActive(false);
+    }
+    static void Hit_OnPoolObjDestroy(GameObject go){
+        Destroy(go.gameObject);
+    }
+    #endregion
 
     public Projectile CreateProjectile(){
-        return pool.Get();
+        return proj_pool.Get();
     }
     public void ReleaseProjectile(Projectile go){
-        pool.Release(go);
+        proj_pool.Release(go);
+    }
+    public void HitAnim(Projectile go){
+        GameObject hit = hit_pool.Get();
+        hit.transform.position=go.transform.position;
+        Sequence s = DOTween.Sequence();
+        s.AppendInterval(hitAnimDuration);
+        s.AppendCallback(()=>{ hit_pool.Release(hit); });
     }
 }
