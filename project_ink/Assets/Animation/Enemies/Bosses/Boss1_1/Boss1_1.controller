@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dashDuration: 0.5
-  waitTime: 1
+  waitTime: 0.8
 --- !u!1102 &-8052449896222752320
 AnimatorState:
   serializedVersion: 6
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b35c672bc3089643867b5846ce676d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 0.7
+  waitTime: 1
 --- !u!1101 &-6710494026142616713
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -786,8 +786,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toRightMostSpeed: 11
-  a1_loopDuration: 0.7
-  a2_duration: 2.2
+  a1_loopDuration: 1.25
+  a2_duration: 2
 --- !u!114 &1116515877691322054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -972,8 +972,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redHatShootDist: 1.2
   redHatShootDuration: 0.5
-  bulletSpd: 8
-  shootInterval: 0.5
+  bulletSpd: 14
+  shootInterval: 0.7
 --- !u!1101 &3535422786128634438
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -1058,7 +1058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redHatShootDist: 1.2
   redHatShootDuration: 0.5
-  bullet_y_spd: 3
+  bullet_y_spd: 10
 --- !u!114 &5975876860103030456
 MonoBehaviour:
   m_ObjectHideFlags: 1
