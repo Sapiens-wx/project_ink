@@ -5136,7 +5136,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.65
+  m_Time: 0.3
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -5145,8 +5145,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.05621338
-        value: 0.29032326
+        time: 0.3072014
+        value: 0.23075294
         inSlope: 0
         outSlope: 0
         tangentMode: 0
