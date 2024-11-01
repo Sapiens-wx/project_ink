@@ -376,8 +376,8 @@ MonoBehaviour:
   jumpHangTimeThreshold: 1.2
   jumpHangAccelerationMult: 2.75
   jumpHangMaxSpeedMult: 1.94
-  dashSpeed: 20
-  dashTime: 0.12
+  dashSpeed: 25
+  dashTime: 0.16
   dashCoolDown: 0.5
   jumpCutGravityMult: 2
   maxFallSpeed: 16

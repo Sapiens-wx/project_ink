@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52d84e90947c75b489c1062268bb5da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  redHatDashDuration: 0.5
   dashDuration: 0.5
   waitTime: 0.8
 --- !u!1102 &-8052449896222752320
