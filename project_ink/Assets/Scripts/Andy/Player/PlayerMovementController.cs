@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour
     //layers
     [SerializeField] private LayerMask _groundLayer;
 
+    //platforms
+    private GameObject currentPlatformCollider;
+
     //booleans
     public bool isGround;
 
@@ -132,6 +135,18 @@ public class PlayerController : MonoBehaviour
 
         LastPressedJumpTime -= Time.deltaTime;
 
+        //get down platform
+        if (Input.GetKey(KeyCode.S))
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (currentPlatformCollider != null)
+                {
+                    StartCoroutine(DisablePlatformCoroutine());
+                }
+            }
+        }
+
         #region INPUT HANDLER
         _moveInput.x = Input.GetAxisRaw("Horizontal");
         _moveInput.y = Input.GetAxisRaw("Vertical");
@@ -141,12 +156,12 @@ public class PlayerController : MonoBehaviour
         if (_moveInput.x != 0)
             CheckDirectionToFace(_moveInput.x > 0);
 
-        if (Input.GetButtonDown("Jump") || Input.GetKeyDown("w") || Input.GetKeyDown("up"))
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown("w") || Input.GetKeyDown("up")) && !Input.GetKey(KeyCode.S))
         {
             OnJumpInput();
         }
         
-        if (Input.GetButtonUp("Jump") || Input.GetKeyUp("w") || Input.GetKeyUp("up"))
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown("w") || Input.GetKeyDown("up")) && !Input.GetKey(KeyCode.S))
         {
             OnJumpUpInput();
         }
@@ -202,6 +217,7 @@ public class PlayerController : MonoBehaviour
             //Default gravity if standing on a platform or moving upwards
             SetGravityScale(gravityScale);
         }
+
         CheckGrounded();
         SwitchAnimation();
     }
@@ -403,6 +419,31 @@ public class PlayerController : MonoBehaviour
             myAnim.SetBool("Idle", true);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Platform")
+        {
+            currentPlatformCollider = other.gameObject;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Platform")
+        {
+            currentPlatformCollider = null;
+        }
+    }
+
+    private IEnumerator DisablePlatformCoroutine()
+    {
+        BoxCollider2D platformCollider = currentPlatformCollider.GetComponent<BoxCollider2D>();
+        Physics2D.IgnoreCollision(myFeet, platformCollider);
+        yield return new WaitForSeconds(0.25f);
+        Physics2D.IgnoreCollision(myFeet, platformCollider, false);
+    }
+
     //public void TakeDamage(int damage)
     //{
     //    if (!isInvincible)
