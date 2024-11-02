@@ -6,7 +6,7 @@ public class B1_1_Idle_S2 : StateBase<B1_1_Ctrller>
 {
     [Header("Debug usage: enable action")]
     public bool a1;
-    public bool a2, a3, a4, a5;
+    public bool a2, a3;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
@@ -16,7 +16,7 @@ public class B1_1_Idle_S2 : StateBase<B1_1_Ctrller>
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        switch(Random.Range(0,5)){
+        switch(Random.Range(0,3)){
             case 0:
                 if(a1) animator.SetTrigger("toA1");
                 break;
@@ -25,12 +25,6 @@ public class B1_1_Idle_S2 : StateBase<B1_1_Ctrller>
                 break;
             case 2:
                 if(a3) animator.SetTrigger("toA3");
-                break;
-            case 3:
-                if(a4) animator.SetTrigger("toA4");
-                break;
-            case 4:
-                if(a5) animator.SetTrigger("toA5");
                 break;
         }
     }
