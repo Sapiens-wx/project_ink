@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
         myFeet = GetComponent<BoxCollider2D>();
         isFacingRight = true;
         CurrentFacingDirection = FACING_DIRECTION.RIGHT;
+        OnValidate();
     }
     
     private void OnValidate()
@@ -117,6 +118,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if (isDashing)
         {
             return;
@@ -282,7 +288,7 @@ public class PlayerController : MonoBehaviour
             //Prevent any deceleration from happening, or in other words conserve are current momentum
             //You could experiment with allowing for the player to slightly increae their speed whilst in this "state"
             accelRate = 0;
-        }
+        } 
         #endregion
 
         //Calculate difference between current velocity and desired velocity
@@ -291,8 +297,12 @@ public class PlayerController : MonoBehaviour
 
         float movement = speedDif * accelRate;
 
+      
+
         //Convert this to a vector and apply to rigidbody
         myRigidbody.AddForce(movement * Vector2.right, ForceMode2D.Force);
+
+       
 
         /*
 		 * For those interested here is what AddForce() will do
