@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using UnityEditor.TerrainTools;
 
 /// <summary>
 /// stores room prefabs (GameObject) that can be instantiated based on a Room tree

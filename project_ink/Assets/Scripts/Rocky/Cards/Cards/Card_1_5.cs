@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Card_1_5", menuName = "Inventory/Cards/1/5")]
