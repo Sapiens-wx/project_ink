@@ -15,7 +15,7 @@ public class MapGenerator : MonoBehaviour
     //debug
     Vector2Int position;
 
-    private void AffectGrid(Heap<List<int>> heap, List<int> affectedGrid, int[] arr, MapConfig.Element element)
+    private void AffectGrid(HashHeap<List<int>> heap, List<int> affectedGrid, int[] arr, MapConfig.Element element)
     {
         if (affectedGrid.Count > 1)
         {
@@ -23,7 +23,7 @@ public class MapGenerator : MonoBehaviour
             heap.HeapifyUp(heap.dictionary[affectedGrid]);
         }
     }
-    private void PrintDictionary(Heap<List<int>> heap)
+    private void PrintDictionary(HashHeap<List<int>> heap)
     {
         StringBuilder sb = new StringBuilder();
         for(int j = 0; j < gridHeight; ++j)
@@ -58,7 +58,7 @@ public class MapGenerator : MonoBehaviour
         }
         Debug.Log(sb.ToString());
     }
-    private void AffectSurroundingTiles(Heap<List<int>> heap, Vector2Int position, MapConfig.Element element)
+    private void AffectSurroundingTiles(HashHeap<List<int>> heap, Vector2Int position, MapConfig.Element element)
     {
         if (position.y > 0) { //--->top horizontal line
             if (position.x > 0) { //left
@@ -134,7 +134,7 @@ public class MapGenerator : MonoBehaviour
         }
 
     }
-    private void ReduceAndCheckPickedElementCount(Heap<List<int>> heap, int[] counts, int pickedElement)
+    private void ReduceAndCheckPickedElementCount(HashHeap<List<int>> heap, int[] counts, int pickedElement)
     {
         if (--counts[pickedElement] <= 0)
         {
@@ -155,7 +155,7 @@ public class MapGenerator : MonoBehaviour
     void InitGrid()
     {
         mapConfig.Initialize();
-        //计每个元素生成的个数
+        //锟斤拷每锟斤拷元锟斤拷锟斤拷锟缴的革拷锟斤拷
         int[] counts=new int[mapConfig.arr.Count]; 
         for(int i = 0; i < counts.Length; ++i) {
             counts[i] = mapConfig.arr[i].maxAmount == 0 ? int.MaxValue : mapConfig.arr[i].maxAmount;
@@ -178,7 +178,7 @@ public class MapGenerator : MonoBehaviour
         {
             grid[i] = new List<int>[gridHeight];
         }
-        Heap<List<int>> heap=new Heap<List<int>>((List<int> l, List<int> r) => { return l.Count < r.Count; });
+        HashHeap<List<int>> heap=new HashHeap<List<int>>((List<int> l, List<int> r) => { return l.Count < r.Count; });
         Dictionary<List<int>, Vector2Int> dictionary=new Dictionary<List<int>, Vector2Int>(heap.Count);
         grid[0][0] = new List<int>(mapConfig.ltTopTiles); //left top tiles
         for(int i = gridHeight - 2; i > 0; --i) { // left mid tiles
@@ -242,13 +242,13 @@ public class MapGenerator : MonoBehaviour
     }
 }
 
-public class Heap<T>{
+public class HashHeap<T>{
     private List<T> list;
     private Compare compare;
     public Dictionary<T, int> dictionary;
 
     public delegate bool Compare(T lhs, T rhs); //true: lhs should be before rhs
-    public Heap(Compare compareInterface)
+    public HashHeap(Compare compareInterface)
     {
         list = new List<T>();
         compare = compareInterface;
@@ -309,7 +309,7 @@ public class Heap<T>{
         list.RemoveAt(list.Count - 1);
         if (index >= list.Count)
             return;
-        dictionary.Add(list[index], index);
+        dictionary[list[index]]=index;
         HeapifyDown(index);
     }
     private void HeapifyDown(int cur)
