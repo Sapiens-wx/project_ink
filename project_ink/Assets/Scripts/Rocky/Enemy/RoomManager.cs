@@ -35,6 +35,16 @@ public class RoomManager : Singleton<RoomManager>
     }
     public EnemyBase ClosestEnemy(Transform target){
         if(enemies.Count==0) return null;
-        return enemies[0];
+        float min=float.MaxValue;
+        EnemyBase minEnemy=null;
+        foreach(EnemyBase enemy in enemies){
+            Vector2 distv=target.transform.position-enemy.transform.position;
+            float dist=distv.x*distv.x+distv.y*distv.y;
+            if(dist<min){
+                min=dist;
+                minEnemy=enemy;
+            }
+        }
+        return minEnemy;
     }
 }

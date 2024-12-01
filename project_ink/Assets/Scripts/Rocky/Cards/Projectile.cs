@@ -84,7 +84,7 @@ public class Projectile : MonoBehaviour
         ProjectileManager.inst.ReleaseProjectile(this);
     }
     void OnTriggerEnter2D(Collider2D collider){
-        if(collider.gameObject.layer==8){ //if is enemy
+        if(GameManager.inst.IsLayer(GameManager.inst.enemyLayer, collider.gameObject.layer)){ //if is enemy
             EnemyBase enemy=collider.GetComponent<EnemyBase>();
             enemy.OnHit(this);
         }
