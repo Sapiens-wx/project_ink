@@ -302,13 +302,17 @@ public class PlayerController : MonoBehaviour
         //Convert this to a vector and apply to rigidbody
         myRigidbody.AddForce(movement * Vector2.right, ForceMode2D.Force);
 
-       
+        if (Mathf.Abs(_moveInput.x) > 0)
+        {
 
-        /*
-		 * For those interested here is what AddForce() will do
-		 * RB.velocity = new Vector2(RB.velocity.x + (Time.fixedDeltaTime  * speedDif * accelRate) / RB.mass, RB.velocity.y);
-		 * Time.fixedDeltaTime is by default in Unity 0.02 seconds equal to 50 FixedUpdate() calls per second
-		*/
+            myAnim.SetBool("Running", true);
+        }
+        else
+        {
+
+            myAnim.SetBool("Running", false);
+        }
+
     }
 
     private void Turn()
