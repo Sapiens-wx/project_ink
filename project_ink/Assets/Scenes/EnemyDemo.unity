@@ -671,6 +671,8 @@ MonoBehaviour:
     m_Bits: 192
   _start: {x: -4.71, y: -1.48}
   _to: {x: 6.87, y: 0.41}
+  showGroundNodes: 1
+  showAirNodes: 0
 --- !u!4 &540863893
 Transform:
   m_ObjectHideFlags: 0
@@ -1779,6 +1781,7 @@ MonoBehaviour:
   bc: {fileID: 0}
   rgb: {fileID: 0}
   animator: {fileID: 0}
+  hatredPersistent: 0
   detectDist: 3.11
   attackTriggerDist: 2.03
   playerInDetect: 0
@@ -1794,6 +1797,10 @@ MonoBehaviour:
   patrol_xmax: 0
   onGround: 0
   prevOnGround: 0
+  attackChargeInterval: 1
+  attackRecoverInterval: 2
+  attackDashSpd: 3
+  attackDashDist: 2
 --- !u!4 &1904761429
 Transform:
   m_ObjectHideFlags: 0
@@ -1803,7 +1810,7 @@ Transform:
   m_GameObject: {fileID: 1904761423}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.544708, y: 0, z: 0}
+  m_LocalPosition: {x: 0.3, y: -1.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public LayerMask groundLayer; //relative to the enemy
     public LayerMask enemyLayer;
+    public float distEpsilon;
     public static GameManager inst;
     void Awake()
     {

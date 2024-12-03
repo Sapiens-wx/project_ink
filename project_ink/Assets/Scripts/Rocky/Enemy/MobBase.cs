@@ -2,9 +2,9 @@ using UnityEngine;
 
 public abstract class MobBase : EnemyBase
 {
-    [Header("Detection")]
+    [SerializeField] bool hatredPersistent;
+    [Header("Distance Detection")]
     public float detectDist;
-    [Header("Attack")]
     public float attackTriggerDist;
 
     [HideInInspector] public bool playerInDetect, prevPlayerInDetect, playerInAttack, prevPlayerInAttack;
@@ -16,11 +16,13 @@ public abstract class MobBase : EnemyBase
     internal virtual void FixedUpdate(){
         //detection
         prevPlayerInDetect=playerInDetect;
-        playerInDetect=PlayerInRange(detectDist);
-        if(playerInDetect&&!prevPlayerInDetect){ //on detect enter
-            animator.SetBool("b_detect", true);
-        } else if(!playerInDetect&&prevPlayerInDetect) //on detect exit
-            animator.SetBool("b_detect",false);
+        if(!hatredPersistent || !playerInDetect){
+            playerInDetect=PlayerInRange(detectDist);
+            if(playerInDetect&&!prevPlayerInDetect){ //on detect enter
+                animator.SetBool("b_detect", true);
+            } else if(!playerInDetect&&prevPlayerInDetect) //on detect exit
+                animator.SetBool("b_detect",false);
+        }
         //attack
         prevPlayerInAttack=playerInAttack;
         playerInAttack=PlayerInRange(attackTriggerDist);

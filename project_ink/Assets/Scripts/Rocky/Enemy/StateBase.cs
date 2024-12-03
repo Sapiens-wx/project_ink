@@ -36,4 +36,10 @@ public abstract class StateBase<T> : StateMachineBehaviour where T : EnemyBase
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
+    internal Coroutine StopCoroutineIfNull(Coroutine coro){
+        if(coro!=null){
+            ctrller.StopCoroutine(coro);
+        }
+        return null;
+    }
 }

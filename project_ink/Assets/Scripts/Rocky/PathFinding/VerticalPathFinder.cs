@@ -3,28 +3,45 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
-public class VerticalPathFinder : MonoBehaviour
+public class PathFinder : MonoBehaviour
 {
     [SerializeField] Bounds bounds;
     [SerializeField] Vector2 gridSize;
     public LayerMask layerMask;
+    //debug params
     public Vector2 _start, _to;
+    public bool showGroundNodes,showAirNodes;
+
     List<Node> path;
 
-    public static VerticalPathFinder inst;
-    Node[,] grid;
-    private List<Node> nodes;
-    public List<Node> Nodes{
+    public static PathFinder inst;
+    Node[,] grid_g;
+    private List<Node> nodes_g;
+    public List<Node> Nodes_g{
         get{
-            if(nodes!=null) return nodes;
-            nodes=new List<Node>();
-            for(int i=0;i<grid.GetLength(0);++i){
-                for(int j=0;j<grid.GetLength(1);++j){
-                    if(grid[i,j]!=null)
-                        nodes.Add(grid[i,j]);
+            if(nodes_g!=null) return nodes_g;
+            nodes_g=new List<Node>();
+            for(int i=0;i<grid_g.GetLength(0);++i){
+                for(int j=0;j<grid_g.GetLength(1);++j){
+                    if(grid_g[i,j]!=null)
+                        nodes_g.Add(grid_g[i,j]);
                 }
             }
-            return nodes;
+            return nodes_g;
+        }
+    }
+    private List<Node> nodes_a;
+    public List<Node> Nodes_a{
+        get{
+            if(nodes_a!=null) return nodes_a;
+            nodes_a=new List<Node>();
+            for(int i=0;i<grid_a.GetLength(0);++i){
+                for(int j=0;j<grid_a.GetLength(1);++j){
+                    if(grid_a[i,j]!=null)
+                        nodes_a.Add(grid_a[i,j]);
+                }
+            }
+            return nodes_a;
         }
     }
     public Vector2 GridSize{
@@ -32,24 +49,45 @@ public class VerticalPathFinder : MonoBehaviour
     }
     void Awake(){
         inst=this;
-        CreateNodes();
+        CreateNodes_g();
     }
-    [ContextMenu("find path")]
+    [ContextMenu("find path_g")]
     void DebugFunc(){
-        path=FindPath(_start, _to, 0);
+        path=FindPath_g(_start, _to, 0);
+    }
+    [ContextMenu("find path_a")]
+    void DebugFunc_a(){
+        path=FindPath_a(_start, _to);
     }
     void OnDrawGizmosSelected(){
         Gizmos.DrawWireCube(bounds.center, bounds.size);
-        int w=(int)(bounds.size.x/gridSize.x)+1;
-        int h=(int)(bounds.size.y/gridSize.y)+1;
-        if(grid!=null){
-            Gizmos.color=Color.green;
-            for(int i=0;i<w;++i){
-                for(int j=0;j<h;++j){
-                    if(grid[i,j]!=null){
-                        Gizmos.DrawWireSphere(grid[i,j].worldPos,.2f);
-                        foreach(Node n in grid[i,j].nodes){
-                            Gizmos.DrawLine(n.worldPos, grid[i,j].worldPos);
+        int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
+        int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
+        if(showGroundNodes){
+            if(grid_g!=null){
+                Gizmos.color=Color.green;
+                for(int i=0;i<w;++i){
+                    for(int j=0;j<h;++j){
+                        if(grid_g[i,j]!=null){
+                            Gizmos.DrawWireSphere(grid_g[i,j].worldPos,.2f);
+                            foreach(Node n in grid_g[i,j].nodes){
+                                Gizmos.DrawLine(n.worldPos, grid_g[i,j].worldPos);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(showAirNodes){
+            if(grid_a!=null){
+                Gizmos.color=Color.green;
+                for(int i=0;i<w;++i){
+                    for(int j=0;j<h;++j){
+                        if(grid_a[i,j]!=null){
+                            Gizmos.DrawWireSphere(grid_a[i,j].worldPos,.2f);
+                            foreach(Node n in grid_a[i,j].nodes){
+                                Gizmos.DrawLine(n.worldPos, grid_a[i,j].worldPos);
+                            }
                         }
                     }
                 }
@@ -65,9 +103,9 @@ public class VerticalPathFinder : MonoBehaviour
             }
         }
     }
-    public Node GetNeareastNode(Vector2 pos, float verticalOffset){
+    public Node GetNeareastNode_g(Vector2 pos, float verticalOffset){
         pos.y+=verticalOffset;
-        List<Node> candidates=Nodes;
+        List<Node> candidates=Nodes_g;
         float xDist=float.MaxValue;
         int sel=-1;
         float totalMinDist=float.MaxValue;
@@ -104,15 +142,15 @@ public class VerticalPathFinder : MonoBehaviour
         });
         */
     }
-    [ContextMenu("create nodes")]
-    public void CreateNodes(){
-        nodes=null; //clear the array that stores all the previous nodes
+    [ContextMenu("create nodes_g")]
+    public void CreateNodes_g(){
+        nodes_g=null; //clear the array that stores all the previous nodes
         int jumpXmin=2, jumpXmax=3, jumpY=4;
         int jumpDownX=3;
 
-        int w=(int)(bounds.size.x/gridSize.x)+1;
-        int h=(int)(bounds.size.y/gridSize.y)+1;
-        grid=new Node[w,h];
+        int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
+        int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
+        grid_g=new Node[w,h];
         bool[,] walls=new bool[w,h];
 
         //add points above ground
@@ -132,8 +170,8 @@ public class VerticalPathFinder : MonoBehaviour
                 walls[i,j]=Physics2D.OverlapPoint(pos, layerMask);
                 bool down=walls[i,j+1];
                 if(! walls[i,j] && down){
-                    grid[i,j]=new Node(new Vector2Int(i,j));
-                    grid[i,j].worldPos=pos;
+                    grid_g[i,j]=new Node(new Vector2Int(i,j));
+                    grid_g[i,j].worldPos=pos;
                 }
             }
         }
@@ -142,22 +180,22 @@ public class VerticalPathFinder : MonoBehaviour
         bool[,] isNodeConnected=new bool[w,h]; //is a node connected by other nodes who have different y pos than the given node.
         for(int j=0;j<h;++j){
             for(int i=0;i<w;++i){
-                if(grid[i,j]!=null){
+                if(grid_g[i,j]!=null){
                     //---connect horizontal nodes--- [only connect the nodes on its right]
                     bool hasRightNode=false;
                     //add its right node
-                    if(i<w-1&&grid[i+1,j]!=null){
-                        grid[i,j].ConnectBothNode(grid[i+1,j]);
+                    if(i<w-1&&grid_g[i+1,j]!=null){
+                        grid_g[i,j].ConnectBothNode(grid_g[i+1,j]);
                         hasRightNode=true;
                     }
-                    if(hasRightNode&&!isNodeConnected[i,j]&&grid[i,j].nodes.Count>=2){ //if has node on its right and has 2 nodes connected(not sure whether the other node is its left neighbor)
+                    if(hasRightNode&&!isNodeConnected[i,j]&&grid_g[i,j].nodes.Count>=2){ //if has node on its right and has 2 nodes connected(not sure whether the other node is its left neighbor)
                         //if(grid[i,j].nodes[0].gridPos.y==grid[i,j].gridPos.y){//check it 
                         //remove the nodes. reconnect the two neighbor nodes
-                        grid[i,j].nodes[^1].RemoveConnectedNode(grid[i,j]);
-                        grid[i,j].nodes[^1].nodes.Add(grid[i,j].nodes[^2]);
-                        grid[i,j].nodes[^2].RemoveConnectedNode(grid[i,j]);
-                        grid[i,j].nodes[^2].nodes.Add(grid[i,j].nodes[^1]);
-                        grid[i,j]=null;
+                        grid_g[i,j].nodes[^1].RemoveConnectedNode(grid_g[i,j]);
+                        grid_g[i,j].nodes[^1].nodes.Add(grid_g[i,j].nodes[^2]);
+                        grid_g[i,j].nodes[^2].RemoveConnectedNode(grid_g[i,j]);
+                        grid_g[i,j].nodes[^2].nodes.Add(grid_g[i,j].nodes[^1]);
+                        grid_g[i,j]=null;
                         continue;
                         //}
                     }
@@ -174,9 +212,9 @@ public class VerticalPathFinder : MonoBehaviour
                             for(int y=j+1;y<leftWallY;++y){
                                 if(walls[leftx,y])
                                     leftWallY=y;
-                                else if(grid[leftx,y]!=null){
+                                else if(grid_g[leftx,y]!=null){
                                     isNodeConnected[leftx,y]=true;
-                                    grid[i,j].ConnectNode(grid[leftx,y]);
+                                    grid_g[i,j].ConnectNode(grid_g[leftx,y]);
                                     leftWallY=y+1;
                                 }
                             }
@@ -186,9 +224,9 @@ public class VerticalPathFinder : MonoBehaviour
                             for(int y=j+1;y<rightWallY;++y){
                                 if(walls[rightx,y])
                                     rightWallY=y;
-                                else if(grid[rightx,y]!=null){
+                                else if(grid_g[rightx,y]!=null){
                                     isNodeConnected[rightx,y]=true;
-                                    grid[i,j].ConnectNode(grid[rightx,y]);
+                                    grid_g[i,j].ConnectNode(grid_g[rightx,y]);
                                     rightWallY=y+1;
                                 }
                             }
@@ -222,8 +260,8 @@ public class VerticalPathFinder : MonoBehaviour
                                 endX_right=x;
                                 break;
                             }
-                            if(x-i>=jumpXmin && grid[x,y]!=null){ //can jump to this position
-                                grid[i,j].ConnectBothNode(grid[x,y]);
+                            if(x-i>=jumpXmin && grid_g[x,y]!=null){ //can jump to this position
+                                grid_g[i,j].ConnectBothNode(grid_g[x,y]);
                             }
                         }
                         //left
@@ -232,8 +270,8 @@ public class VerticalPathFinder : MonoBehaviour
                                 endX_left=x;
                                 break;
                             }
-                            if(i-x>=jumpXmin && grid[x,y]!=null){ //can jump to this position
-                                grid[i,j].ConnectBothNode(grid[x,y]);
+                            if(i-x>=jumpXmin && grid_g[x,y]!=null){ //can jump to this position
+                                grid_g[i,j].ConnectBothNode(grid_g[x,y]);
                             }
                         }
                     }
@@ -242,18 +280,120 @@ public class VerticalPathFinder : MonoBehaviour
             }
         }
     }
-    #region path finding
+#region Air
+    Node[,] grid_a;
+    public Node GetNeareastNode_a(Vector2 pos){
+        List<Node> candidates=Nodes_a;
+        float totalMinDist=float.MaxValue;
+        int totalDistSel=-1;
+        //remove the points that are not in a horizontal line with the point
+        for(int i=0;i<candidates.Count;++i){
+            Vector2 dir=pos-candidates[i].worldPos;
+            float dist=dir.x*dir.x+dir.y*dir.y;
+            if(dist<totalMinDist){
+                totalMinDist=dist;
+                totalDistSel=i;
+            }
+        }
+        if(totalDistSel==-1) return null;
+        return candidates[totalDistSel];
+        /*
+        candidates.Sort((l,r)=>{
+            Vector2 tmp=l.worldPos-pos;
+            float distL=tmp.x*tmp.x+tmp.y*tmp.y;
+            tmp=r.worldPos-pos;
+            float distR=tmp.x*tmp.x+tmp.y*tmp.y;
+            if(distL>distR) return 1;
+            else if(distL<distR) return -1;
+            return 0;
+        });
+        */
+    }
+    /// <summary>
+    /// initialize nodes for pathfinding in the air
+    /// </summary>
+    [ContextMenu("create nodes_a")]
+    public void CreateNodes_a(){
+        int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
+        int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
+        grid_a=new Node[w,h];
+
+        //add points ground
+        Vector2 startPos=bounds.center;
+        startPos.x+=gridSize.x/2-bounds.extents.x;
+        startPos.y+=bounds.extents.y-gridSize.y/2;
+        Vector2 pos=startPos;
+        for(int i=0;i<w;++i){
+            pos.x=startPos.x+i*gridSize.x;
+            for(int j=0;j<h;++j){
+                pos.y=startPos.y-j*gridSize.y;
+                if(!Physics2D.OverlapPoint(pos, layerMask)){
+                    grid_a[i,j]=new Node(new Vector2Int(i,j));
+                    grid_a[i,j].worldPos=pos;
+                }
+            }
+        }
+        for(int i=0;i<w;++i){
+            for(int j=0;j<h;++j){
+                if(grid_a[i,j]==null) continue;
+                int i1=i+1,j1=j+1,i_1=i-1;
+                bool hasLeftNode=i_1>=0&&grid_a[i_1,j]!=null;
+                bool hasRightNode=i1<w&&grid_a[i1,j]!=null;
+                bool hasDownNode=j1<h&&grid_a[i,j1]!=null;
+                if(hasRightNode) //right node
+                    grid_a[i,j].ConnectBothNode(grid_a[i1,j]);
+                if(hasDownNode){ //down node
+                    grid_a[i,j].ConnectBothNode(grid_a[i,j1]);
+                    if(hasLeftNode && grid_a[i_1,j1]!=null)
+                        grid_a[i,j].ConnectBothNode(grid_a[i_1,j1]);
+                    if(hasRightNode && grid_a[i1,j1]!=null)
+                        grid_a[i,j].ConnectBothNode(grid_a[i1,j1]);
+                }
+            }
+        }
+    }
+#endregion
+#region path finding
     PathNode[,] hash;
     Node targetNode;
     HashHeap<PathNode> heap;
-    public List<Node> FindPath(Vector2 start, Vector2 end, float yOffset){
-        return FindPath(GetNeareastNode(start,yOffset), GetNeareastNode(end,yOffset));
+    public List<Node> FindPath_a(Vector2 start, Vector2 end){
+        return FindPath_a(GetNeareastNode_a(start), GetNeareastNode_a(end));
     }
-    public List<Node> FindPath(Node startNode, Node endNode){
+    public List<Node> FindPath_g(Vector2 start, Vector2 end, float yOffset){
+        return FindPath_g(GetNeareastNode_g(start,yOffset), GetNeareastNode_g(end,yOffset));
+    }
+    public List<Node> FindPath_a(Node startNode, Node endNode){
         if(startNode==null || endNode==null)
             return null;
         targetNode=endNode;
-        hash=new PathNode[grid.Length, grid.GetLength(1)];
+        hash=new PathNode[grid_a.Length, grid_a.GetLength(1)];
+        heap=new HashHeap<PathNode>(PathNode.Compare);
+
+        PathNode cur=new PathNode(startNode);
+        AddToOpen(cur);
+        for(;heap.Count!=0 && heap.Front().node!=endNode;){
+            cur=heap.Pop();
+            //move to closed
+            cur.isClosed=true;
+            AddSurroundingNodes(cur);
+        }
+        if(heap.Front().node!=endNode)
+            return null;
+        List<Node> result=new List<Node>();
+        cur=heap.Front();
+        while(cur!=null){
+            result.Add(cur.node);
+            cur=cur.parent;
+        }
+        result.Reverse();
+        return result;
+    }
+    public List<Node> FindPath_g(Node startNode, Node endNode){
+        if(startNode==null || endNode==null)
+            return null;
+        targetNode=endNode;
+        hash=new PathNode[grid_g.Length, grid_g.GetLength(1)];
         heap=new HashHeap<PathNode>(PathNode.Compare);
 
         PathNode cur=new PathNode(startNode);
