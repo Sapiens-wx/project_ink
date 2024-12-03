@@ -5,6 +5,7 @@ public abstract class EnemyBase : MonoBehaviour
     public SpriteRenderer spr;
     [SerializeField] ProgressBar healthBar;
     [SerializeField] internal int maxHealth;
+
     int curHealth;
     internal int CurHealth{
         get=>curHealth;
@@ -26,6 +27,10 @@ public abstract class EnemyBase : MonoBehaviour
     [HideInInspector] public Collider2D bc;
     [HideInInspector] public Rigidbody2D rgb;
     [HideInInspector] public Animator animator;
+    /// <summary>
+    /// called when the enemy gets hit.
+    /// </summary>
+    /// <param name="proj"></param>
     public virtual void OnHit(Projectile proj){
         CurHealth-=proj.damage;
     }
@@ -39,5 +44,9 @@ public abstract class EnemyBase : MonoBehaviour
     }
     void OnDestroy(){
         RoomManager.inst.UnRegisterEnemy(this);
+    }
+    public bool PlayerInRange(float dist){
+        Vector2 dir=PlayerShootingController.inst.transform.position-transform.position;
+        return dir.x*dir.x+dir.y*dir.y<=dist*dist;
     }
 }

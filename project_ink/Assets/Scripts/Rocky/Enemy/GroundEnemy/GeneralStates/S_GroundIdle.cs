@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class E1_idle : StateBase<EnemyBase_Ground>
+public class S_GroundIdle : StateBase<EnemyBase_Ground>
 {
     public float restInterval,restIntervalRange;
     Coroutine coro;

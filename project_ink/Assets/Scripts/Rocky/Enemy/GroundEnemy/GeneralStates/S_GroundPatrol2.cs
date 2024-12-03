@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class S_GroundPatrol2 : StateBase<EnemyBase_Ground>
 {
-    public float patrolSpd;
     public float patrolInterval,patrolIntervalRange;
     float patrolUntilTime;
     Coroutine coro;
@@ -12,7 +11,7 @@ public class S_GroundPatrol2 : StateBase<EnemyBase_Ground>
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         coro = ctrller.StartCoroutine(m_FixedUpdate());
-        ctrller.rgb.velocity=new Vector2(ctrller.Dir==1?patrolSpd:-patrolSpd, ctrller.rgb.velocity.y);
+        ctrller.rgb.velocity=new Vector2(ctrller.Dir==1?ctrller.walkSpd:-ctrller.walkSpd, ctrller.rgb.velocity.y);
         patrolUntilTime=Time.time+Random.Range(patrolInterval-patrolIntervalRange/2, patrolInterval+patrolIntervalRange/2);
     }
 
@@ -42,14 +41,14 @@ public class S_GroundPatrol2 : StateBase<EnemyBase_Ground>
                 pos.x=ctrller.patrol_xmax;
                 ctrller.transform.position=pos;
                 ctrller.Dir=-1;
-                ctrller.rgb.velocity=new Vector2(-patrolSpd, ctrller.rgb.velocity.y);
+                ctrller.rgb.velocity=new Vector2(-ctrller.walkSpd, ctrller.rgb.velocity.y);
             }
             else if(ctrller.transform.position.x<ctrller.patrol_xmin){
                 Vector3 pos=ctrller.transform.position;
                 pos.x=ctrller.patrol_xmin;
                 ctrller.transform.position=pos;
                 ctrller.Dir=1;
-                ctrller.rgb.velocity=new Vector2(patrolSpd, ctrller.rgb.velocity.y);
+                ctrller.rgb.velocity=new Vector2(ctrller.walkSpd, ctrller.rgb.velocity.y);
             }
             yield return wait;
         }

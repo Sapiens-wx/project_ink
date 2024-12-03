@@ -1,13 +1,25 @@
 using UnityEngine;
 
-public abstract class EnemyBase_Ground : EnemyBase
+public abstract class EnemyBase_Ground : MobBase
 {
+    public Bounds bounds;
+    [Header("patrol")]
+    public float walkSpd;
+    [Header("chase")]
+    public float chaseSpd;
     /// <summary>
     /// the patrol min/max relative to the pivot of the enemy object
     /// </summary>
     [HideInInspector] public float patrol_xmin, patrol_xmax;
-    [HideInInspector] public bool onGround, prevOnGround;
 
+    //ground detection
+    [HideInInspector] public bool onGround, prevOnGround;
+    internal override void OnDrawGizmosSelected()
+    {
+        base.OnDrawGizmosSelected();
+        Gizmos.color=Color.blue;
+        Gizmos.DrawWireCube(transform.position+bounds.center, bounds.size);
+    }
     /// <summary>
     /// used to determine the bounds of the platform when the enemy is in patrol state
     /// </summary>
@@ -50,7 +62,8 @@ public abstract class EnemyBase_Ground : EnemyBase
     internal override void Start(){
         base.Start();
     }
-    internal virtual void FixedUpdate(){
+    internal override void FixedUpdate(){
+        base.FixedUpdate();
         CheckOnGround();
         if(!prevOnGround && onGround){ //landing
             UpdateGroundXMinMax();
