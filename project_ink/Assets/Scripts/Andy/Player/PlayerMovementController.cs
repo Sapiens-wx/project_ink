@@ -127,19 +127,11 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        //if (isInvincible)
-        //{
-        //    invincibilityTimer -= Time.deltaTime;
-        //
-        //    // Check if invincibility time has ended
-        //    if (invincibilityTimer <= 0.0f)
-        //    {
-        //        isInvincible = false;
-        //    }
-        //}
         LastOnGroundTime -= Time.deltaTime;
 
         LastPressedJumpTime -= Time.deltaTime;
+
+        FaceCursor();
 
         //get down platform
         if (Input.GetKey(KeyCode.S))
@@ -159,8 +151,6 @@ public class PlayerController : MonoBehaviour
 
         Run(1);
 
-        if (_moveInput.x != 0)
-            CheckDirectionToFace(_moveInput.x > 0);
 
         if ((Input.GetButtonDown("Jump") || Input.GetKeyDown("w") || Input.GetKeyDown("up")) && !Input.GetKey(KeyCode.S))
         {
@@ -226,6 +216,22 @@ public class PlayerController : MonoBehaviour
 
         CheckGrounded();
         SwitchAnimation();
+    }
+    
+    void FaceCursor()
+    {
+        // Get the world position of the cursor
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePosition.z = 0; // Ensure it's in 2D space
+
+        // Check if the cursor is on the right or left side of the player
+        bool shouldFaceRight = mousePosition.x > transform.position.x;
+
+        // Flip the player if facing direction is different
+        if (shouldFaceRight != isFacingRight)
+        {
+            Turn();
+        }
     }
 
     void CheckGrounded()
@@ -302,10 +308,19 @@ public class PlayerController : MonoBehaviour
         //Convert this to a vector and apply to rigidbody
         myRigidbody.AddForce(movement * Vector2.right, ForceMode2D.Force);
 
-        if (Mathf.Abs(_moveInput.x) > 0)
+        if (_moveInput.x > 0)
         {
 
             myAnim.SetBool("Running", true);
+
+            myAnim.SetFloat("RunDirection", 0);
+        }
+        else if (_moveInput.x < 0)
+        {
+
+            myAnim.SetBool("Running", true);
+
+            myAnim.SetFloat("RunDirection", 1);
         }
         else
         {
@@ -346,11 +361,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region CHECK METHODS
-    public void CheckDirectionToFace(bool isMovingRight)
-    {
-        if (isMovingRight != isFacingRight)
-            Turn();
-    }
 
     private bool CanJump()
     {
@@ -457,31 +467,4 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         Physics2D.IgnoreCollision(myFeet, platformCollider, false);
     }
-
-    //public void TakeDamage(int damage)
-    //{
-    //    if (!isInvincible)
-    //    {
-    //        playerCurrentHealth -= damage;
-    //        healthBar.Change(-damage);
-    //
-    //        // Apply invincibility
-    //        isInvincible = true;
-    //        invincibilityTimer = invincibilityTime;
-    //
-    //        if (playerCurrentHealth <= 0)
-    //        {
-    //            // Player dies
-    //            // Destroy(gameObject);
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    if (collision.tag == "Enemy")
-    //    {
-    //        TakeDamage(collision.GetComponent<EnemyBase>().enemyDamage);
-    //    }
-    //}
 }
