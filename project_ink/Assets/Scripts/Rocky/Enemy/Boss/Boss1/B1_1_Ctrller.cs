@@ -10,10 +10,6 @@ public class B1_1_Ctrller : BossBase
     public float a1_2_jumpHeight;
     [Header("Action3")]
     public GameObject a3_target;
-    [Header("Action4")]
-    public GameObject a4_bullet;
-    [Header("Action5")]
-    public GameObject a5_bullet;
     [Header("Stage Transit")]
     public Vector2 st_platform1;
     public Vector2 st_platform2;

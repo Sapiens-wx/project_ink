@@ -6,7 +6,6 @@ using DG.Tweening;
 public class B1_1_Shoot : StateBase<B1_1_Ctrller>
 {
     [SerializeField] float redHatShootDist, redHatShootDuration;
-    [SerializeField] float bulletSpd;
     [SerializeField] float shootInterval;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -36,9 +35,8 @@ public class B1_1_Shoot : StateBase<B1_1_Ctrller>
         //shoot 3 bullets toward the player
         for(int i=0;i<3;++i){
             s.AppendCallback(()=>{
-                EnemyBullet bullet=Instantiate(ctrller.a4_bullet).GetComponent<EnemyBullet>();
-                bullet.transform.position=ctrller.redHat.transform.position;
-                bullet.rgb.velocity=((Vector2)PlayerShootingController.inst.transform.position-(Vector2)bullet.transform.position).normalized*bulletSpd;
+                Vector2 dir=((Vector2)PlayerShootingController.inst.transform.position-(Vector2)ctrller.redHat.transform.position).normalized;
+                EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet_dir(EnemyBulletManager.inst.boss1_a4, ctrller.redHat.transform.position, dir);
             });
             if(i!=2) s.AppendInterval(shootInterval);
         }

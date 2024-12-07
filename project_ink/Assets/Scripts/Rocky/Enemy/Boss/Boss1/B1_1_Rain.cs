@@ -36,7 +36,7 @@ public class B1_1_Rain : StateBase<B1_1_Ctrller>
         s.AppendCallback(()=>{
             for(int i=0;i<3;++i){
                 //intantiate bullet
-                EnemyBullet bullet=Instantiate(ctrller.a5_bullet).GetComponent<EnemyBullet>();
+                EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet(EnemyBulletManager.inst.boss1_a5);
                 bullet.transform.position=ctrller.redHat.transform.position;
                 //x position of the bullet when hit the ground
                 float vy=bullet_y_spd, g=bullet.rgb.gravityScale*9.8f, y1=RoomManager.inst.RoomBounds.min.y;
@@ -48,6 +48,7 @@ public class B1_1_Rain : StateBase<B1_1_Ctrller>
                 float t2=Mathf.Sqrt(2*h/g);
                 float t=t1+t2;
                 float vx=distx/t;
+
                 bullet.rgb.velocity=new Vector2(vx,vy);
             } 
         });

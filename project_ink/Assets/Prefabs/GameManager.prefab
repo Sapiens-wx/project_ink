@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5767117497732373713}
   - component: {fileID: 3040801714471790660}
+  - component: {fileID: 419862369736518472}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -50,3 +51,19 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
+  distEpsilon: 0
+--- !u!114 &419862369736518472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744755388659314665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dae71b42ac6e6284d9616736d72dd356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss1_a4: {fileID: 3403746014265127253, guid: 740448b237333e142b81f0d04135ab95, type: 3}
+  boss1_a5: {fileID: 6782198782412407035, guid: dfe8225a9eb1ddc45839794e5905d021, type: 3}
+  monkey: {fileID: 0}
