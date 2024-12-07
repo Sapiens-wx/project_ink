@@ -6,6 +6,8 @@ public abstract class MobBase : EnemyBase
     [Header("Distance Detection")]
     public float detectDist;
     public float attackTriggerDist;
+    [Header("chase")]
+    public float chaseSpd;
 
     [HideInInspector] public bool playerInDetect, prevPlayerInDetect, playerInAttack, prevPlayerInAttack;
     internal virtual void OnDrawGizmosSelected(){

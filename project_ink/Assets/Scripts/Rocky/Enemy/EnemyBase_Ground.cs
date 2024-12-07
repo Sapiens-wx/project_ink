@@ -5,8 +5,6 @@ public abstract class EnemyBase_Ground : MobBase
     public Bounds bounds;
     [Header("patrol")]
     public float walkSpd;
-    [Header("chase")]
-    public float chaseSpd;
     /// <summary>
     /// the patrol min/max relative to the pivot of the enemy object
     /// </summary>

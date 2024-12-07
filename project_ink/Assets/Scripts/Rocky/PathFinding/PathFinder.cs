@@ -50,6 +50,7 @@ public class PathFinder : MonoBehaviour
     void Awake(){
         inst=this;
         CreateNodes_g();
+        CreateNodes_a();
     }
     [ContextMenu("find path_g")]
     void DebugFunc(){

@@ -1039,6 +1039,7 @@ MonoBehaviour:
   prevPlayerInAttack: 0
   restDir: -1
   flyAngluarSpd: 0.6
+  flyDuration: 2
 --- !u!95 &1120613511
 Animator:
   serializedVersion: 5

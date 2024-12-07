@@ -88,7 +88,6 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
             } else{ //i<paths.Count. Move through even nodes in [paths]
                 cur=paths[i];
                 prev=paths[i-1];
-                Debug.Log($"going to node {cur.gridPos}, {cur.worldPos}");
                 float moveStartTime=Time.time;
                 ctrller.Dir=(cur.gridPos.x>prev.gridPos.x)?1:-1;
                 if(cur.gridPos.y==prev.gridPos.y){ //move horizontally
