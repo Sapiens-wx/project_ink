@@ -77,6 +77,8 @@ public abstract class EnemyBase_Ground : MobBase
         CheckOnGround();
         if(!prevOnGround && onGround){ //landing
             UpdateGroundXMinMax();
-        }
+            animator.SetBool("b_onground", true);
+        } else if(!onGround && prevOnGround) //leave the ground
+            animator.SetBool("b_onground", false);
     }
 }

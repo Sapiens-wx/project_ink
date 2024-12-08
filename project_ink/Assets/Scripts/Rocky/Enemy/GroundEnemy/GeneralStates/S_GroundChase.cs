@@ -25,6 +25,29 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
         chaseCoro=StopCoroutineIfNull(chaseCoro);
         ctrller.rgb.velocity=Vector2.zero;
     }
+    Vector2 GetJumpVelocity_exact(Vector2 from, Vector2 to){
+        RaycastHit2D hit = Physics2D.Raycast(to, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
+        if(!hit){
+            Debug.LogError("no platform to land on");
+            return Vector2.zero;
+        }
+        //calculate the exact [to] position: just when the ctrller's corner touches the platform's corner
+        Vector2 min=hit.collider.bounds.min, max=hit.collider.bounds.max;
+        Vector2 bcExtents=ctrller.bc.bounds.extents, bcOffset=ctrller.bc.offset;
+        if(ctrller.Dir==1){ //jump right up
+            to=new Vector2(min.x-bcExtents.x+bcOffset.x, max.y+bcExtents.y+bcOffset.y);
+        } else //jump left up
+            to=new Vector2(max.x+bcExtents.x+bcOffset.x, max.y+bcExtents.y+bcOffset.y);
+        //calculate velocity
+        Vector2 v=Vector2.zero;
+        float jumpTime=.5f;
+        float h=to.y-from.y;
+        float gravity=ctrller.rgb.gravityScale*9.8f;
+        v.y=h/jumpTime+.5f*gravity*jumpTime; //v=h/t+.5*gt
+        v.x=(to.x-from.x)/jumpTime;
+        return v;
+    }
+    /* legacy
     Vector2 GetJumpVelocity(Vector2 from, Vector2 to){
         Vector2 v=Vector2.zero;
         v.x=from.x<to.x?ctrller.chaseSpd:-ctrller.chaseSpd;
@@ -51,7 +74,7 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
             }
         }
         return v;
-    }
+    }*/
     PathFinder.Node NearestNodeToTarget(Transform target){
         return PathFinder.inst.GetNeareastNode_g(target.position, ctrller.bounds.min.y+PathFinder.inst.GridSize.y/2);
     }
@@ -139,9 +162,10 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
                     }
                 }
                 else{ //jump up
-                    v=GetJumpVelocity(ctrller.transform.position, cur.worldPos+
-                        new Vector2(-ctrller.Dir*(PathFinder.inst.GridSize.x/2+ctrller.bounds.max.x),
-                        ctrller.bounds.max.y-PathFinder.inst.GridSize.y/2));
+                    //v=GetJumpVelocity(ctrller.transform.position, cur.worldPos+
+                    //    new Vector2(-ctrller.Dir*(PathFinder.inst.GridSize.x/2+ctrller.bounds.max.x),
+                    //    ctrller.bounds.max.y-PathFinder.inst.GridSize.y/2));
+                    v=GetJumpVelocity_exact(ctrller.transform.position, cur.worldPos);
                     ctrller.rgb.velocity=v;
                     for(;Vector2.Distance(ctrller.transform.position, cur.worldPos)>epsilon;){
                         ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
