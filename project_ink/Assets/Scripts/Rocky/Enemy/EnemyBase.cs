@@ -49,4 +49,10 @@ public abstract class EnemyBase : MonoBehaviour
         Vector2 dir=PlayerShootingController.inst.transform.position-transform.position;
         return dir.x*dir.x+dir.y*dir.y<=dist*dist;
     }
+    public bool PlayerInRange(Bounds b){
+        b.center+=transform.position;
+        Vector2 min=b.min, max=b.max;
+        Vector2 pos=PlayerShootingController.inst.transform.position;
+        return !(pos.x<min.x||pos.x>max.x||pos.y<min.y||pos.y>max.y);
+    }
 }

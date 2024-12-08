@@ -3,6 +3,8 @@ using UnityEngine;
 public abstract class EnemyBase_Ground : MobBase
 {
     public Bounds bounds;
+    [Header("Attack Detection")]
+    public Bounds attackTriggerBounds;
     [Header("patrol")]
     public float walkSpd;
     /// <summary>
@@ -15,6 +17,8 @@ public abstract class EnemyBase_Ground : MobBase
     internal override void OnDrawGizmosSelected()
     {
         base.OnDrawGizmosSelected();
+        Gizmos.color=Color.red;
+        Gizmos.DrawWireCube(attackTriggerBounds.center+transform.position, attackTriggerBounds.size);
         Gizmos.color=Color.blue;
         Gizmos.DrawWireCube(transform.position+bounds.center, bounds.size);
     }
@@ -62,6 +66,14 @@ public abstract class EnemyBase_Ground : MobBase
     }
     internal override void FixedUpdate(){
         base.FixedUpdate();
+        //attack trigger detection
+        prevPlayerInAttack=playerInAttack;
+        playerInAttack=PlayerInRange(attackTriggerBounds);
+        if(playerInAttack&&!prevPlayerInAttack){ //on detect enter
+            animator.SetBool("b_attack", true);
+        } else if(!playerInAttack&&prevPlayerInAttack) //on detect exit
+            animator.SetBool("b_attack",false);
+
         CheckOnGround();
         if(!prevOnGround && onGround){ //landing
             UpdateGroundXMinMax();
