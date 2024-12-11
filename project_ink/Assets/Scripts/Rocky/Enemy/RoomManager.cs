@@ -48,4 +48,16 @@ public class RoomManager : Singleton<RoomManager>
         }
         return minEnemy;
     }
+    public List<EnemyBase> EnemiesInRange(Vector2 center, float dist){
+        List<EnemyBase> ret=new List<EnemyBase>();
+        dist*=dist;
+        foreach(EnemyBase e in enemies){
+            Vector2 dir=(Vector2)e.transform.position-center;
+            float d=dir.x*dir.x+dir.y*dir.y;
+            if(d<=dist){
+                ret.Add(e);
+            }
+        }
+        return ret;
+    }
 }

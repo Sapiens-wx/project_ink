@@ -11,6 +11,8 @@ public abstract class EnemyBase : MonoBehaviour
         get=>curHealth;
         set{
             curHealth=value;
+            if(curHealth<0) curHealth=0;
+            else if(curHealth>maxHealth) curHealth=maxHealth;
             if(healthBar!=null)
                 healthBar.SetProgress((float)curHealth/maxHealth);
         }
@@ -21,6 +23,11 @@ public abstract class EnemyBase : MonoBehaviour
         set{
             dir=value;
             spr.transform.localScale=new Vector3(dir==1?Mathf.Abs(spr.transform.localScale.x):-Mathf.Abs(spr.transform.localScale.x), spr.transform.localScale.y, spr.transform.localScale.z);
+            if(healthBar!=null){ //make sure not to flip the health bar.
+                Vector3 localScale=healthBar.transform.localScale;
+                localScale.x=dir==1?Mathf.Abs(localScale.x):-Mathf.Abs(localScale.x);
+                healthBar.transform.localScale=localScale;
+            }
         }
     }
     [HideInInspector] public int id; //id in a room
