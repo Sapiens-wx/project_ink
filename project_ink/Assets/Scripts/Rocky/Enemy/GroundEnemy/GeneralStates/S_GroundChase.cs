@@ -76,13 +76,13 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
         return v;
     }*/
     PathFinder.Node NearestNodeToTarget(Transform target){
-        return PathFinder.inst.GetNeareastNode_g(target.position, ctrller.bounds.min.y+PathFinder.inst.GridSize.y/2);
+        return PathFinder.inst.GetNeareastNode_g(target.position, -ctrller.bc.bounds.extents.y+ctrller.bc.offset.y+PathFinder.inst.GridSize.y/2);
     }
     PathFinder.Node NearestNodeToThis(){
-        return PathFinder.inst.GetNeareastNode_g(ctrller.transform.position, ctrller.bounds.min.y+PathFinder.inst.GridSize.y/2);
+        return PathFinder.inst.GetNeareastNode_g(ctrller.transform.position, -ctrller.bc.bounds.extents.y+ctrller.bc.offset.y+PathFinder.inst.GridSize.y/2);
     }
     void FindPath(Transform target){
-        paths=PathFinder.inst.FindPath_g(ctrller.transform.position, target.position, ctrller.bounds.min.y+PathFinder.inst.GridSize.y/2);
+        paths=PathFinder.inst.FindPath_g(ctrller.transform.position, target.position, -ctrller.bc.bounds.extents.y+ctrller.bc.offset.y+PathFinder.inst.GridSize.y/2);
     }
     bool CheckStucked(float from){
         return Time.time-from>10;
@@ -129,12 +129,12 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
                     ctrller.rgb.velocity=v;
                     float edgeXPos;
                     if(ctrller.Dir==1){ //edge is on the right
-                        float boundsLeft=ctrller.bounds.min.x;
-                        edgeXPos=Mathf.Max(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x+PathFinder.inst.GridSize.x/2-ctrller.bounds.size.x*1.5f);
+                        float boundsLeft=ctrller.bc.bounds.min.x;
+                        edgeXPos=Mathf.Max(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x+PathFinder.inst.GridSize.x/2-ctrller.bc.bounds.size.x*1.5f);
                         bool wasInAir=false;
-                        for(;edgeXPos>=ctrller.transform.position.x+boundsLeft || (!wasInAir || !ctrller.onGround);){
+                        for(;edgeXPos>=boundsLeft || (!wasInAir || !ctrller.onGround);){
                             ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
-                            if(edgeXPos<ctrller.transform.position.x+boundsLeft){
+                            if(edgeXPos<boundsLeft){
                                 v.x=0;
                             }
                             if(!ctrller.onGround) wasInAir=true;
@@ -145,12 +145,12 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
                             yield return detectInterval;
                         }
                     } else{
-                        float boundsRight=ctrller.bounds.max.x;
-                        edgeXPos=Mathf.Min(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x-PathFinder.inst.GridSize.x/2+ctrller.bounds.size.x*1.5f);
+                        float boundsRight=ctrller.bc.bounds.max.x;
+                        edgeXPos=Mathf.Min(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x-PathFinder.inst.GridSize.x/2+ctrller.bc.bounds.size.x*1.5f);
                         bool wasInAir=false;
-                        for(;edgeXPos<=ctrller.transform.position.x+boundsRight || (!wasInAir || !ctrller.onGround);){
+                        for(;edgeXPos<=boundsRight || (!wasInAir || !ctrller.onGround);){
                             ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
-                            if(edgeXPos>ctrller.transform.position.x+boundsRight)
+                            if(edgeXPos>boundsRight)
                                 v.x=0;
                             if(!ctrller.onGround) wasInAir=true;
                             if(CheckStucked(moveStartTime)){

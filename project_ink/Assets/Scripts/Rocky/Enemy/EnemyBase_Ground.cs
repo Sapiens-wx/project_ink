@@ -2,7 +2,6 @@ using UnityEngine;
 
 public abstract class EnemyBase_Ground : MobBase
 {
-    public Bounds bounds;
     [Header("Attack Detection")]
     public Bounds attackTriggerBounds;
     [Header("patrol")]
@@ -20,7 +19,6 @@ public abstract class EnemyBase_Ground : MobBase
         Gizmos.color=Color.red;
         Gizmos.DrawWireCube(attackTriggerBounds.center+transform.position, attackTriggerBounds.size);
         Gizmos.color=Color.blue;
-        Gizmos.DrawWireCube(transform.position+bounds.center, bounds.size);
     }
     /// <summary>
     /// used to determine the bounds of the platform when the enemy is in patrol state
