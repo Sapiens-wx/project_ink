@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class EnemyBase : MonoBehaviour
 {
     public SpriteRenderer spr;
+    [SerializeField] internal Collider2D damageBox;
     [SerializeField] ProgressBar healthBar;
     [SerializeField] internal int maxHealth;
 
@@ -37,7 +38,6 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// called when the enemy gets hit.
     /// </summary>
-    /// <param name="proj"></param>
     public virtual void OnHit(Projectile proj){
         CurHealth-=proj.damage;
     }

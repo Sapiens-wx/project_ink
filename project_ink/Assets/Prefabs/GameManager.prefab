@@ -51,6 +51,9 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
+  enemyBulletLayer:
+    serializedVersion: 2
+    m_Bits: 512
   distEpsilon: 0
 --- !u!114 &419862369736518472
 MonoBehaviour:

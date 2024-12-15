@@ -27,7 +27,7 @@ public class RoomManager : Singleton<RoomManager>
     public int RegisterEnemy(EnemyBase enemy){
         enemy.id=enemies.Count;
         enemies.Add(enemy);
-        return enemies.Count-1;
+        return enemy.id;
     }
     public void UnRegisterEnemy(EnemyBase enemy){
         enemies[enemy.id]=enemies[^1];
