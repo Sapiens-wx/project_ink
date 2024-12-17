@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spr: {fileID: 7422648796942379075}
+  damageBox: {fileID: 0}
   healthBar: {fileID: 5843437316745494235}
   maxHealth: 10
   id: 0
@@ -110,14 +111,12 @@ MonoBehaviour:
   animator: {fileID: 0}
   hatredPersistent: 0
   detectDist: 3.66
+  groupDetectDist: 9
   chaseSpd: 3
   playerInDetect: 0
   prevPlayerInDetect: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.55, y: 0.59, z: 0}
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 5.89, y: 1.22, z: 0}

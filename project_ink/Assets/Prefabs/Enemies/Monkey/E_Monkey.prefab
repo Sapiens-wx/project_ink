@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spr: {fileID: 8286592351433612706}
+  damageBox: {fileID: 0}
   healthBar: {fileID: 6222407891667852257}
   maxHealth: 4
   id: 0
@@ -58,6 +59,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   hatredPersistent: 1
   detectDist: 3.4
+  groupDetectDist: 9
   chaseSpd: 2.5
   playerInDetect: 0
   prevPlayerInDetect: 0

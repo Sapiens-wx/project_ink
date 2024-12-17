@@ -48,6 +48,9 @@ public class RoomManager : Singleton<RoomManager>
         }
         return minEnemy;
     }
+    /// <summary>
+    /// enemies include boss and mobs
+    /// </summary>
     public List<EnemyBase> EnemiesInRange(Vector2 center, float dist){
         List<EnemyBase> ret=new List<EnemyBase>();
         dist*=dist;
@@ -56,6 +59,23 @@ public class RoomManager : Singleton<RoomManager>
             float d=dir.x*dir.x+dir.y*dir.y;
             if(d<=dist){
                 ret.Add(e);
+            }
+        }
+        return ret;
+    }
+    /// <summary>
+    /// finds only mobs
+    /// </summary>
+    public List<MobBase> MobsInRange(Vector2 center, float dist){
+        List<MobBase> ret=new List<MobBase>();
+        dist*=dist;
+        foreach(EnemyBase e in enemies){
+            MobBase m=e as MobBase;
+            if(m==null) continue;
+            Vector2 dir=(Vector2)e.transform.position-center;
+            float d=dir.x*dir.x+dir.y*dir.y;
+            if(d<=dist){
+                ret.Add(m);
             }
         }
         return ret;

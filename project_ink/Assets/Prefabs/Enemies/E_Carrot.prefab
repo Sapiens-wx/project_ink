@@ -60,6 +60,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   hatredPersistent: 0
   detectDist: 3.01
+  groupDetectDist: 9
   chaseSpd: 3
   playerInDetect: 0
   prevPlayerInDetect: 0
