@@ -25,6 +25,15 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
         chaseCoro=StopCoroutineIfNull(chaseCoro);
         ctrller.rgb.velocity=Vector2.zero;
     }
+    Vector2 GetHorizontalJumpVelocity(Vector2 from, Vector2 to){
+        //calculate velocity
+        Vector2 v=new Vector2(ctrller.Dir==1?ctrller.chaseSpd:-ctrller.chaseSpd,0);
+        float jumpTime=(to.x-from.x)/v.x;
+        float gravity=ctrller.rgb.gravityScale*9.8f;
+        v.y=gravity*jumpTime/2; //vy=gt/2
+        v.y+=.1f; //even with exact value, the enemy still jumps lower than desired height
+        return v;
+    }
     Vector2 GetJumpVelocity_exact(Vector2 from, Vector2 to){
         RaycastHit2D hit = Physics2D.Raycast(to, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
         if(!hit){
@@ -44,7 +53,8 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
         float h=to.y-from.y;
         float gravity=ctrller.rgb.gravityScale*9.8f;
         v.y=h/jumpTime+.5f*gravity*jumpTime; //v=h/t+.5*gt
-        v.x=(to.x-from.x)/jumpTime;
+        v.x=(to.x-from.x)/jumpTime+.1f;
+        v.y+=.3f/Mathf.Max(v.y,1); //even with exact value, the enemy still jumps lower than desired height
         return v;
     }
     /* legacy
@@ -113,46 +123,23 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
                 prev=paths[i-1];
                 float moveStartTime=Time.time;
                 ctrller.Dir=(cur.gridPos.x>prev.gridPos.x)?1:-1;
-                if(cur.gridPos.y==prev.gridPos.y){ //move horizontally
-                    v=new Vector2(ctrller.Dir==1?ctrller.chaseSpd:-ctrller.chaseSpd, ctrller.rgb.velocity.y);
-                    ctrller.rgb.velocity=v;
-                    for(;Mathf.Abs(ctrller.transform.position.x-cur.worldPos.x)>epsilon;){
-                        ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
-                        if(CheckStucked(moveStartTime)){
-                            Debug.LogWarning("the enemy might be stucked. restart path finding");
-                            break;
-                        }
-                        yield return detectInterval;
-                    }
-                } else if(cur.gridPos.y>prev.gridPos.y){ //jump down
-                    v=new Vector2(ctrller.Dir==1?ctrller.chaseSpd:-ctrller.chaseSpd, ctrller.rgb.velocity.y);
-                    ctrller.rgb.velocity=v;
-                    float edgeXPos;
-                    if(ctrller.Dir==1){ //edge is on the right
-                        float boundsLeft=ctrller.bc.bounds.min.x;
-                        edgeXPos=Mathf.Max(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x+PathFinder.inst.GridSize.x/2-ctrller.bc.bounds.size.x*1.5f);
-                        bool wasInAir=false;
-                        for(;edgeXPos>=boundsLeft || (!wasInAir || !ctrller.onGround);){
+                if(cur.gridPos.y==prev.gridPos.y){
+                    if(PathFinder.inst.NeedsJump(prev, cur)){ //horizontal jump
+                        v=GetHorizontalJumpVelocity(ctrller.transform.position, cur.worldPos);
+                        ctrller.rgb.velocity=v;
+                        for(;Vector2.Distance(ctrller.transform.position, cur.worldPos)>epsilon;){
                             ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
-                            if(edgeXPos<boundsLeft){
-                                v.x=0;
-                            }
-                            if(!ctrller.onGround) wasInAir=true;
                             if(CheckStucked(moveStartTime)){
                                 Debug.LogWarning("the enemy might be stucked. restart path finding");
                                 break;
                             }
                             yield return detectInterval;
                         }
-                    } else{
-                        float boundsRight=ctrller.bc.bounds.max.x;
-                        edgeXPos=Mathf.Min(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x-PathFinder.inst.GridSize.x/2+ctrller.bc.bounds.size.x*1.5f);
-                        bool wasInAir=false;
-                        for(;edgeXPos<=boundsRight || (!wasInAir || !ctrller.onGround);){
+                    } else{ //move horizontally
+                        v=new Vector2(ctrller.Dir==1?ctrller.chaseSpd:-ctrller.chaseSpd, ctrller.rgb.velocity.y);
+                        ctrller.rgb.velocity=v;
+                        for(;Mathf.Abs(ctrller.transform.position.x-cur.worldPos.x)>epsilon;){
                             ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
-                            if(edgeXPos>boundsRight)
-                                v.x=0;
-                            if(!ctrller.onGround) wasInAir=true;
                             if(CheckStucked(moveStartTime)){
                                 Debug.LogWarning("the enemy might be stucked. restart path finding");
                                 break;
@@ -161,13 +148,54 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
                         }
                     }
                 }
-                else{ //jump up
+                else if(cur.gridPos.y>prev.gridPos.y){ //jump down
+                    v=new Vector2(ctrller.Dir==1?ctrller.chaseSpd:-ctrller.chaseSpd, ctrller.rgb.velocity.y);
+                    ctrller.rgb.velocity=v;
+                    float edgeXPos;
+                    if(ctrller.Dir==1){ //edge is on the right
+                        float boundsLeft=ctrller.bc.bounds.min.x;
+                        edgeXPos=Mathf.Max(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x-ctrller.bc.bounds.size.x/2);
+                        bool wasInAir=false;
+                        for(;edgeXPos>=boundsLeft || (!wasInAir || !ctrller.onGround);){
+                            ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
+                            if(edgeXPos<boundsLeft)
+                                v.x=0;
+                            boundsLeft=ctrller.bc.bounds.min.x;
+                            if(!ctrller.onGround) wasInAir=true;
+                            if(CheckStucked(moveStartTime)){
+                                Debug.LogWarning("the enemy might be stucked in jump down. restart path finding");
+                                break;
+                            }
+                            yield return detectInterval;
+                        }
+                    } else{
+                        float boundsRight=ctrller.bc.bounds.max.x;
+                        edgeXPos=Mathf.Min(prev.worldPos.x-PathFinder.inst.GridSize.x/2, cur.worldPos.x+ctrller.bc.bounds.size.x/2);
+                        bool wasInAir=false;
+                        for(;edgeXPos<=boundsRight || (!wasInAir || !ctrller.onGround);){
+                            ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
+                            if(edgeXPos>boundsRight)
+                                v.x=0;
+                            boundsRight=ctrller.bc.bounds.max.x;
+                            if(!ctrller.onGround) wasInAir=true;
+                            if(CheckStucked(moveStartTime)){
+                                Debug.LogWarning("the enemy might be stucked in jump down. restart path finding");
+                                break;
+                            }
+                            yield return detectInterval;
+                        }
+                    }
+                } else{ //jump up
                     //v=GetJumpVelocity(ctrller.transform.position, cur.worldPos+
                     //    new Vector2(-ctrller.Dir*(PathFinder.inst.GridSize.x/2+ctrller.bounds.max.x),
                     //    ctrller.bounds.max.y-PathFinder.inst.GridSize.y/2));
                     v=GetJumpVelocity_exact(ctrller.transform.position, cur.worldPos);
                     ctrller.rgb.velocity=v;
                     for(;Vector2.Distance(ctrller.transform.position, cur.worldPos)>epsilon;){
+                        if((ctrller.Dir==1&&ctrller.transform.position.x>cur.worldPos.x)||(ctrller.Dir==-1&&ctrller.transform.position.x<cur.worldPos.x)){
+                            v.x=0;
+                        }
+                        if(v.x==0&&ctrller.onGround) break;
                         ctrller.rgb.velocity=new Vector2(v.x, ctrller.rgb.velocity.y);
                         if(CheckStucked(moveStartTime)){
                             Debug.LogWarning("the enemy might be stucked. restart path finding");
@@ -175,6 +203,8 @@ public class S_GroundChase : StateBase<EnemyBase_Ground>
                         }
                         yield return detectInterval;
                     }
+                    while(!ctrller.onGround)
+                        yield return detectInterval;
                 }
                 }
                 //detect if the target node changes

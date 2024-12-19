@@ -16,6 +16,7 @@ public class PathFinder : MonoBehaviour
 
     public static PathFinder inst;
     Node[,] grid_g;
+    bool[,] walls;
     private List<Node> nodes_g;
     public List<Node> Nodes_g{
         get{
@@ -146,13 +147,13 @@ public class PathFinder : MonoBehaviour
     [ContextMenu("create nodes_g")]
     public void CreateNodes_g(){
         nodes_g=null; //clear the array that stores all the previous nodes
-        int jumpXmin=2, jumpXmax=3, jumpY=4;
+        int jumpXmin=2, jumpXmax=3, jumpY=4, horizontalJumpXMax=4;
         int jumpDownX=3;
 
         int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
         int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
         grid_g=new Node[w,h];
-        bool[,] walls=new bool[w,h];
+        walls=new bool[w,h];
 
         //add points above ground
         Vector2 startPos=bounds.center;
@@ -189,18 +190,16 @@ public class PathFinder : MonoBehaviour
                         grid_g[i,j].ConnectBothNode(grid_g[i+1,j]);
                         hasRightNode=true;
                     }
-                    if(hasRightNode&&!isNodeConnected[i,j]&&grid_g[i,j].nodes.Count>=2){ //if has node on its right and has 2 nodes connected(not sure whether the other node is its left neighbor)
-                        //if(grid[i,j].nodes[0].gridPos.y==grid[i,j].gridPos.y){//check it 
-                        //remove the nodes. reconnect the two neighbor nodes
+                    //if hasRightnode && is not connected by nodes with different y pos && is connected by a left node,
+                    //then this node can be eliminated
+                    if(hasRightNode&&!isNodeConnected[i,j]&&grid_g[i,j].nodes.Count>=2){
                         grid_g[i,j].nodes[^1].RemoveConnectedNode(grid_g[i,j]);
-                        grid_g[i,j].nodes[^1].nodes.Add(grid_g[i,j].nodes[^2]);
+                        grid_g[i,j].nodes[^1].ConnectNode(grid_g[i,j].nodes[^2]);
                         grid_g[i,j].nodes[^2].RemoveConnectedNode(grid_g[i,j]);
-                        grid_g[i,j].nodes[^2].nodes.Add(grid_g[i,j].nodes[^1]);
+                        grid_g[i,j].nodes[^2].ConnectNode(grid_g[i,j].nodes[^1]);
                         grid_g[i,j]=null;
                         continue;
-                        //}
                     }
-                    //---horizontal jump---
                     //---jump down---
                     int leftWallY=h; //the topmost y pos that has wall.
                     int rightWallY=h;
@@ -216,7 +215,7 @@ public class PathFinder : MonoBehaviour
                                 else if(grid_g[leftx,y]!=null){
                                     isNodeConnected[leftx,y]=true;
                                     grid_g[i,j].ConnectNode(grid_g[leftx,y]);
-                                    leftWallY=y+1;
+                                    leftWallY=y+1; //the y+1 pos must be a wall. so terminate the loop
                                 }
                             }
                         }
@@ -277,6 +276,32 @@ public class PathFinder : MonoBehaviour
                         }
                     }
                     //if(grid[i,j].nodes.Count)
+                }
+            }
+        }
+        for(int j=0;j<h;++j){
+            for(int i=0;i<w;++i){
+                if(grid_g[i,j]!=null){
+                    //---horizontal jump---
+                    if(i<w-1&&j<h-1&&!walls[i+1,j+1]){ //make sure the node is on the right edge of a platform
+                        int hjumpMaxX=Mathf.Min(w,i+horizontalJumpXMax);
+                        int x=i+1;
+                        for(int y=Mathf.Max(j-jumpY+1,0);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
+                            if(walls[x,y]) hjumpMaxX=-1;
+                        }
+                        for(x=i+2;x<hjumpMaxX;++x){
+                            for(int y=Mathf.Max(0,j-jumpY+1);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
+                                if(walls[x,y]){
+                                    hjumpMaxX=-1;
+                                    break;
+                                }
+                            }
+                            if(hjumpMaxX!=-1 && grid_g[x,j]!=null){ //if there is a node on the right, connect the two nodes
+                                grid_g[i,j].ConnectBothNode(grid_g[x,j]);
+                                hjumpMaxX=-1;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -438,6 +463,17 @@ public class PathFinder : MonoBehaviour
         }
     }
     #endregion
+    /// <summary>
+    /// if needs jump to get from [from] node to a target node given that the two nodes are horizontal
+    /// </summary>
+    public bool NeedsJump(Node from, Node to){
+        if(from.gridPos.y+1>=walls.GetLength(1)) Debug.Log("needs jump returns false");
+        if(from.gridPos.y+1>=walls.GetLength(1)) return false;
+        int x;
+        if(to.gridPos.x>from.gridPos.x) x=from.gridPos.x+1;
+        else x=from.gridPos.x-1;
+        return !walls[x,from.gridPos.y+1];
+    }
     public class Node{
         public Vector2Int gridPos;
         public Vector2 worldPos;
