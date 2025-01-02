@@ -22,12 +22,12 @@ public class CardSlotManager : Singleton<CardSlotManager>
     bool toggle_panel=true;
     float toggle_panel_ypos;
     //-----card effects-----
-    //card_1_3
-    public Buff1_3 buff1_3;
-    //card_1_4
+    public Buff_ReduceAntic buff1_3;
     public Buff1_4 buff1_4;
-    //card_1_5
     public Buff1_5 buff1_5;
+    public PlanetBuff planetBuff;
+    public Buff_ReduceAntic buffP_2;
+    public BuffP_3 buffP_3;
 
     private void Start()
     {
@@ -55,6 +55,10 @@ public class CardSlotManager : Singleton<CardSlotManager>
         anticipating=true;
         //implement card1_3
         float totalTime=buff1_3.Activate(cardSlots[curSlot].card.anticipation);
+        //planet Mercury effect
+        totalTime=planetBuff.Mercury(totalTime);
+        //planet Mercury activate effect
+        totalTime=buffP_2.Activate(totalTime);
 
         float time=totalTime;
         WaitForFixedUpdate wait=new WaitForFixedUpdate();

@@ -69,6 +69,8 @@ public abstract class Card : ScriptableObject
         CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         CardSlotManager.inst.InstantiateProjectile(this, false);
         ReturnToCardPool();
+        CardSlotManager.inst.planetBuff.Venus(this);
+        CardSlotManager.inst.buffP_3.Activate(this);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator AutoFire(){
@@ -98,6 +100,7 @@ public abstract class Card : ScriptableObject
         ReturnToCardPool();
         yield break;
     }
+    public virtual void OnHitEnemy(EnemyBase enemy){}
     public abstract Card Copy();
     public virtual void CopyTo(Card card)
     {
@@ -117,5 +120,14 @@ public abstract class Card : ScriptableObject
         Card_1_5,
         Card_1_6,
         Card_1_7,
+
+        Card_P_Earth,
+        Card_P_Mercury,
+        Card_P_Venus,
+        Card_P_Uranus,
+        Card_P_Mars,
+        Card_P_Sun,
+        Card_P_Jupiter,
+        Card_P_Saturn,
     }
 }
