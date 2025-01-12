@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e3ae05cff98a441bd02bedd43d7615, type: 3}
   m_Name: Config
   m_EditorClassIdentifier: 
-  earth: {fileID: 0}
+  earth: {fileID: 7454504291050146381, guid: 738df516d7d68294da20837965082e63, type: 3}
   mercury: {fileID: 5936727908147610682, guid: 78542209bae8103449d186944372c1a1, type: 3}
   venus: {fileID: 8528826753105896972, guid: dab08176eb454ea4ca0627d4d3507203, type: 3}
-  uranus: {fileID: 0}
-  mars: {fileID: 0}
+  uranus: {fileID: 2589308404171809304, guid: 67fdffa9cf7b82449b9dbd000a60133e, type: 3}
+  mars: {fileID: 4189429498292286801, guid: ae788fa6a7c7b6b489a94bae3913e2ba, type: 3}
   sun: {fileID: 0}
-  jupiter: {fileID: 0}
+  jupiter: {fileID: 7483860620996078777, guid: 6388907df8104a0478cf717ff87e6a77, type: 3}
   saturn: {fileID: 0}

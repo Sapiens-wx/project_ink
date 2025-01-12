@@ -39,11 +39,15 @@ public abstract class Card : ScriptableObject
     }
     protected virtual void ReturnToCardPool()
     {
+        OnExitSlot();
         if (!isConsumed)
             cardDealer.ReturnToCardPool(this);
     }
     public virtual void OnEnterSlot(int slot) {
         slotIndex = slot;
+    }
+    public void OnExitSlot(){
+        slotIndex=-1;
     }
     /// <summary>
     /// generates an automatic bullet flying toward an enemy
@@ -61,6 +65,18 @@ public abstract class Card : ScriptableObject
     }
     public virtual void Prep_Fire(List<IEnumerator> actions){
         actions.Add(Fire());
+        //Mars effect
+        CardSlotManager.inst.planetBuff.Mars(this, actions);
+        //Mars activation effect
+        CardSlotManager.inst.buffP_5.Activate(this, actions);
+        //Venus effect
+        CardSlotManager.inst.planetBuff.Venus(this, actions);
+        //Venus activation effect
+        CardSlotManager.inst.buffP_3.Activate(this, actions);
+        //Jupiter effect
+        CardSlotManager.inst.planetBuff.Jupiter(actions);
+        //Jupiter activation effect
+        CardSlotManager.inst.buffP_6.Activate(actions);
     }
     public virtual void Prep_Discard(List<IEnumerator> actions){
         actions.Add(Discard());
@@ -69,12 +85,11 @@ public abstract class Card : ScriptableObject
         CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         CardSlotManager.inst.InstantiateProjectile(this, false);
         ReturnToCardPool();
-        CardSlotManager.inst.planetBuff.Venus(this);
-        CardSlotManager.inst.buffP_3.Activate(this);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator AutoFire(){
-        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
+        if(slotIndex>=0)
+            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         CardSlotManager.inst.InstantiateProjectile(this, true);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);

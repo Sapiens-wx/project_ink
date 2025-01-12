@@ -28,6 +28,8 @@ public class CardSlotManager : Singleton<CardSlotManager>
     public PlanetBuff planetBuff;
     public Buff_ReduceAntic buffP_2;
     public BuffP_3 buffP_3;
+    public BuffP_5 buffP_5;
+    public BuffP_6 buffP_6;
 
     private void Start()
     {

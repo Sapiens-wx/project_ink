@@ -18,7 +18,7 @@ public class PlanetManager:MonoBehaviour{
     void Initialize(){
         planets=new Planet[6];
     }
-    public bool hasPlanet(PlanetType type){
+    public bool HasPlanet(PlanetType type){
         return (mask&(int)type)!=0;
     }
     public void AddPlanet(PlanetType planetType){

@@ -18,9 +18,15 @@ public class Planet {
                 CardSlotManager.inst.buffP_3.Enable();
                 break;
             case PlanetType.Uranus:
+                break;
             case PlanetType.Mars:
+                CardSlotManager.inst.buffP_5.Enable();
+                break;
             case PlanetType.Sun:
+                break;
             case PlanetType.Jupiter:
+                CardSlotManager.inst.buffP_6.Enable();
+                break;
             case PlanetType.Saturn:
                 break;
             default: throw new System.Exception("planet type undefined");
