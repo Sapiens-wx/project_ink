@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: card inventory
   m_EditorClassIdentifier: 
   cards:
+  - {fileID: 11400000, guid: 07328b4b5b0bc6f4ba926920cea963ba, type: 2}
   - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
+  - {fileID: 11400000, guid: 9c35f2a3e8c21ff418f05f6a5ce104bf, type: 2}
+  - {fileID: 11400000, guid: 521b7085bbe0f084c9c562b24d5d6ddb, type: 2}
+  - {fileID: 11400000, guid: 521b7085bbe0f084c9c562b24d5d6ddb, type: 2}
+  - {fileID: 11400000, guid: 9c35f2a3e8c21ff418f05f6a5ce104bf, type: 2}
   - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
+  - {fileID: 11400000, guid: 1719987e542cadd4590794e88bdefc15, type: 2}
   - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
-  - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
-  - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
-  - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
-  - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
-  - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
-  - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
-  - {fileID: 11400000, guid: 91511b3ecbd9c2c4dbb401d8173d102c, type: 2}
+  - {fileID: 11400000, guid: 1719987e542cadd4590794e88bdefc15, type: 2}

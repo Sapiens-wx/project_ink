@@ -6,7 +6,7 @@ public class PlanetManager:MonoBehaviour{
 
     public static PlanetManager inst;
     Planet[] planets;
-    Sun sun;
+    [HideInInspector] public Sun sun;
     [HideInInspector] public int mask;
 
     void Awake(){
@@ -22,6 +22,17 @@ public class PlanetManager:MonoBehaviour{
         return (mask&(int)type)!=0;
     }
     public void AddPlanet(PlanetType planetType){
+        if(planetType==PlanetType.Sun){
+            //activate the previous sun
+            if(sun!=null){
+                sun.Activate();
+                PlanetVisualizer.inst.RemovePlanet(sun);
+            }
+            //create a new sun
+            sun=new Sun();
+            PlanetVisualizer.inst.AddPlanet(sun);
+            return;
+        }
         //update mask
         Planet planet=Planet.FromType(planetType);
         mask|=(int)planetType;

@@ -8,6 +8,8 @@ public class Planet {
         this.type=type;
     }
     public virtual void Activate(){
+        if(PlanetManager.inst.sun!=null)
+            ++PlanetManager.inst.sun.charge;
         switch(type){
             case PlanetType.Earth:
                 break;
@@ -43,22 +45,28 @@ public class Sun : Planet{
     public int charge;
     Planet[] planets;
     internal Sun():base(PlanetType.Sun){
-        charge=0;
+        charge=1;
         type=PlanetType.Sun;
         planets=new Planet[6];
     }
     public override void Activate()
     {
-        
+        foreach(Planet p in planets){
+            if(p!=null)
+                p.Activate();
+        }
+        CardSlotManager.inst.InstantiateProjectile(5*charge, true);
     }
     public void AddPlanet(Planet planet){
         int idx=-1, nullIdx=-1;
         for(int i=0;i<planets.Length;++i){
             //find the first null slot
-            if(nullIdx==-1&&planets[i]==null)
-                nullIdx=i;
+            if(planets[i]==null){
+                if(nullIdx==-1)
+                    nullIdx=i;
+            }
             //find the index of the planet with the same type if there is any
-            if(planets[i].type==planet.type){
+            else if(planets[i].type==planet.type){
                 idx=i;
                 break;
             }

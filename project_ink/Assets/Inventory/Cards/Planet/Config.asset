@@ -17,6 +17,6 @@ MonoBehaviour:
   venus: {fileID: 8528826753105896972, guid: dab08176eb454ea4ca0627d4d3507203, type: 3}
   uranus: {fileID: 2589308404171809304, guid: 67fdffa9cf7b82449b9dbd000a60133e, type: 3}
   mars: {fileID: 4189429498292286801, guid: ae788fa6a7c7b6b489a94bae3913e2ba, type: 3}
-  sun: {fileID: 0}
+  sun: {fileID: 1274131761499579572, guid: abd9ab8bf08384441bdfd84287cd844a, type: 3}
   jupiter: {fileID: 7483860620996078777, guid: 6388907df8104a0478cf717ff87e6a77, type: 3}
   saturn: {fileID: 0}
