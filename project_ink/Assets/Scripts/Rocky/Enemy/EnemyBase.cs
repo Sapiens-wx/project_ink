@@ -41,6 +41,10 @@ public abstract class EnemyBase : MonoBehaviour
     public virtual void OnHit(Projectile proj){
         CurHealth-=proj.damage;
     }
+    public void Die(){
+        if(PlanetVisualizer.inst.uranusesDict.ContainsKey(this))
+            PlanetVisualizer.inst.RemoveUranus(this);
+    }
     internal virtual void Start(){
         Dir=1;
         RoomManager.inst.RegisterEnemy(this);

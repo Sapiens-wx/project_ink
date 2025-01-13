@@ -144,7 +144,15 @@ public class PlanetBuff : Buff{
         }
     }
     public void Uranus(){
-
+        //saturn effect
+        if(PlanetManager.inst.HasPlanet(PlanetType.Saturn)){
+            foreach(Uranus u in PlanetVisualizer.inst.uranuses)
+                u.charge+=6;
+        }
+        else{
+            foreach(Uranus u in PlanetVisualizer.inst.uranuses)
+                u.charge+=3;
+        }
     }
     int marsEffectCounter=0;
     

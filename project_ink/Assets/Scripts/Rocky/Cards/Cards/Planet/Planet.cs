@@ -10,6 +10,7 @@ public class Planet {
     public virtual void Activate(){
         if(PlanetManager.inst.sun!=null)
             ++PlanetManager.inst.sun.charge;
+        CardSlotManager.inst.planetBuff.Uranus();
         switch(type){
             case PlanetType.Earth:
                 break;
@@ -20,6 +21,8 @@ public class Planet {
                 CardSlotManager.inst.buffP_3.Enable();
                 break;
             case PlanetType.Uranus:
+                Uranus u = (Uranus)this;
+                u.surroundingEnemy.CurHealth-=u.charge;
                 break;
             case PlanetType.Mars:
                 CardSlotManager.inst.buffP_5.Enable();
@@ -37,8 +40,16 @@ public class Planet {
     public static Planet FromType(PlanetType type){
         switch(type){
             case PlanetType.Sun: return new Sun();
+            case PlanetType.Uranus: return new Uranus();
             default: return new Planet(type);
         }
+    }
+}
+public class Uranus : Planet{
+    public int charge;
+    public EnemyBase surroundingEnemy;
+    internal Uranus():base(PlanetType.Uranus){
+        charge=0;
     }
 }
 public class Sun : Planet{
@@ -46,7 +57,6 @@ public class Sun : Planet{
     Planet[] planets;
     internal Sun():base(PlanetType.Sun){
         charge=1;
-        type=PlanetType.Sun;
         planets=new Planet[6];
     }
     public override void Activate()
