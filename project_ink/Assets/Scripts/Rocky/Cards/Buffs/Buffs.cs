@@ -206,10 +206,12 @@ public class BuffP_3 : Buff{
 		yield return new WaitForSeconds(0.3f);
 		CardSlotManager.inst.InstantiateProjectile(3, true).gameObject.name="venus buff activated";
     }
-    public void Activate(Card cardShot, List<IEnumerator> actions){
-        if(!enabled) return;
-        if(cardShot.damage==0) return;
-        --count;
+    public void Activate(Card cardShot, List<IEnumerator> actions, bool forceActivate=false){
+        if(!forceActivate){
+            if(!enabled) return;
+            if(cardShot.damage==0) return;
+            --count;
+        }
         actions.Add(DelayShoot());
         if(count==0){
             Disable();
@@ -228,14 +230,27 @@ public class BuffP_5 : Buff{
         base.Enable();
         count=2;
     }
-    public void Activate(Card cardShot, List<IEnumerator> actions){
-        if(!enabled) return;
+    public void Activate(Card cardShot, List<IEnumerator> actions, bool forceActivate=false){
+        if(!forceActivate&&!enabled) return;
         if(cardShot.damage==0) return;
-        --count;
-        if(count==0){
-            Disable();
+        if(!forceActivate){
+            --count;
+            if(count==0){
+                Disable();
+            }
         }
         actions.Add(cardShot.Activate());
+    }
+}
+
+/// <summary>
+/// Sun activation effect:
+/// </summary>
+[System.Serializable]
+public class BuffP_6 : Buff{
+    public void Activate(){
+        PlanetManager.inst.sun.Activate();
+        PlanetVisualizer.inst.RemovePlanet(PlanetManager.inst.sun);
     }
 }
 
@@ -243,15 +258,51 @@ public class BuffP_5 : Buff{
 /// Jupiter activation effect: auto fire the next two cards in the discard pile
 /// </summary>
 [System.Serializable]
-public class BuffP_6 : Buff{
-    public override void Enable()
-    {
-        base.Enable();
-    }
-    public void Activate(List<IEnumerator> actions){
-        if(!enabled) return;
+public class BuffP_7 : Buff{
+    public void Activate(List<IEnumerator> actions, bool forceActivate=false){
+        if(!forceActivate&&!enabled) return;
         actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
         actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
         Disable();
+    }
+}
+
+/// <summary>
+/// Saturn activation effect: randomly activates three planet effects
+/// </summary>
+[System.Serializable]
+public class BuffP_8 : Buff{
+    public void Activate(){
+        PlanetManager.inst.sun.charge+=3;
+        for(int i=0;i<3;++i){
+            switch(UnityEngine.Random.Range(1,9)){
+                //TODO: fill in the effects for saturn activation effect
+                case 1: //earth effect
+                    break;
+                case 2: //mercury effect
+                    CardSlotManager.inst.buffP_2.Enable();
+                    break;
+                case 3: //venus effect
+                    CardSlotManager.inst.buffP_3.Enable();
+                    break;
+                case 4: //uranus effect
+                    //randomly choose a uranus and activate its effect
+                    if(PlanetVisualizer.inst.uranuses.Count>0)
+                        PlanetVisualizer.inst.uranuses[UnityEngine.Random.Range(0, PlanetVisualizer.inst.uranuses.Count)].Activate();
+                    break;
+                case 5: //mars effect
+                    CardSlotManager.inst.buffP_5.Enable();
+                    break;
+                case 6: //sun effect
+                    CardSlotManager.inst.buffP_6.Activate();
+                    break;
+                case 7: //jupter effect
+                    CardSlotManager.inst.buffP_7.Enable();
+                    break;
+                case 8: //saturn effect
+                    Activate();
+                    break;
+            }
+        }
     }
 }

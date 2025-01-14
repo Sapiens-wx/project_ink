@@ -30,6 +30,8 @@ public class CardSlotManager : Singleton<CardSlotManager>
     public BuffP_3 buffP_3;
     public BuffP_5 buffP_5;
     public BuffP_6 buffP_6;
+    public BuffP_7 buffP_7;
+    public BuffP_8 buffP_8;
 
     private void Start()
     {

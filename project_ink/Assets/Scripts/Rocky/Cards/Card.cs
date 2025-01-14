@@ -76,7 +76,7 @@ public abstract class Card : ScriptableObject
         //Jupiter effect
         CardSlotManager.inst.planetBuff.Jupiter(actions);
         //Jupiter activation effect
-        CardSlotManager.inst.buffP_6.Activate(actions);
+        CardSlotManager.inst.buffP_7.Activate(actions);
     }
     public virtual void Prep_Discard(List<IEnumerator> actions){
         actions.Add(Discard());

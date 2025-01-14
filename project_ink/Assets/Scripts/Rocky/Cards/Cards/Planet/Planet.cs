@@ -30,9 +30,12 @@ public class Planet {
             case PlanetType.Sun:
                 break;
             case PlanetType.Jupiter:
-                CardSlotManager.inst.buffP_6.Enable();
+                CardSlotManager.inst.buffP_7.Enable();
                 break;
             case PlanetType.Saturn:
+                if(PlanetManager.inst.sun!=null)
+                    --PlanetManager.inst.sun.charge; //the next line of the code will charge the sun by 3
+                CardSlotManager.inst.buffP_8.Activate();
                 break;
             default: throw new System.Exception("planet type undefined");
         }

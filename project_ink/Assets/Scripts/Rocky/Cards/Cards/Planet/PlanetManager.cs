@@ -25,8 +25,7 @@ public class PlanetManager:MonoBehaviour{
         if(planetType==PlanetType.Sun){
             //activate the previous sun
             if(sun!=null){
-                sun.Activate();
-                PlanetVisualizer.inst.RemovePlanet(sun);
+                CardSlotManager.inst.buffP_6.Activate();
             }
             //create a new sun
             sun=new Sun();

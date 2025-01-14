@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public int damage;
     [HideInInspector] public bool chase;
     [HideInInspector] public Card card;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -83,6 +84,8 @@ public class Projectile : MonoBehaviour
         }
     }
     void M_Destroy(){
+        if(gameObject.activeSelf==false) return; //eliminate repetitively calling on trigger enter
+        StopAllCoroutines();
         ProjectileManager.inst.ReleaseProjectile(this);
     }
     void OnTriggerEnter2D(Collider2D collider){
