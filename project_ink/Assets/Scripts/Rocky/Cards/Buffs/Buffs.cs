@@ -250,7 +250,7 @@ public class BuffP_5 : Buff{
 public class BuffP_6 : Buff{
     public void Activate(){
         PlanetManager.inst.sun.Activate();
-        PlanetVisualizer.inst.RemovePlanet(PlanetManager.inst.sun);
+        PlanetManager.inst.RemovePlanet(PlanetManager.inst.sun);
     }
 }
 
@@ -273,7 +273,8 @@ public class BuffP_7 : Buff{
 [System.Serializable]
 public class BuffP_8 : Buff{
     public void Activate(){
-        PlanetManager.inst.sun.charge+=3;
+        if(PlanetManager.inst.sun!=null)
+            PlanetManager.inst.sun.charge+=3;
         for(int i=0;i<3;++i){
             switch(UnityEngine.Random.Range(1,9)){
                 //TODO: fill in the effects for saturn activation effect
@@ -294,6 +295,10 @@ public class BuffP_8 : Buff{
                     CardSlotManager.inst.buffP_5.Enable();
                     break;
                 case 6: //sun effect
+                    if(PlanetManager.inst.sun==null){ //if doesn't have sun, don't activate sun effect
+                        --i;
+                        break;
+                    }
                     CardSlotManager.inst.buffP_6.Activate();
                     break;
                 case 7: //jupter effect

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class PlanetManager:MonoBehaviour{
@@ -22,22 +23,17 @@ public class PlanetManager:MonoBehaviour{
         return (mask&(int)type)!=0;
     }
     public void AddPlanet(PlanetType planetType){
-        if(planetType==PlanetType.Sun){
-            //activate the previous sun
-            if(sun!=null){
-                CardSlotManager.inst.buffP_6.Activate();
-            }
-            //create a new sun
-            sun=new Sun();
-            PlanetVisualizer.inst.AddPlanet(sun);
-            return;
-        }
         //update mask
         Planet planet=Planet.FromType(planetType);
         mask|=(int)planetType;
 
+StringBuilder sb=new StringBuilder();
         int idx=-1, nullIdx=-1;
         for(int i=0;i<planets.Length;++i){
+            if(planets[i]==null)
+                sb.Append($"i={i}, planets[i]=null\n");
+            else
+                sb.Append($"i={i}, planets[i]={planets[i].type}\n");
             //find the first null slot
             if(planets[i]==null){
                 if(nullIdx==-1)
@@ -48,6 +44,20 @@ public class PlanetManager:MonoBehaviour{
                 idx=i;
                 break;
             }
+        }
+        //if the planet is sun
+        if(planet.type==PlanetType.Sun){
+            //activate the previous sun
+            if(sun!=null){
+                CardSlotManager.inst.buffP_6.Activate();
+            }
+            sun=(Sun)planet;
+            if(idx!=-1) //there is a existing sun, then use this sun's position
+                planets[idx]=planet;
+            else
+                planets[nullIdx]=planet;
+            PlanetVisualizer.inst.AddPlanet(planet);
+            return;
         }
         if(idx>=0){ //has that planet in orbits
             if(sun!=null){
@@ -68,7 +78,9 @@ public class PlanetManager:MonoBehaviour{
         planet.Activate();
     }
     public void RemovePlanet(Planet planet){
+        if(planet==null) return;
         int idx=-1;
+        mask&=~(int)planet.type;
         for(int i=0;i<planets.Length;++i){
             //find the index of the planet with the same type if there is any
             if(planets[i]==planet){
@@ -78,5 +90,7 @@ public class PlanetManager:MonoBehaviour{
         }
         PlanetVisualizer.inst.RemovePlanet(planets[idx]);
         planets[idx]=null;
+        if(planet.type==PlanetType.Sun)
+            sun=null;
     }
 }
