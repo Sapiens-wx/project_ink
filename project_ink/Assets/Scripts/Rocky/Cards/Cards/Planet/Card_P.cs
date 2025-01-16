@@ -15,6 +15,9 @@ public class Card_P : Card
         return ret;
     }
     public override void OnHitEnemy(EnemyBase enemy){
-        PlanetManager.inst.AddPlanet(planetType);
+        if(planetType==PlanetType.Earth)
+            CardSlotManager.inst.planetBuff.Earth();
+        else
+            PlanetManager.inst.AddPlanet(planetType);
     }
 }

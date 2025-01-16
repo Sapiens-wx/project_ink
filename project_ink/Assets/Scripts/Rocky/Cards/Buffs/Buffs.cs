@@ -158,7 +158,6 @@ public class PlanetBuff : Buff{
     
     ///<summary>
     ///activate the next damage card for every 3 damage card shot. 
-    ///returns true if needs to activate the damage card for an extra time
     ///</summary>
     public void Mars(Card cardShot, List<IEnumerator> actions){
         if(PlanetManager.inst.HasPlanet(PlanetType.Mars) && cardShot.damage>0){
@@ -189,6 +188,15 @@ public class PlanetBuff : Buff{
             ++jupiterEffectCounter;
         }
     }
+    public void Earth(){
+        Planet planet=PlanetManager.inst.RandomPlanet();
+        if(planet!=null){
+            //double activate the planet
+            planet.DoubleActivate();
+            //destroy the planet
+            PlanetManager.inst.RemovePlanet(planet);
+        }
+    }
 }
 
 /// <summary>
@@ -197,14 +205,21 @@ public class PlanetBuff : Buff{
 [System.Serializable]
 public class BuffP_3 : Buff{
     int count;
+    int damage;
     public override void Enable()
     {
         base.Enable();
         count=3;
+        damage=3;
+    }
+    public void DoubleEnable()
+    {
+        Enable();
+        damage=6;
     }
     IEnumerator DelayShoot(){
 		yield return new WaitForSeconds(0.3f);
-		CardSlotManager.inst.InstantiateProjectile(3, true).gameObject.name="venus buff activated";
+		CardSlotManager.inst.InstantiateProjectile(damage, true).gameObject.name="venus buff activated";
     }
     public void Activate(Card cardShot, List<IEnumerator> actions, bool forceActivate=false){
         if(!forceActivate){
@@ -225,10 +240,16 @@ public class BuffP_3 : Buff{
 [System.Serializable]
 public class BuffP_5 : Buff{
     int count;
+    bool doubleActivate;
     public override void Enable()
     {
         base.Enable();
         count=2;
+        doubleActivate=false;
+    }
+    public void DoubleEnable(){
+        Enable();
+        doubleActivate=true;
     }
     public void Activate(Card cardShot, List<IEnumerator> actions, bool forceActivate=false){
         if(!forceActivate&&!enabled) return;
@@ -240,6 +261,8 @@ public class BuffP_5 : Buff{
             }
         }
         actions.Add(cardShot.Activate());
+        if(doubleActivate)
+            actions.Add(cardShot.Activate());
     }
 }
 
@@ -259,10 +282,24 @@ public class BuffP_6 : Buff{
 /// </summary>
 [System.Serializable]
 public class BuffP_7 : Buff{
+    bool doubleActivate;
+    public override void Enable()
+    {
+        base.Enable();
+        doubleActivate=false;
+    }
+    public void DoubleEnable(){
+        base.Enable();
+        doubleActivate=true;
+    }
     public void Activate(List<IEnumerator> actions, bool forceActivate=false){
         if(!forceActivate&&!enabled) return;
         actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
         actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
+        if(doubleActivate){
+            actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
+            actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
+        }
         Disable();
     }
 }
@@ -272,10 +309,10 @@ public class BuffP_7 : Buff{
 /// </summary>
 [System.Serializable]
 public class BuffP_8 : Buff{
-    public void Activate(){
+    public void Activate(bool doubleActivate=false){
         if(PlanetManager.inst.sun!=null)
             PlanetManager.inst.sun.charge+=3;
-        for(int i=0;i<3;++i){
+        for(int i=doubleActivate?6:3;i>0;--i){
             switch(UnityEngine.Random.Range(1,9)){
                 //TODO: fill in the effects for saturn activation effect
                 case 1: //earth effect
@@ -305,7 +342,7 @@ public class BuffP_8 : Buff{
                     CardSlotManager.inst.buffP_7.Enable();
                     break;
                 case 8: //saturn effect
-                    Activate();
+                    Activate(doubleActivate);
                     break;
             }
         }

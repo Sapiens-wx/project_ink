@@ -88,9 +88,19 @@ StringBuilder sb=new StringBuilder();
                 break;
             }
         }
+        if(idx==-1){
+            Debug.LogWarning("remove planet: planet non-exist: "+planet.type);
+            return;
+        }
         PlanetVisualizer.inst.RemovePlanet(planets[idx]);
         planets[idx]=null;
         if(planet.type==PlanetType.Sun)
             sun=null;
+    }
+    public Planet RandomPlanet(){
+        foreach(Planet p in planets){
+            if(p!=null) return p;
+        }
+        return null;
     }
 }
