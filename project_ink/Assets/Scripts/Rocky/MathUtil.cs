@@ -49,4 +49,18 @@ public class MathUtil{
         }
         return to;
     }
+    //-------------physics----------------
+    public static Vector2 CalcJumpVelocity(float startXPos, float endXPos, float jumpHeight, float gravity)
+    {
+        // Calculate the horizontal distance
+        float deltaX = endXPos - startXPos;
+        // Calculate the total time of flight
+        float halfTime = Mathf.Sqrt(2*jumpHeight/gravity);
+        // Calculate the initial vertical velocity
+        float jumpYSpd = halfTime * gravity;
+        float jumpXSpd=deltaX/halfTime*0.5f;
+
+        // Return the initial velocity as a Vector2
+        return new Vector2(jumpXSpd, jumpYSpd);
+    }
 }
