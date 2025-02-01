@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyBulletManager : Singleton<EnemyBulletManager>{
     public EnemyBulletBase boss1_a4,boss1_a5;
     public EnemyBulletBase monkey, monkey_split;
-    public EnemyBulletBase diamond, frog;
+    public EnemyBulletBase diamond, frog, elf;
     /// <summary>
     /// set the bullet direction. velocity=dir*bullet.spd
     /// </summary>

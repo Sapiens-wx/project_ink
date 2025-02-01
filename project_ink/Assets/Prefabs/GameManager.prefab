@@ -73,3 +73,4 @@ MonoBehaviour:
   monkey_split: {fileID: 7894666452604304954, guid: 8052f1e7a8de9ad42999d6100a604123, type: 3}
   diamond: {fileID: 1912567075307409250, guid: 23318d123364da244b08729cbb2109e5, type: 3}
   frog: {fileID: 6581883151400673887, guid: 47a7a18548dc8854e835f0c7fc6fe48c, type: 3}
+  elf: {fileID: 6782198782412407035, guid: 44890755ce7dc5a4cad774a7645566a8, type: 3}
