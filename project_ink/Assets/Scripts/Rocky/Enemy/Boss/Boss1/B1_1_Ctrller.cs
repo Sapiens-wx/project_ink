@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class B1_1_Ctrller : EnemyBase
+public class B1_1_Ctrller : BossBase
 {
-    public Animator animator;
     public GameObject redHat;
     [Header("Action1")]
     public float a1_2_jumpHeight;
     [Header("Action3")]
     public GameObject a3_target;
-    [Header("Action4")]
-    public GameObject a4_bullet;
-    [Header("Action5")]
-    public GameObject a5_bullet;
     [Header("Stage Transit")]
     public Vector2 st_platform1;
     public Vector2 st_platform2;
@@ -31,7 +26,7 @@ public class B1_1_Ctrller : EnemyBase
     }
     public override void OnHit(Projectile proj)
     {
-        CurHealth-=proj.damage;
+        base.OnHit(proj);
         if(CurHealth<<1<maxHealth)
             animator.SetTrigger("toIdle2");
     }

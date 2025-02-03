@@ -11,6 +11,8 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public Rigidbody2D rgb;
     [HideInInspector] public int damage;
     [HideInInspector] public bool chase;
+    [HideInInspector] public Card card;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,7 @@ public class Projectile : MonoBehaviour
     }
     public void InitProjectile(Card card, Vector2 pos, Vector2 velocity, bool chase){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
+        this.card=card;
         damage=card.damage;
         rgb.velocity=velocity;
         transform.position=pos;
@@ -81,12 +84,15 @@ public class Projectile : MonoBehaviour
         }
     }
     void M_Destroy(){
+        if(gameObject.activeSelf==false) return; //eliminate repetitively calling on trigger enter
+        StopAllCoroutines();
         ProjectileManager.inst.ReleaseProjectile(this);
     }
     void OnTriggerEnter2D(Collider2D collider){
-        if(collider.gameObject.layer==8){ //if is enemy
+        if(GameManager.IsLayer(GameManager.inst.enemyLayer, collider.gameObject.layer)){ //if is enemy
             EnemyBase enemy=collider.GetComponent<EnemyBase>();
             enemy.OnHit(this);
+            if(card!=null) card.OnHitEnemy(enemy);
         }
         ProjectileManager.inst.HitAnim(this);
         M_Destroy();

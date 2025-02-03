@@ -932,6 +932,8 @@ GameObject:
   - component: {fileID: 2198366963604748596}
   - component: {fileID: 1983554298781702395}
   - component: {fileID: 4576415493943712413}
+  - component: {fileID: 8248812775599936785}
+  - component: {fileID: 8737952204702817244}
   m_Layer: 5
   m_Name: Card Panel
   m_TagString: Untagged
@@ -988,6 +990,10 @@ MonoBehaviour:
     firstCardOfRound: 0
   buff1_5:
     indicator: {fileID: 155502644632812538}
+  planetBuff:
+    indicator: {fileID: 0}
+  buffP_2:
+    indicator: {fileID: 0}
 --- !u!114 &4576415493943712413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1004,6 +1010,34 @@ MonoBehaviour:
   hitPrefab: {fileID: 8032902103068574690, guid: 726853ce698fff04c9dd22d7f6a946bc, type: 3}
   hitAnimDuration: 0.25
   projectileSpeed: 17
+--- !u!114 &8248812775599936785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6339516331735325090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f2ee824a241c1459b77e81b88e2cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mask: 0
+--- !u!114 &8737952204702817244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6339516331735325090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad0801d53ed90354385f06b7d0e2f9db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: ec00813b016b0834f882c1ecfb158a99, type: 2}
+  planetDist: 2
+  planetSunDist: 0.5
 --- !u!1 &7110395164758506167
 GameObject:
   m_ObjectHideFlags: 0

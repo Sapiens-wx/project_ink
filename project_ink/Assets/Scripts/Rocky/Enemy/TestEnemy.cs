@@ -13,7 +13,7 @@ public class TestEnemy : MonoBehaviour
 
     Rigidbody2D rgb;
     Collider2D bc;
-    List<VerticalPathFinder.Node> paths;
+    List<PathFinder.Node> paths;
     //ground detection
     Vector2 groundDetectLB, groundDetectRB;
     bool onGround, prevOnGround;
@@ -68,21 +68,21 @@ public class TestEnemy : MonoBehaviour
         }
         return v;
     }
-    VerticalPathFinder.Node NearestNodeToTarget(Transform target){
-        return VerticalPathFinder.inst.GetNeareastNode(target.position, bounds.min.y+VerticalPathFinder.inst.GridSize.y/2);
+    PathFinder.Node NearestNodeToTarget(Transform target){
+        return PathFinder.inst.GetNeareastNode_g(target.position, bounds.min.y+PathFinder.inst.GridSize.y/2);
     }
-    VerticalPathFinder.Node NearestNodeToThis(){
-        return VerticalPathFinder.inst.GetNeareastNode(transform.position, bounds.min.y+VerticalPathFinder.inst.GridSize.y/2);
+    PathFinder.Node NearestNodeToThis(){
+        return PathFinder.inst.GetNeareastNode_g(transform.position, bounds.min.y+PathFinder.inst.GridSize.y/2);
     }
     void FindPath(Transform target){
-        paths=VerticalPathFinder.inst.FindPath(transform.position, target.position, bounds.min.y+VerticalPathFinder.inst.GridSize.y/2);
+        paths=PathFinder.inst.FindPath_g(transform.position, target.position, bounds.min.y+PathFinder.inst.GridSize.y/2);
     }
     bool CheckStucked(float from){
         return Time.time-from>10;
     }
     IEnumerator Move(){
         WaitForSeconds detectInterval=new WaitForSeconds(.2f);
-        VerticalPathFinder.Node cur=paths[0],prev;
+        PathFinder.Node cur=paths[0],prev;
         //move to the first node
         /*rgb.velocity=new Vector2((cur.worldPos.x>transform.position.x)?xspd:-xspd, rgb.velocity.y);
         for(;Vector2.Distance(transform.position, cur.worldPos)>detectDist;)
@@ -106,13 +106,13 @@ public class TestEnemy : MonoBehaviour
                 rgb.velocity=v;
                 float edgeXPos;
                 if(dir==1){ //edge is on the right
-                    edgeXPos=prev.worldPos.x+VerticalPathFinder.inst.GridSize.x/2;
+                    edgeXPos=prev.worldPos.x+PathFinder.inst.GridSize.x/2;
                     for(;edgeXPos>=transform.position.x+bounds.min.x;){
                         rgb.velocity=new Vector2(v.x, rgb.velocity.y);
                         yield return detectInterval;
                     }
                 } else{
-                    edgeXPos=prev.worldPos.x-VerticalPathFinder.inst.GridSize.x/2;
+                    edgeXPos=prev.worldPos.x-PathFinder.inst.GridSize.x/2;
                     for(;edgeXPos<=transform.position.x-bounds.min.x;){
                         rgb.velocity=new Vector2(v.x, rgb.velocity.y);
                         yield return detectInterval;
@@ -121,8 +121,8 @@ public class TestEnemy : MonoBehaviour
             }
             else{ //jump up
                 v=GetJumpVelocity(transform.position, cur.worldPos+
-                    new Vector2(-dir*(VerticalPathFinder.inst.GridSize.x/2),
-                    bounds.extents.y-bounds.center.y-VerticalPathFinder.inst.GridSize.y/2));
+                    new Vector2(-dir*(PathFinder.inst.GridSize.x/2),
+                    bounds.extents.y-bounds.center.y-PathFinder.inst.GridSize.y/2));
                 rgb.velocity=v;
                 for(;Vector2.Distance(transform.position, cur.worldPos)>detectDist;){
                     Debug.Log("update v " + v.x);
@@ -136,7 +136,7 @@ public class TestEnemy : MonoBehaviour
     IEnumerator Chase(Transform target){
         WaitForSeconds detectInterval=new WaitForSeconds(.05f);
         FindPath(target);
-        VerticalPathFinder.Node cur=paths[0],prev;
+        PathFinder.Node cur=paths[0],prev;
         //move from the first node to the last
         int i=1;
         for(;i<paths.Count;){
@@ -162,7 +162,7 @@ public class TestEnemy : MonoBehaviour
                 float edgeXPos;
                 if(dir==1){ //edge is on the right
                     float boundsLeft=bounds.min.x;
-                    edgeXPos=Mathf.Max(prev.worldPos.x+VerticalPathFinder.inst.GridSize.x/2, cur.worldPos.x+VerticalPathFinder.inst.GridSize.x/2-bounds.size.x*1.5f);
+                    edgeXPos=Mathf.Max(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x+PathFinder.inst.GridSize.x/2-bounds.size.x*1.5f);
                     bool wasInAir=false;
                     for(;edgeXPos>=transform.position.x+boundsLeft || (!wasInAir || !onGround);){
                         rgb.velocity=new Vector2(v.x, rgb.velocity.y);
@@ -178,7 +178,7 @@ public class TestEnemy : MonoBehaviour
                     }
                 } else{
                     float boundsRight=bounds.max.x;
-                    edgeXPos=Mathf.Min(prev.worldPos.x+VerticalPathFinder.inst.GridSize.x/2, cur.worldPos.x-VerticalPathFinder.inst.GridSize.x/2+bounds.size.x*1.5f);
+                    edgeXPos=Mathf.Min(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x-PathFinder.inst.GridSize.x/2+bounds.size.x*1.5f);
                     bool wasInAir=false;
                     for(;edgeXPos<=transform.position.x+boundsRight || (!wasInAir || !onGround);){
                         rgb.velocity=new Vector2(v.x, rgb.velocity.y);
@@ -195,8 +195,8 @@ public class TestEnemy : MonoBehaviour
             }
             else{ //jump up
                 v=GetJumpVelocity(transform.position, cur.worldPos+
-                    new Vector2(-dir*(VerticalPathFinder.inst.GridSize.x/2+bounds.max.x),
-                    bounds.max.y-VerticalPathFinder.inst.GridSize.y/2));
+                    new Vector2(-dir*(PathFinder.inst.GridSize.x/2+bounds.max.x),
+                    bounds.max.y-PathFinder.inst.GridSize.y/2));
                 rgb.velocity=v;
                 for(;Vector2.Distance(transform.position, cur.worldPos)>detectDist;){
                     rgb.velocity=new Vector2(v.x, rgb.velocity.y);
@@ -208,11 +208,11 @@ public class TestEnemy : MonoBehaviour
                 }
             }
             //detect if the target node changes
-            VerticalPathFinder.Node targetNode=NearestNodeToTarget(target);
-            VerticalPathFinder.Node fromNode=NearestNodeToThis();
+            PathFinder.Node targetNode=NearestNodeToTarget(target);
+            PathFinder.Node fromNode=NearestNodeToThis();
 
             if(targetNode!=paths[^1] || fromNode !=paths[i-1]){
-                paths=VerticalPathFinder.inst.FindPath(fromNode, targetNode);
+                paths=PathFinder.inst.FindPath_g(fromNode, targetNode);
                 i=1;
             } else ++i;
         }
