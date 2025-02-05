@@ -80,4 +80,14 @@ public class RoomManager : Singleton<RoomManager>
         }
         return ret;
     }
+    /// <summary>
+    /// activate all elite enemies. Called when the player enters a room
+    /// </summary>
+    void ActivateElites(){
+        foreach(EnemyBase e in enemies){
+            EliteBase eg=e as EliteBase;
+            if(eg==null) continue;
+            eg.Activate();
+        }
+    }
 }
