@@ -59,9 +59,6 @@ public abstract class EnemyBase_Ground : MobBase
         leftBot.x+=bounds.size.x*.1f;
         onGround = Physics2D.OverlapArea(leftBot,rightBot,GameManager.inst.groundLayer);
     }
-    internal override void Start(){
-        base.Start();
-    }
     internal override void FixedUpdate(){
         base.FixedUpdate();
         //attack trigger detection
