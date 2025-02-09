@@ -28,7 +28,7 @@ public abstract class MobBase : EnemyBase
                 animator.SetBool("b_detect",false);
         }
     }
-    void SetDetectPlayer(){
+    public void SetDetectPlayer(){
         if(playerInDetect) return;
         playerInDetect=true;
         animator.SetBool("b_detect", true);

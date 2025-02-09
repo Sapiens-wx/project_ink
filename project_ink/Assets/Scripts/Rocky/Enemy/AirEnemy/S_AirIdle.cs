@@ -20,6 +20,7 @@ public class S_AirIdle : StateBase<EnemyBase_Air>
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if(ctrller==null) ctrller=animator.GetComponent<EnemyBase_Air>();
         Vector3 scale = ctrller.transform.localScale;
         scale.y=Mathf.Abs(scale.y);
         ctrller.transform.localScale=scale;

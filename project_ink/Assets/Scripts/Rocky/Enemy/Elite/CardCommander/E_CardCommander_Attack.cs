@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class E_CardCommander_Attack : StateBase<E_CardCommander>
 {
+    const float summonDist = 2f;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -18,7 +19,8 @@ public class E_CardCommander_Attack : StateBase<E_CardCommander>
                     animator.SetBool("b_action1", false);
                     goto case 0;
                 }
-                goto case 0;
+                if(RoomManager.inst.HasEnemy(e=>{return e as E_Club!=null || e as E_Spade!=null || e as E_Diamond!=null || e as E_Heart!=null;}))
+                    goto case 0;
                 ctrller.StartCoroutine(Action2());
                 break;
         }
@@ -63,6 +65,19 @@ public class E_CardCommander_Attack : StateBase<E_CardCommander>
     }
     //Summon normal enemies
     IEnumerator Action2(){
+        EnemyType leftEnemyType=(EnemyType)Random.Range((int)EnemyType.Club, (int)EnemyType.Diamond+1);
+        EnemyType rightEnemyType=(EnemyType)Random.Range((int)EnemyType.Club, (int)EnemyType.Diamond+1);
+        MobBase leftEnemy = (MobBase)RoomManager.inst.InstantiateEnemy(leftEnemyType);
+        MobBase rightEnemy = (MobBase)RoomManager.inst.InstantiateEnemy(rightEnemyType);
+        leftEnemy.transform.position=ctrller.transform.position+new Vector3(-summonDist, 0);
+        rightEnemy.transform.position=ctrller.transform.position+new Vector3(summonDist, 0);
+        leftEnemy.ToTheGround();
+        rightEnemy.ToTheGround();
+        //give hatred to the spawned enemies
+        leftEnemy.SetDetectPlayer();
+        rightEnemy.SetDetectPlayer();
+
+        ctrller.animator.SetTrigger("chase");
         yield break;
     }
 }

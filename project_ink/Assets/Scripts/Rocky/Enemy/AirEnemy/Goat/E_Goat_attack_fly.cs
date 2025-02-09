@@ -22,10 +22,10 @@ public class E_Goat_attack_fly : StateBase<E_Goat_Ground>{
         RaycastHit2D hit_down = Physics2D.Raycast(ctrller.transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
         RaycastHit2D hit_up = Physics2D.Raycast(ctrller.transform.position, Vector2.up, float.MaxValue, GameManager.inst.groundLayer);
         if(!hit_down){
-            Debug.LogError("Goat attack_fly: ray didn't hit ground");
-            return;
-        }
-        targetHeight=ctrller.flyHeight+hit_down.point.y;
+            Debug.LogWarning("Goat attack_fly: ray didn't hit ground");
+            targetHeight=ctrller.flyHeight+ctrller.transform.position.y;
+        } else
+            targetHeight=ctrller.flyHeight+hit_down.point.y;
         if(hit_up) targetHeight=Mathf.Min(targetHeight, hit_up.point.y-.025f-ctrller.bc.bounds.extents.y+ctrller.bc.offset.y);
     }
 }
