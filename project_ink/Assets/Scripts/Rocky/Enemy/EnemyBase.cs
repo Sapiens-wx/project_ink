@@ -46,6 +46,7 @@ public abstract class EnemyBase : MonoBehaviour
             PlanetVisualizer.inst.RemoveUranus(this);
     }
     internal virtual void Start(){
+        if(bc!=null) return; //it means start function is called else where. no need to initialize again
         Dir=1;
         RoomManager.inst.RegisterEnemy(this);
         CurHealth=maxHealth;
@@ -65,5 +66,13 @@ public abstract class EnemyBase : MonoBehaviour
         Vector2 min=b.min, max=b.max;
         Vector2 pos=PlayerShootingController.inst.transform.position;
         return !(pos.x<min.x||pos.x>max.x||pos.y<min.y||pos.y>max.y);
+    }
+    /// <summary>
+    /// make the enemy stick to the ground by changing the y pos (raycast downward)
+    /// </summary>
+    public void ToTheGround(){
+        RaycastHit2D hit=Physics2D.Raycast(transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
+        if(hit)
+            transform.position=new Vector3(transform.position.x, hit.point.y+bc.bounds.extents.y+bc.offset.y, 0);
     }
 }

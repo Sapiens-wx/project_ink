@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &64136309394918913
 Transform:
   m_ObjectHideFlags: 0
@@ -104,7 +104,7 @@ MonoBehaviour:
   spr: {fileID: 3131416991592194550}
   damageBox: {fileID: 0}
   healthBar: {fileID: 7011146068983826890}
-  maxHealth: 0
+  maxHealth: 20
   id: 0
   bc: {fileID: 0}
   rgb: {fileID: 0}

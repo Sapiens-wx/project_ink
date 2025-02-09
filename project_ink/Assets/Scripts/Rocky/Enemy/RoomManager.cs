@@ -5,6 +5,8 @@ using UnityEngine;
 public class RoomManager : Singleton<RoomManager>
 {
     [SerializeField] private Bounds roomBounds;
+    [Header("Enemy")]
+    [SerializeField] EnemyList enemyPrefabList;
 
     [HideInInspector] public List<EnemyBase> enemies;
 
@@ -22,6 +24,7 @@ public class RoomManager : Singleton<RoomManager>
     internal override void Awake()
     {
         base.Awake();
+        enemyPrefabList.Init();
         enemies=new List<EnemyBase>();
     }
     public int RegisterEnemy(EnemyBase enemy){
@@ -80,6 +83,17 @@ public class RoomManager : Singleton<RoomManager>
         }
         return ret;
     }
+    //can be optimized
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>true if there is a corresponding enemy in the room</returns>
+    public bool HasEnemy(System.Predicate<EnemyBase> predicate){
+        foreach(EnemyBase e in enemies){
+            if(predicate(e)) return true;
+        }
+        return false;
+    }
     /// <summary>
     /// activate all elite enemies. Called when the player enters a room
     /// </summary>
@@ -89,5 +103,10 @@ public class RoomManager : Singleton<RoomManager>
             if(eg==null) continue;
             eg.Activate();
         }
+    }
+    public EnemyBase InstantiateEnemy(EnemyType enemyType){
+        EnemyBase e=Instantiate(enemyPrefabList[enemyType]).GetComponent<EnemyBase>();
+        e.Start();
+        return e;
     }
 }
