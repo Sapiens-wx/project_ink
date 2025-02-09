@@ -16,6 +16,13 @@ public class RoomManager : Singleton<RoomManager>
     public Bounds RoomBounds{
         get=>roomBounds;
     }
+    public Bounds RoomGlobalBounds{
+        get{
+            Bounds b=roomBounds;
+            b.center+=transform.position;
+            return b;
+        }
+    }
 
     void OnDrawGizmosSelected(){
         Gizmos.color=Color.green;

@@ -27,4 +27,7 @@ public enum EnemyType{
     Heart,
     Spade,
     Diamond,
+    Frog,
+    Goat,
+    Monkey,
 }

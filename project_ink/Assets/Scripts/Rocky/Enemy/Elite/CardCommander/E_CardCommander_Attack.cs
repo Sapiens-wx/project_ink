@@ -67,12 +67,16 @@ public class E_CardCommander_Attack : StateBase<E_CardCommander>
     IEnumerator Action2(){
         EnemyType leftEnemyType=(EnemyType)Random.Range((int)EnemyType.Club, (int)EnemyType.Diamond+1);
         EnemyType rightEnemyType=(EnemyType)Random.Range((int)EnemyType.Club, (int)EnemyType.Diamond+1);
-        EnemyBase leftEnemy = RoomManager.inst.InstantiateEnemy(leftEnemyType);
-        EnemyBase rightEnemy = RoomManager.inst.InstantiateEnemy(rightEnemyType);
+        MobBase leftEnemy = (MobBase)RoomManager.inst.InstantiateEnemy(leftEnemyType);
+        MobBase rightEnemy = (MobBase)RoomManager.inst.InstantiateEnemy(rightEnemyType);
         leftEnemy.transform.position=ctrller.transform.position+new Vector3(-summonDist, 0);
         rightEnemy.transform.position=ctrller.transform.position+new Vector3(summonDist, 0);
         leftEnemy.ToTheGround();
         rightEnemy.ToTheGround();
+        //give hatred to the spawned enemies
+        leftEnemy.SetDetectPlayer();
+        rightEnemy.SetDetectPlayer();
+
         ctrller.animator.SetTrigger("chase");
         yield break;
     }

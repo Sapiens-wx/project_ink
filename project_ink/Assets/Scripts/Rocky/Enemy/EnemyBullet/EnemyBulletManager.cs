@@ -7,6 +7,7 @@ public class EnemyBulletManager : Singleton<EnemyBulletManager>{
     public EnemyBulletBase monkey, monkey_split;
     public EnemyBulletBase diamond, frog;
     public EnemyBulletBase elf, elf_split;
+    public EnemyBulletBase witch;
     /// <summary>
     /// set the bullet direction. velocity=dir*bullet.spd
     /// </summary>
