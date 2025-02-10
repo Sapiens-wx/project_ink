@@ -2511,6 +2511,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E_Witch
       objectReference: {fileID: 0}
+    - target: {fileID: 5356559688156356306, guid: 73f42368ee180b941887e8150917d748, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7621341926840076589, guid: 73f42368ee180b941887e8150917d748, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.89
@@ -2830,7 +2834,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 433466988118411142, guid: 538cf8942309004448d9f40efb240970, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303745402857701644, guid: 538cf8942309004448d9f40efb240970, type: 3}
+      propertyPath: loseHatredInterval
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -18,14 +18,14 @@ public class E_Carrot_Attack : StateBase<E_Carrot>
             tmp.x=ctrller.patrol_xmax;
             ctrller.transform.position=tmp;
             ctrller.rgb.velocity=new Vector2(-ctrller.attackDashSpd,0);
-            if(!ctrller.playerInDetect)
+            if(!ctrller.inHatred)
                 animator.SetTrigger("idle");
         } else if(ctrller.Dir==-1 && ctrller.transform.position.x<ctrller.patrol_xmin){ //reach the end on the left
             ctrller.Dir=1;
             tmp.x=ctrller.patrol_xmin;
             ctrller.transform.position=tmp;
             ctrller.rgb.velocity=new Vector2(ctrller.attackDashSpd,0);
-            if(!ctrller.playerInDetect)
+            if(!ctrller.inHatred)
                 animator.SetTrigger("idle");
         }
     }

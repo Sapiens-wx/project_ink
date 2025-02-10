@@ -142,15 +142,18 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 1
+  loseHatredInterval: 0
   detectDist: 3.4
   groupDetectDist: 9
   chaseSpd: 2.5
-  playerInDetect: 0
-  prevPlayerInDetect: 0
+  inHatred: 0
+  prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerDist: 2
   restDir: -1
+  idle2_radius: 0
+  idle2_flyAngularSpd: 0
   flyAngluarSpd: 0.6
   flyDuration: 2
 --- !u!50 &6333793889757791431
