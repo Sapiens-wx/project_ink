@@ -1435,8 +1435,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6602452244206553492, guid: 8ea79f7d37fbc6e41add32649f4c40e7, type: 3}
-      propertyPath: waitDuration
+      propertyPath: restDir
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602452244206553492, guid: 8ea79f7d37fbc6e41add32649f4c40e7, type: 3}
+      propertyPath: chaseSpd
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602452244206553492, guid: 8ea79f7d37fbc6e41add32649f4c40e7, type: 3}
+      propertyPath: idle2_radius
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602452244206553492, guid: 8ea79f7d37fbc6e41add32649f4c40e7, type: 3}
+      propertyPath: waitDuration
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602452244206553492, guid: 8ea79f7d37fbc6e41add32649f4c40e7, type: 3}
+      propertyPath: attackTriggerDist
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602452244206553492, guid: 8ea79f7d37fbc6e41add32649f4c40e7, type: 3}
+      propertyPath: idle2_flyAngularSpd
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9012088397996395970, guid: 8ea79f7d37fbc6e41add32649f4c40e7, type: 3}
       propertyPath: m_Controller
@@ -2022,7 +2042,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &194970156750250726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2144,6 +2164,18 @@ PrefabInstance:
     - target: {fileID: 5007773659597148487, guid: 493308ef8ae61c54a843a1500111b515, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7648294120046852701, guid: 493308ef8ae61c54a843a1500111b515, type: 3}
+      propertyPath: detectDist
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7648294120046852701, guid: 493308ef8ae61c54a843a1500111b515, type: 3}
+      propertyPath: attackInterval
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7648294120046852701, guid: 493308ef8ae61c54a843a1500111b515, type: 3}
+      propertyPath: attackTriggerDist
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2279,6 +2311,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6260848239250087244, guid: 2414d72eda70e414f8669baea6c86628, type: 3}
+      propertyPath: chaseSpd
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6260848239250087244, guid: 2414d72eda70e414f8669baea6c86628, type: 3}
+      propertyPath: detectDist
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6260848239250087244, guid: 2414d72eda70e414f8669baea6c86628, type: 3}
+      propertyPath: jumpHeight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6260848239250087244, guid: 2414d72eda70e414f8669baea6c86628, type: 3}
+      propertyPath: attackRange
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8777255867111519257, guid: 2414d72eda70e414f8669baea6c86628, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.87
@@ -2378,12 +2426,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 277784224}
     m_Modifications:
     - target: {fileID: 3679631619611030237, guid: 06c143e7378a08849acc4c3795055070, type: 3}
+      propertyPath: chaseSpd
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679631619611030237, guid: 06c143e7378a08849acc4c3795055070, type: 3}
       propertyPath: flyDuration
-      value: 100
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679631619611030237, guid: 06c143e7378a08849acc4c3795055070, type: 3}
+      propertyPath: idle2_radius
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3679631619611030237, guid: 06c143e7378a08849acc4c3795055070, type: 3}
       propertyPath: flyAngluarSpd
       value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679631619611030237, guid: 06c143e7378a08849acc4c3795055070, type: 3}
+      propertyPath: attackTriggerDist
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679631619611030237, guid: 06c143e7378a08849acc4c3795055070, type: 3}
+      propertyPath: idle2_flyAngularSpd
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6071727858008600689, guid: 06c143e7378a08849acc4c3795055070, type: 3}
       propertyPath: m_Name
@@ -2556,6 +2620,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4618394509394368875, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
+      propertyPath: walkSpd
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4618394509394368875, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
+      propertyPath: chaseSpd
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4618394509394368875, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
+      propertyPath: attackDashSpd
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2609,6 +2685,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: bc
+      value: 
+      objectReference: {fileID: 2822858695150967762}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: rgb
+      value: 
+      objectReference: {fileID: 2822858695150967763}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: walkSpd
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 2822858695150967761}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: chaseSpd
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: patrol_xmax
+      value: 9.769296
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: patrol_xmin
+      value: -8.893096
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackDashSpd
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackDashDist
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackChargeInterval
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackRecoverInterval
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4167495223712668527, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
       propertyPath: m_Name
       value: E_Club
@@ -2625,6 +2745,21 @@ PrefabInstance:
 --- !u!4 &2822858695150967760 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2130900840322424216, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+  m_PrefabInstance: {fileID: 2822858695150967759}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2822858695150967761 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5712458531170073266, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+  m_PrefabInstance: {fileID: 2822858695150967759}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &2822858695150967762 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6567877058658895815, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+  m_PrefabInstance: {fileID: 2822858695150967759}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &2822858695150967763 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 8468852257259963068, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
   m_PrefabInstance: {fileID: 2822858695150967759}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &3239162549461904432
@@ -2855,8 +2990,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 277784224}
     m_Modifications:
     - target: {fileID: 1043808778395408461, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
+      propertyPath: flySpd
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043808778395408461, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
       propertyPath: dashSpd
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043808778395408461, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
+      propertyPath: walkSpd
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043808778395408461, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
+      propertyPath: chaseSpd
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043808778395408461, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
+      propertyPath: flyHeight
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043808778395408461, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
+      propertyPath: airDashSpd
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043808778395408461, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
+      propertyPath: groundDashSpd
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5388041183662867609, guid: f2795ca5a599ccd4bbb0a6ad2cd28520, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2986,6 +3145,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 277784224}
     m_Modifications:
     - target: {fileID: 2314146067022150089, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314146067022150089, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314146067022150089, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2314146067022150089, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.96
       objectReference: {fileID: 0}
@@ -3025,10 +3196,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2314146067022150089, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3636983471394364733, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1019158253}
+    - target: {fileID: 5301025236214040599, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: walkSpd
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5301025236214040599, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: chaseSpd
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5301025236214040599, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: shootAngle
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5301025236214040599, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: shootForce
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5301025236214040599, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: shootForceRange
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6917103526950763409, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
       propertyPath: m_Name
       value: E_Diamond
@@ -3097,6 +3292,18 @@ PrefabInstance:
     - target: {fileID: 433466988118411142, guid: 538cf8942309004448d9f40efb240970, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303745402857701644, guid: 538cf8942309004448d9f40efb240970, type: 3}
+      propertyPath: walkSpd
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303745402857701644, guid: 538cf8942309004448d9f40efb240970, type: 3}
+      propertyPath: chaseSpd
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303745402857701644, guid: 538cf8942309004448d9f40efb240970, type: 3}
+      propertyPath: dashDist
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
