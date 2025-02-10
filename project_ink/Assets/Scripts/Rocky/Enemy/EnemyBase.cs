@@ -75,4 +75,10 @@ public abstract class EnemyBase : MonoBehaviour
         if(hit)
             transform.position=new Vector3(transform.position.x, hit.point.y+bc.bounds.extents.y+bc.offset.y, 0);
     }
+    /// <summary>
+    /// make the enemy face the player
+    /// </summary>
+    public void UpdateDir(){
+        Dir=(int)Mathf.Sign(PlayerShootingController.inst.transform.position.x-transform.position.x);
+    }
 }

@@ -18,6 +18,7 @@ public class E_Spade_attack : StateBase<E_Spade>
     }
     IEnumerator Dash(){
         float dashSpd=ctrller.dashDist/ctrller.dashInterval;
+        ctrller.UpdateDir();
         ctrller.rgb.velocity=new Vector2(ctrller.Dir==1?dashSpd:-dashSpd, 0);
         yield return new WaitForSeconds(ctrller.dashInterval);
         ctrller.rgb.velocity=Vector2.zero;
