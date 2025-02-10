@@ -239,7 +239,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.012182303}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2604716849835689904}
@@ -370,15 +370,15 @@ MonoBehaviour:
   runDecceleration: 0.8
   accelInAir: 1
   deccelInAir: 1
-  jumpHeight: 5
+  jumpHeight: 4
   jumpTimeToApex: 0.4
   coyoteTime: 0.131
   jumpInputBufferTime: 0.1
   jumpHangTimeThreshold: 1.2
   jumpHangAccelerationMult: 2.75
   jumpHangMaxSpeedMult: 1.94
-  dashSpeed: 25
-  dashTime: 0.16
+  dashSpeed: 35
+  dashTime: 0.19
   dashCoolDown: 0.5
   jumpCutGravityMult: 2
   maxFallSpeed: 16
@@ -427,6 +427,7 @@ MonoBehaviour:
   offset: 0
   shotPoint: {fileID: 0}
   startTimeBtwShots: 0
+  ArmAnimator: {fileID: 0}
 --- !u!114 &6072513370150089190
 MonoBehaviour:
   m_ObjectHideFlags: 0
