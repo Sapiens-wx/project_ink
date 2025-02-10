@@ -99,9 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bffdc77818a95b94f83cf628488d8e1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spd: 5
+  spd: 3
   rgb: {fileID: 0}
-  splitDist: 1
+  splitDist: 0.4
 --- !u!50 &6991713520525420208
 Rigidbody2D:
   serializedVersion: 4
