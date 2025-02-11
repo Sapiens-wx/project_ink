@@ -22,8 +22,10 @@ public class E_Elf_fly : StateBase<E_Elf>{
     }
     IEnumerator Fly(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
+        float linearSpd_deltaTime=Time.fixedDeltaTime*UnityEngine.Random.Range(spdMin, spdMax);
+        float angularSpd=Mathf.Atan(linearSpd_deltaTime/ctrller.attackTriggerDist);
         float theta=Vector2.SignedAngle(Vector2.up, DirToPlayer())*Mathf.Deg2Rad;
-        float dtheta=UnityEngine.Random.Range(spdMin, spdMax)*Time.fixedDeltaTime;
+        float dtheta=angularSpd;
         //if initially the enemy is not in (-75, 75), then fly to that range
         float initialAngle=theta*Mathf.Rad2Deg;
         if(initialAngle>angleRangeInDegree)
@@ -33,7 +35,7 @@ public class E_Elf_fly : StateBase<E_Elf>{
         
         Vector2 targetPos, vectorToTargetPos;
         float t=0;
-        while(t<ctrller.attackInterval){
+        while(t<ctrller.flyInterval){
             //increase theta by dtheta and flip dtheta (direction) if necessary
             theta+=dtheta;
             if((theta>angleRangeInRad && dtheta>=0) || (theta<-angleRangeInRad && dtheta<=0)){
@@ -44,11 +46,11 @@ public class E_Elf_fly : StateBase<E_Elf>{
             //update target pos
             targetPos=MathUtil.GetVector_up(theta, PlayerShootingController.inst.transform.position, ctrller.attackTriggerDist);
             vectorToTargetPos=targetPos-ctrller.rgb.position;
-            float distToTarget=vectorToTargetPos.x*vectorToTargetPos.x+vectorToTargetPos.y*vectorToTargetPos.y;
-            if(distToTarget>.4f){
-                targetPos=(Vector2)ctrller.rgb.position+vectorToTargetPos/Mathf.Sqrt(distToTarget)*.5f;
+            float distToTarget=vectorToTargetPos.magnitude;
+            if(distToTarget>linearSpd_deltaTime){
+                targetPos=(Vector2)ctrller.rgb.position+vectorToTargetPos/distToTarget*linearSpd_deltaTime;
             }
-            ctrller.rgb.position=Vector2.Lerp(ctrller.rgb.position,targetPos,.3f);
+            ctrller.rgb.position=targetPos;
 
             //increase time
             t+=Time.fixedDeltaTime;

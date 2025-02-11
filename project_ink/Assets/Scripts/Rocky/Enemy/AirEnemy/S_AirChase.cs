@@ -21,6 +21,7 @@ public class S_AirChase : StateBase<EnemyBase_Air>
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         chaseCoro=StopCoroutineIfNull(chaseCoro);
+        ctrller.rgb.velocity=Vector2.zero;
     }
     PathFinder.Node NearestNodeToTarget(Transform target){
         return PathFinder.inst.GetNeareastNode_a(target.position);

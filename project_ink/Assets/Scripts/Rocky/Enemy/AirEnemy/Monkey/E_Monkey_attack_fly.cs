@@ -3,24 +3,19 @@ using UnityEngine;
 
 public class E_Monkey_attack_fly : StateBase<E_Monkey>{
 
+const float angleRangeInRad = 30*Mathf.Deg2Rad;
     Coroutine flyCoro;
     float h;
-    float flyToTime;
     float phy, periodStartTime;
+    float angularSpd;
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         ctrller.onCollisionEnter+=OnCollide;
         h=Vector2.Distance(ctrller.transform.position, PlayerShootingController.inst.transform.position);
         flyCoro=ctrller.StartCoroutine(Fly());
-        flyToTime=ctrller.flyDuration+Time.time;
         phy=0;
         periodStartTime=0;
-    }
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        base.OnStateUpdate(animator, stateInfo, layerIndex);
-        if(Time.time>=flyToTime) animator.SetTrigger("attack");
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -33,37 +28,57 @@ public class E_Monkey_attack_fly : StateBase<E_Monkey>{
         float cos=Mathf.Cos(theta), sin=Mathf.Sin(theta);
         return new Vector2(-sin*h, cos*h)+(Vector2)PlayerShootingController.inst.transform.position;
     }
+    Vector2 DirToPlayer(){
+        return (ctrller.rgb.position-(Vector2)PlayerShootingController.inst.transform.position).normalized;
+    }
+    void DrawPoint(Vector2 point){
+        Debug.DrawLine(point+new Vector2(-1,-1), point+new Vector2(1,1));
+        Debug.DrawLine(point+new Vector2(-1,1), point+new Vector2(1,-1));
+    }
     IEnumerator Fly(){
-        float epsilon=.05f;
-        float theta=Vector2.SignedAngle(Vector2.up, ctrller.transform.position-PlayerShootingController.inst.transform.position)*Mathf.Deg2Rad;
-        float thetaRange=Mathf.PI/6;
-
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
-        float dtheta=ctrller.flyAngluarSpd*Time.fixedDeltaTime;
-        if(theta>thetaRange) dtheta=-dtheta;
-        Vector2 targetPos;
-        //move to start angle
-        while(Mathf.Abs(theta-thetaRange)>epsilon){
+        float linearSpd=ctrller.flySpd;
+        float linearSpd_deltaTime=linearSpd*Time.fixedDeltaTime;
+        angularSpd=Mathf.Atan(linearSpd/h);
+        float angularSpd_deltaTime=angularSpd*Time.fixedDeltaTime;
+        float theta=Vector2.SignedAngle(Vector2.up, DirToPlayer())*Mathf.Deg2Rad;
+        float dtheta=angularSpd_deltaTime;
+        //if initially the enemy is not in (-75, 75), then fly to that range
+        if(theta>angleRangeInRad)
+            dtheta=-Mathf.Abs(dtheta);
+        else if(theta<-angleRangeInRad)
+            dtheta=Mathf.Abs(dtheta);
+        
+        Vector2 targetPos, vectorToTargetPos;
+        float t=0;
+        while(t<ctrller.flyDuration){
+            //increase theta by dtheta and flip dtheta (direction) if necessary
             theta+=dtheta;
-            targetPos=CalculateTargetPos(theta);
+            if((theta>angleRangeInRad && dtheta>=0) || (theta<-angleRangeInRad && dtheta<=0)){
+                dtheta=-dtheta;
+                theta+=dtheta+dtheta;
+            }
+
+            //update target pos
+            targetPos=MathUtil.GetVector_up(theta, PlayerShootingController.inst.transform.position, h);
+            vectorToTargetPos=targetPos-(Vector2)ctrller.rgb.position;
+            float distToTarget=vectorToTargetPos.magnitude;
+            if(distToTarget>linearSpd_deltaTime){
+                targetPos=(Vector2)ctrller.rgb.position+vectorToTargetPos/distToTarget*linearSpd_deltaTime;
+            }
             ctrller.rgb.position=targetPos;
+
+            //increase time
+            t+=Time.fixedDeltaTime;
             yield return wait;
         }
-        periodStartTime=Time.time;
-        phy=0;
-        while(true){
-            theta=thetaRange*Mathf.Cos(6.28318f*ctrller.flyAngluarSpd*(Time.time-periodStartTime)+phy);
-            targetPos=CalculateTargetPos(theta);
-            targetPos=MathUtil.ClampFromToVector(ctrller.rgb.position, targetPos, .3f);
-            ctrller.rgb.position=Vector2.Lerp(ctrller.rgb.position,targetPos,.3f);
-            yield return wait;
-        }
+        ctrller.animator.SetTrigger("attack");
         flyCoro=null;
     }
     void OnCollide(Collision2D collision){
         if(collision==null || GameManager.IsLayer(GameManager.inst.groundLayer,collision.gameObject.layer)){
             float x=Time.time-periodStartTime;
-            phy=MathUtil.SwitchDirection(6.28318f*ctrller.flyAngluarSpd, phy, x);
+            phy=MathUtil.SwitchDirection(6.28318f*angularSpd, phy, x);
         }
     }
 }
