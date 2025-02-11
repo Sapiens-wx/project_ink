@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D myRigidbody;
     private Animator myAnim;
-    private BoxCollider2D myFeet;
+    private CapsuleCollider2D myFeet;
     //--private bool isInvincible = false;
     //--private float invincibilityTimer = 0.0f;
 
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
-        myFeet = GetComponent<BoxCollider2D>();
+        myFeet = GetComponent<CapsuleCollider2D>();
         isFacingRight = true;
         CurrentFacingDirection = FACING_DIRECTION.RIGHT;
         OnValidate();
