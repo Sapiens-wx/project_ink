@@ -33,9 +33,7 @@ public abstract class MobBase : EnemyBase
                 loseHatredTime=-1;
                 prevInHatred=inHatred;
                 inHatred=true;
-                Debug.Log($"on detect enter: inHatred:{inHatred}, {prevInHatred}");
                 if(inHatred&&!prevInHatred){
-                    Debug.Log("Set in hatred");
                     inHatred=false; //this is because i have to initiate the SetDetectPlayer function, but the function returns if playerInDetect is already set to true. wrote this line on purpose
                     SetDetectPlayer();
                 }
@@ -43,7 +41,6 @@ public abstract class MobBase : EnemyBase
                 loseHatredTime=Time.time+loseHatredInterval;
             }
             if(inHatred&&loseHatredTime>0&&Time.time>=loseHatredTime){ //lose hatred
-                Debug.Log("lose hatred");
                 loseHatredTime=-1;
                 prevInHatred=inHatred;
                 inHatred=false;
