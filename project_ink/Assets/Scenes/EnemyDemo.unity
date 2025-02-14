@@ -2437,7 +2437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 953887486702809010, guid: b1323ff1a8daf174bbd341ba91f2f21f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2017174154775531252, guid: b1323ff1a8daf174bbd341ba91f2f21f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2834,7 +2834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 433466988118411142, guid: 538cf8942309004448d9f40efb240970, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3303745402857701644, guid: 538cf8942309004448d9f40efb240970, type: 3}
       propertyPath: loseHatredInterval

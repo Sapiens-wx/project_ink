@@ -67,11 +67,14 @@ MonoBehaviour:
   onGround: 0
   prevOnGround: 0
   chargeInterval: 1
+  chargeInterval2: 0.5
   airChargeInterval: 1
   jumpXDist: 4
   jumpYDist: 3.5
   dashSpd: 14
   dashDist: 5.5
+  ac1_dash_count: 0
+  gravityScale: 0
 --- !u!212 &3470317722796370506
 SpriteRenderer:
   m_ObjectHideFlags: 0
