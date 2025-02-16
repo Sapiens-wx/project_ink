@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolDist: 1.5
-  patrolDistRange: 0.4
+  patrolDistRange: 0.15
 --- !u!1101 &-201292737273779306
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
