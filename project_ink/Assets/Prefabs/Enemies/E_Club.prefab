@@ -54,29 +54,30 @@ MonoBehaviour:
   healthBar: {fileID: 4826439751106518200}
   maxHealth: 10
   id: 0
-  bc: {fileID: 0}
-  rgb: {fileID: 0}
-  animator: {fileID: 0}
+  bc: {fileID: 6567877058658895815}
+  rgb: {fileID: 8468852257259963068}
+  animator: {fileID: 5712458531170073266}
   hatredPersistent: 0
-  detectDist: 3.5
-  groupDetectDist: 9
-  chaseSpd: 2.5
-  playerInDetect: 0
-  prevPlayerInDetect: 0
+  loseHatredInterval: 1.2
+  detectDist: 6.03
+  groupDetectDist: 6.07
+  chaseSpd: 4
+  inHatred: 0
+  prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.88, y: 1.25, z: 0}
-  walkSpd: 1.5
-  patrol_xmin: 0
-  patrol_xmax: 0
+    m_Extent: {x: 2.32, y: 1.25, z: 0}
+  walkSpd: 4
+  patrol_xmin: -8.893096
+  patrol_xmax: 9.769296
   onGround: 0
   prevOnGround: 0
-  attackChargeInterval: 1
-  attackRecoverInterval: 2
-  attackDashSpd: 3
-  attackDashDist: 2
+  attackChargeInterval: 0.6
+  attackRecoverInterval: 0.7
+  attackDashSpd: 13
+  attackDashDist: 0.1
 --- !u!212 &5481118380688400167
 SpriteRenderer:
   m_ObjectHideFlags: 0
