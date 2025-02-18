@@ -32,6 +32,8 @@ public class E_Elf_fly : StateBase<E_Elf>{
             dtheta=-Mathf.Abs(dtheta);
         else if(initialAngle<-angleRangeInDegree)
             dtheta=Mathf.Abs(dtheta);
+        else
+            dtheta=Random.Range(0,2)==0?dtheta:-dtheta;
         
         Vector2 targetPos, vectorToTargetPos;
         float t=0;

@@ -7,7 +7,7 @@ public class E_Goat_Ground : EnemyBase_Ground{
     public float flyHeight, flySpd;
     public float airDashSpd, groundDashSpd;
 
-    [HideInInspector] public bool isAirDashing; //is the enemy dashing towards the player?
+    [HideInInspector] public bool isDashing; //is the enemy dashing towards the player?
     internal override void Start()
     {
         base.Start();
@@ -23,7 +23,7 @@ public class E_Goat_Ground : EnemyBase_Ground{
         };
     }
     void OnCollisionEnter2D(Collision2D collision){
-        if(isAirDashing && GameManager.IsLayer(GameManager.inst.groundLayer, collision.collider.gameObject.layer)){
+        if(isDashing && GameManager.IsLayer(GameManager.inst.groundLayer, collision.collider.gameObject.layer)){
             animator.SetTrigger("attack_hit_wall");
             rgb.velocity=Vector2.zero;
         }
