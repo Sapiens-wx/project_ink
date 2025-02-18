@@ -154,7 +154,7 @@ MonoBehaviour:
   restDir: -1
   idle2_radius: 0
   idle2_flyAngularSpd: 0
-  flyAngluarSpd: 0.6
+  flySpd: 0
   flyDuration: 2
 --- !u!50 &6333793889757791431
 Rigidbody2D:

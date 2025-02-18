@@ -102,6 +102,7 @@ MonoBehaviour:
   spd: 3
   rgb: {fileID: 0}
   splitDist: 0.4
+  splitAngle: 30
 --- !u!50 &6991713520525420208
 Rigidbody2D:
   serializedVersion: 4

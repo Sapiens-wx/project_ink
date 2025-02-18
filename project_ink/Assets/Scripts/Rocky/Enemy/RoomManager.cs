@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RoomManager : Singleton<RoomManager>
@@ -33,6 +34,9 @@ public class RoomManager : Singleton<RoomManager>
         base.Awake();
         enemyPrefabList.Init();
         enemies=new List<EnemyBase>();
+    }
+    void Start(){
+        ActivateElites();
     }
     public int RegisterEnemy(EnemyBase enemy){
         enemy.id=enemies.Count;
