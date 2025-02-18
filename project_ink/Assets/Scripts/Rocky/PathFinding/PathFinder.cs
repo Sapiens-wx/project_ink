@@ -610,6 +610,11 @@ public class PathNavigator {
     bool CheckStucked(float from){
         return Time.time-from>10;
     }
+    bool CheckStucked(Vector2 lastPos){
+        if(lastPos==ctrller.rgb.position)
+            Debug.Log("enemy is stucked");
+        return lastPos==ctrller.rgb.position;
+    }
     public IEnumerator Chase(Transform target){
         float epsilon=0.4f; //used to check whether two points are close enough
         WaitForSeconds detectInterval=new WaitForSeconds(.05f);
@@ -621,6 +626,7 @@ public class PathNavigator {
         //the enemy moves toward the player.
         for(;i<=paths.Count;){ 
             Vector2 v;
+            Vector2 lastPos;
             if(i==paths.Count){ //reaches the nearest node to the player. now moves toward the player
                 ctrller.Dir=PlayerShootingController.inst.transform.position.x>ctrller.transform.position.x?1:-1;
                 v=new Vector2(ctrller.Dir==1?chaseSpd:-chaseSpd, ctrller.rgb.velocity.y);
@@ -630,7 +636,10 @@ public class PathNavigator {
                 for(;;){
                     v.y=ctrller.rgb.velocity.y;
                     ctrller.rgb.velocity=v;
+                    lastPos=ctrller.rgb.position;
                     yield return detectInterval;
+                    if(CheckStucked(lastPos))
+                        break;
                 }
             } else{ //i<paths.Count. Move through even nodes in [paths]
                 cur=paths[i];
@@ -720,16 +729,17 @@ public class PathNavigator {
                     while(!onGround())
                         yield return detectInterval;
                 }
-                }
-                //detect if the target node changes
-                PathFinder.Node targetNode=NearestNodeToTarget(target);
-                PathFinder.Node fromNode=NearestNodeToThis();
+            }
+            //detect if the target node changes
+            PathFinder.Node targetNode=NearestNodeToTarget(target);
+            PathFinder.Node fromNode=NearestNodeToThis();
 
-                if(targetNode!=paths[^1] || fromNode !=paths[i-1]){
-                    paths=PathFinder.inst.FindPath_g(fromNode, targetNode);
-                    i=1;
-                } else ++i;
+            if(targetNode!=paths[^1] || fromNode !=paths[i-1]){
+                paths=PathFinder.inst.FindPath_g(fromNode, targetNode);
+                i=1;
+            } else ++i;
         }
+        ctrller.animator.SetTrigger("idle");
         ctrller.rgb.velocity=Vector2.zero;
     }
 }

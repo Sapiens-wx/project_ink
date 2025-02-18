@@ -20,6 +20,7 @@ public class S_AirChase : StateBase<EnemyBase_Air>
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if(ctrller==null) ctrller=animator.GetComponent<EnemyBase_Air>();
         chaseCoro=StopCoroutineIfNull(chaseCoro);
         ctrller.rgb.velocity=Vector2.zero;
     }
