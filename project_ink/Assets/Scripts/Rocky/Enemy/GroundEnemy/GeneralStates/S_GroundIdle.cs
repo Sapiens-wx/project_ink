@@ -24,12 +24,9 @@ public class S_GroundIdle : StateBase<EnemyBase_Ground>
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        ctrller.StopCoroutine(coro);
-        coro=null;
-        if(toWalkCoro!=null){
-            ctrller.StopCoroutine(toWalkCoro);
-            toWalkCoro=null;
-        }
+        if(ctrller==null) ctrller=animator.GetComponent<EnemyBase_Ground>();
+        coro=StopCoroutineIfNull(coro);
+        toWalkCoro=StopCoroutineIfNull(toWalkCoro);
     }
     IEnumerator RandWalk(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();

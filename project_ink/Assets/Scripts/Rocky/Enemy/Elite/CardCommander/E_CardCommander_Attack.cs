@@ -45,6 +45,7 @@ public class E_CardCommander_Attack : StateBase<E_CardCommander>
         //charge
         yield return new WaitForSeconds(ctrller.chargeInterval);
         //calculate jump velocity
+        ctrller.gravityScale=ctrller.rgb.gravityScale;
         float g=ctrller.rgb.gravityScale*9.8f;
         float t=Mathf.Sqrt(2*ctrller.jumpYDist/g);
         ctrller.rgb.velocity=new Vector2(ctrller.Dir*ctrller.jumpXDist/t, g*t);
@@ -54,14 +55,7 @@ public class E_CardCommander_Attack : StateBase<E_CardCommander>
         ctrller.rgb.velocity=Vector2.zero;
         ctrller.rgb.gravityScale=0;
         yield return new WaitForSeconds(ctrller.airChargeInterval);
-        //dash
-        Vector2 dir=(Vector2)PlayerShootingController.inst.transform.position-(Vector2)ctrller.transform.position;
-        float dist=dir.magnitude;
-        dir/=dist;
-        ctrller.rgb.velocity=dir*ctrller.dashSpd;
-        yield return new WaitForSeconds(dist/ctrller.dashSpd);
-        ctrller.rgb.gravityScale=g/9.8f;
-        ctrller.animator.SetTrigger("chase");
+        ctrller.animator.SetTrigger("dash");
     }
     //Summon normal enemies
     IEnumerator Action2(){
