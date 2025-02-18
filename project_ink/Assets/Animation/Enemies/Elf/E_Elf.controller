@@ -89,8 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3484deecd2e5448affb39a9b1a3785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spdMin: 1.5
-  spdMax: 3
+  spdMin: 4.5
+  spdMax: 6
 --- !u!1101 &-1032324315766874913
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
