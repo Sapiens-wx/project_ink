@@ -48,5 +48,6 @@ public abstract class EliteBase : EnemyBase{
     /// </summary>
     public void Activate(){
         animator.SetTrigger("chase");
+        Debug.Log("set trigger chase");
     }
 }

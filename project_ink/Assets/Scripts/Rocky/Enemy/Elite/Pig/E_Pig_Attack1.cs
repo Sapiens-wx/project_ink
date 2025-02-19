@@ -7,17 +7,18 @@ using DG.Tweening;
 public class E_Pig_Attack1 : StateBase<E_Pig>
 {
     float jumpX;
-    Vector3 oriScalePig1,oriScalePig2,oriScalePig3; //used by E_Pig_Attack1/2
-    Vector3 oriPosPig1,oriPosPig2,oriPosPig3; //used by E_Pig_Attack1/2
+    Vector3[] oriScalePig, oriPosPig;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        oriScalePig1=ctrller.pig1.transform.localScale;
-        oriScalePig2=ctrller.pig2.transform.localScale;
-        oriScalePig3=ctrller.pig3.transform.localScale;
-        oriPosPig1=ctrller.pig1.transform.position;
-        oriPosPig2=ctrller.pig2.transform.position;
-        oriPosPig3=ctrller.pig3.transform.position;
+        oriScalePig=new Vector3[3];
+        oriPosPig=new Vector3[3];
+        oriScalePig[0]=ctrller.pig[0].transform.localScale;
+        oriScalePig[1]=ctrller.pig[1].transform.localScale;
+        oriScalePig[2]=ctrller.pig[2].transform.localScale;
+        oriPosPig[0]=ctrller.pig[0].transform.position;
+        oriPosPig[1]=ctrller.pig[1].transform.position;
+        oriPosPig[2]=ctrller.pig[2].transform.position;
         ctrller.StartCoroutine(Jump());
     }
     Vector2 JumpVelocity(){
@@ -37,86 +38,56 @@ public class E_Pig_Attack1 : StateBase<E_Pig>
         dist=ctrller.Dir==1?dist:-dist;
         return dist;
     }
-    float Jump(Collider2D target, Vector3 oriScale, Vector3 oriPos, float xDist, bool startAnim, bool endAnim){
+    float Jump(int idx, float xDist, bool startAnim, bool endAnim){
         float time=0;
 
-        float squeezey=oriScale.y*ctrller.animScaleYMin;
-        float restorey=oriScale.y;
-        float squeezePosY=oriPos.y+(ctrller.animScaleYMin-1)/2*target.bounds.size.y;
-        float restorePosY=oriPos.y;
-        float squeezex=oriScale.x*ctrller.animScaleXMax;
-        float restorex=oriScale.x;
+        float squeezey=oriScalePig[idx].y*ctrller.animScaleYMin;
+        float restorey=oriScalePig[idx].y;
+        float squeezePosY=oriPosPig[idx].y+(ctrller.animScaleYMin-1)/2*ctrller.pig[idx].bounds.size.y;
+        float restorePosY=oriPosPig[idx].y;
+        float squeezex=oriScalePig[idx].x*ctrller.animScaleXMax;
+        float restorex=oriScalePig[idx].x;
 
         Sequence s=DOTween.Sequence();
         if(startAnim){
             time+=ctrller.animInterval;
             //Squeeze
-            s.Append(target.transform.DOScaleY(squeezey, ctrller.animInterval));
-            s.Join(target.transform.DOScaleX(squeezex, ctrller.animInterval));
-            s.Join(target.transform.DOMoveY(squeezePosY, ctrller.animInterval));
+            s.Append(ctrller.pig[idx].transform.DOScaleY(squeezey, ctrller.animInterval));
+            s.Join(ctrller.pig[idx].transform.DOScaleX(squeezex, ctrller.animInterval));
+            s.Join(ctrller.pig[idx].transform.DOMoveY(squeezePosY, ctrller.animInterval));
         }
 
         time+=ctrller.jumpInterval;
         //restore
-        s.Append(target.transform.DOScaleY(restorey, ctrller.animInterval));
-        s.Join(target.transform.DOScaleX(restorex, ctrller.animInterval));
-        s.Join(target.transform.DOMoveY(restorePosY, ctrller.animInterval));
+        s.Append(ctrller.pig[idx].transform.DOScaleY(restorey, ctrller.animInterval));
+        s.Join(ctrller.pig[idx].transform.DOScaleX(restorex, ctrller.animInterval));
+        s.Join(ctrller.pig[idx].transform.DOMoveY(restorePosY, ctrller.animInterval));
         //jump
-        s.Join(ctrller.transform.DOMoveX(target.transform.position.x+xDist, ctrller.jumpInterval));
-        s.Join(target.transform.DOMoveY(target.transform.position.y+ctrller.jumpHeight, ctrller.jumpInterval/2).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad));
+        s.Join(ctrller.transform.DOMoveX(ctrller.pig[idx].transform.position.x+xDist, ctrller.jumpInterval));
+        s.Join(ctrller.pig[idx].transform.DOMoveY(ctrller.pig[idx].transform.position.y+ctrller.jumpHeight, ctrller.jumpInterval/2).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad));
 
         time+=ctrller.animInterval;
         //squeeze
-        s.Append(target.transform.DOScaleY(squeezey, ctrller.animInterval));
-        s.Join(target.transform.DOScaleX(squeezex, ctrller.animInterval));
-        s.Join(target.transform.DOMoveY(squeezePosY, ctrller.animInterval));
+        s.Append(ctrller.pig[idx].transform.DOScaleY(squeezey, ctrller.animInterval));
+        s.Join(ctrller.pig[idx].transform.DOScaleX(squeezex, ctrller.animInterval));
+        s.Join(ctrller.pig[idx].transform.DOMoveY(squeezePosY, ctrller.animInterval));
 
         if(endAnim){
             time+=ctrller.animInterval;
             //restore
-            s.Append(target.transform.DOScaleY(restorey, ctrller.animInterval));
-            s.Join(target.transform.DOScaleX(restorex, ctrller.animInterval));
-            s.Join(target.transform.DOMoveY(restorePosY, ctrller.animInterval));
+            s.Append(ctrller.pig[idx].transform.DOScaleY(restorey, ctrller.animInterval));
+            s.Join(ctrller.pig[idx].transform.DOScaleX(restorex, ctrller.animInterval));
+            s.Join(ctrller.pig[idx].transform.DOMoveY(restorePosY, ctrller.animInterval));
         }
         return time;
     }
     IEnumerator Jump(){
-        yield return new WaitForSeconds(Jump(ctrller.pig2, oriScalePig2, oriPosPig2, JumpDist(), true, false));
+        yield return new WaitForSeconds(Jump(0, JumpDist(), true, false));
         for(int i=0;i<3;++i){
-            yield return new WaitForSeconds(Jump(ctrller.pig2, oriScalePig2, oriPosPig2, JumpDist(), false, false));
+            yield return new WaitForSeconds(Jump(0, JumpDist(), false, false));
         }
-        yield return new WaitForSeconds(Jump(ctrller.pig2, oriScalePig2, oriPosPig2, JumpDist(), false, true));
+        yield return new WaitForSeconds(Jump(0, JumpDist(), false, true));
         ctrller.animator.SetTrigger("idle");
         yield break;
-        float squeezey=ctrller.transform.localScale.y*ctrller.animScaleYMin;
-        float restorey=ctrller.transform.localScale.y;
-        float squeezePosY=(ctrller.animScaleYMin-1)/2*ctrller.bc.bounds.size.y;
-        float squeezex=ctrller.transform.localScale.x*ctrller.animScaleXMax;
-        float restorex=ctrller.transform.localScale.x;
-        //squeeze
-        ctrller.spr.transform.DOScaleY(squeezey, ctrller.animInterval);
-        ctrller.spr.transform.DOScaleX(squeezex, ctrller.animInterval);
-        ctrller.spr.transform.DOLocalMoveY(squeezePosY, ctrller.animInterval);
-        yield return new WaitForSeconds(ctrller.animInterval);
-        for(int i=0;i<5;++i){
-            //restore
-            ctrller.spr.transform.DOScaleY(restorey, ctrller.animInterval);
-            ctrller.spr.transform.DOScaleX(restorex, ctrller.animInterval);
-            ctrller.spr.transform.DOLocalMoveY(0, ctrller.animInterval);
-            Vector2 v=new Vector2((jumpX-ctrller.transform.position.x)/ctrller.jumpInterval, 0.5f*ctrller.jumpInterval*ctrller.rgb.gravityScale*9.8f);
-            ctrller.rgb.velocity=JumpVelocity();
-            yield return new WaitForSeconds(ctrller.jumpInterval);
-            ctrller.rgb.velocity=Vector2.zero;
-            //squeeze
-            ctrller.spr.transform.DOScaleY(squeezey, ctrller.animInterval);
-            ctrller.spr.transform.DOScaleX(squeezex, ctrller.animInterval);
-            ctrller.spr.transform.DOLocalMoveY(squeezePosY, ctrller.animInterval);
-            yield return new WaitForSeconds(ctrller.animInterval);
-        }
-        //restore
-        ctrller.spr.transform.DOScaleY(restorey, ctrller.animInterval);
-        ctrller.spr.transform.DOScaleX(restorex, ctrller.animInterval);
-        ctrller.spr.transform.DOLocalMoveY(0, ctrller.animInterval);
-        ctrller.animator.SetTrigger("idle");
     }
 }
