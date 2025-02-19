@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4802293389211713086
 Transform:
   m_ObjectHideFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4090966889556887836}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.91, y: 2.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -58,16 +58,19 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 1
-  detectDist: 3.69
-  groupDetectDist: 9
-  chaseSpd: 3
-  playerInDetect: 0
-  prevPlayerInDetect: 0
+  loseHatredInterval: 0
+  detectDist: 5.94
+  groupDetectDist: 3.02
+  chaseSpd: 10
+  inHatred: 0
+  prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
-  attackTriggerDist: 2.76
+  attackTriggerDist: 4.5
   restDir: 1
-  waitDuration: 0
+  idle2_radius: 4
+  idle2_flyAngularSpd: 10
+  waitDuration: 0.3
 --- !u!212 &6756619011306347257
 SpriteRenderer:
   m_ObjectHideFlags: 0
