@@ -2754,6 +2754,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E_Monkey
       objectReference: {fileID: 0}
+    - target: {fileID: 6071727858008600689, guid: 06c143e7378a08849acc4c3795055070, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6921674390480197468, guid: 06c143e7378a08849acc4c3795055070, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.31
@@ -2873,6 +2877,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E_Carrot
       objectReference: {fileID: 0}
+    - target: {fileID: 2352920881182269097, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2480547767632701656, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.13
@@ -2969,6 +2977,10 @@ PrefabInstance:
     - target: {fileID: 4167495223712668527, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
       propertyPath: m_Name
       value: E_Club
+      objectReference: {fileID: 0}
+    - target: {fileID: 4167495223712668527, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3129,11 +3141,14 @@ MonoBehaviour:
   onGround: 0
   prevOnGround: 0
   chargeInterval: 1
+  chargeInterval2: 0
   airChargeInterval: 1
   jumpXDist: 4
   jumpYDist: 3.5
   dashSpd: 14
   dashDist: 5.5
+  ac1_dash_count: 0
+  gravityScale: 0
 --- !u!1001 &7739739665145699298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3374,6 +3389,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E_Diamond
       objectReference: {fileID: 0}
+    - target: {fileID: 6917103526950763409, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3430,6 +3449,10 @@ PrefabInstance:
     - target: {fileID: 433466988118411142, guid: 538cf8942309004448d9f40efb240970, type: 3}
       propertyPath: m_Name
       value: E_Spade
+      objectReference: {fileID: 0}
+    - target: {fileID: 433466988118411142, guid: 538cf8942309004448d9f40efb240970, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
