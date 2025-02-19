@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.8799871, y: -1.8462163, z: 0.04895168}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4819497563291629596}
   m_Father: {fileID: 0}
@@ -110,25 +110,26 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
-  detectDist: 3.66
-  groupDetectDist: 9
-  chaseSpd: 3
-  playerInDetect: 0
-  prevPlayerInDetect: 0
+  loseHatredInterval: 0
+  detectDist: 6.44
+  groupDetectDist: 4.03
+  chaseSpd: 4
+  inHatred: 0
+  prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 5.89, y: 1.22, z: 0}
-  walkSpd: 1.5
+    m_Extent: {x: 7.92, y: 1.22, z: 0}
+  walkSpd: 3
   patrol_xmin: 0
   patrol_xmax: 0
   onGround: 0
   prevOnGround: 0
-  shootAngle: 30
+  shootAngle: 8
   shootAngleRange: 4
-  shootForce: 6
-  shootForceRange: 1
+  shootForce: 17
+  shootForceRange: 2
 --- !u!50 &3946437401914036291
 Rigidbody2D:
   serializedVersion: 4

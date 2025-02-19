@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8777255867111519257
 Transform:
   m_ObjectHideFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3791441549120329235}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.87, y: 0.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -59,23 +59,24 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
-  detectDist: 3.65
-  groupDetectDist: 4.6
-  chaseSpd: 3
-  playerInDetect: 0
-  prevPlayerInDetect: 0
+  loseHatredInterval: 1.2
+  detectDist: 6
+  groupDetectDist: 2.98
+  chaseSpd: 6
+  inHatred: 0
+  prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 2.55, y: 1.03, z: 0}
+    m_Extent: {x: 6.89, y: 1.03, z: 0}
   walkSpd: 1
   patrol_xmin: 0
   patrol_xmax: 0
   onGround: 0
   prevOnGround: 0
   attackRange: 1
-  jumpHeight: 1
+  jumpHeight: 3
 --- !u!212 &6697556225842994589
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5388041183662867609
 Transform:
   m_ObjectHideFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8634909648360989252}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.91, y: 2.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -60,26 +60,27 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
-  detectDist: 3.68
-  groupDetectDist: 9
-  chaseSpd: 3
-  playerInDetect: 0
-  prevPlayerInDetect: 0
+  loseHatredInterval: 0
+  detectDist: 6.03
+  groupDetectDist: 2.99
+  chaseSpd: 6
+  inHatred: 0
+  prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 2.73, y: 0.8, z: 0}
-  walkSpd: 1.5
+    m_Extent: {x: 10.82, y: 0.8, z: 0}
+  walkSpd: 3
   patrol_xmin: 0
   patrol_xmax: 0
   onGround: 0
   prevOnGround: 0
   balloon: {fileID: 5230826917689501155}
-  flyHeight: 3
-  flySpd: 1
-  airDashSpd: 3
-  groundDashSpd: 3
+  flyHeight: 3.6
+  flySpd: 2
+  airDashSpd: 10
+  groundDashSpd: 12
   isAirDashing: 0
 --- !u!212 &1011739413842955365
 SpriteRenderer:

@@ -110,23 +110,24 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
-  detectDist: 3.02
-  groupDetectDist: 9
-  chaseSpd: 3
-  playerInDetect: 0
-  prevPlayerInDetect: 0
+  loseHatredInterval: 1
+  detectDist: 5.98
+  groupDetectDist: 3.1
+  chaseSpd: 5
+  inHatred: 0
+  prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.89, y: 1.19, z: 0}
-  walkSpd: 1.5
+    m_Extent: {x: 2.49, y: 1.19, z: 0}
+  walkSpd: 4
   patrol_xmin: 0
   patrol_xmax: 0
   onGround: 0
   prevOnGround: 0
-  dashInterval: 0.5
-  dashDist: 1.5
+  dashInterval: 0.38
+  dashDist: 3
 --- !u!50 &2190669026088105460
 Rigidbody2D:
   serializedVersion: 4
