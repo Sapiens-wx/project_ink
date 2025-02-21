@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 4027145767226707038}
   - component: {fileID: 2665760279466900238}
   - component: {fileID: 2083882600543267088}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1349,6 +1349,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Right Platform Pro
       objectReference: {fileID: 0}
+    - target: {fileID: 4635381310651498370, guid: b7536c7a0874b6c4ea4f9a1e98fa86ef, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8707224644045823508, guid: b7536c7a0874b6c4ea4f9a1e98fa86ef, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -2510,6 +2514,10 @@ PrefabInstance:
     - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
       propertyPath: m_Name
       value: Wood Mid Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3695,6 +3703,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Mid Platform
       objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4065,6 +4077,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Mid Platform
       objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4138,6 +4154,10 @@ PrefabInstance:
     - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
       propertyPath: m_Name
       value: Wood Mid Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4286,6 +4306,10 @@ PrefabInstance:
     - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
       propertyPath: m_Name
       value: Wood Mid Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4582,6 +4606,10 @@ PrefabInstance:
     - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
       propertyPath: m_Name
       value: Wood Mid Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5544,6 +5572,10 @@ PrefabInstance:
     - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
       propertyPath: m_Name
       value: Wood Mid Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7543,6 +7575,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Left Platform Pro
       objectReference: {fileID: 0}
+    - target: {fileID: 1484319900454670968, guid: bccce7998328bba44aacee00493f2c79, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7913,6 +7949,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood Left Platform Pro
       objectReference: {fileID: 0}
+    - target: {fileID: 1484319900454670968, guid: bccce7998328bba44aacee00493f2c79, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8230,6 +8270,10 @@ PrefabInstance:
     - target: {fileID: 4635381310651498370, guid: b7536c7a0874b6c4ea4f9a1e98fa86ef, type: 3}
       propertyPath: m_Name
       value: Wood Right Platform Pro
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635381310651498370, guid: b7536c7a0874b6c4ea4f9a1e98fa86ef, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8707224644045823508, guid: b7536c7a0874b6c4ea4f9a1e98fa86ef, type: 3}
       propertyPath: m_LocalScale.x
@@ -9762,6 +9806,10 @@ PrefabInstance:
     - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
       propertyPath: m_Name
       value: Wood Mid Platform
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675948949695014710, guid: b0c7137d2a727d4459cabcb89a826a74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
