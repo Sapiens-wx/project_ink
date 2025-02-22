@@ -12,7 +12,7 @@ public class E_Goat_Ground : EnemyBase_Ground{
     {
         base.Start();
         balloon.gameObject.SetActive(false);
-        PlayerDamageCtrl.inst.onHitByEnemy+=(collider)=>{
+        PlayerCtrl.inst.onPlayerHit+=(collider)=>{
             if(collider==damageBox){
                 animator.SetTrigger("attack_hit_player");
             }

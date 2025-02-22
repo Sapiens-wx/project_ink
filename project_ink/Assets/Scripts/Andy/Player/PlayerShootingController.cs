@@ -56,6 +56,7 @@ public class PlayerShootingController : Singleton<PlayerShootingController>
             LOOKING_DIRECTION direction = GetCurrentLookingDirection(out lookingDir);
             //shoot a card
             CardSlotManager.inst.PrepareFire(lookingDir);
+            /*
             if (playerController.isGround)
             {
                 switch(direction){
@@ -98,7 +99,7 @@ public class PlayerShootingController : Singleton<PlayerShootingController>
                 {
                     myAnim.SetTrigger("AttackInAir_D");
                 }
-            }
+            }*/
            // myAnim.SetBool("Attack", false);
             //myAnim.SetBool("AttackInAir", false);
             attackAnim = false;
