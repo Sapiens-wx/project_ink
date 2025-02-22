@@ -27,6 +27,8 @@ public class Pjump_down : PStateBase
     IEnumerator m_FixedUpdate(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
         while(true){
+            player.UpdateDir();
+            Jump();
             Movement();
             Dash();
             ApplyGravity();

@@ -294,12 +294,8 @@ MonoBehaviour:
   jumpKey: 107
   jumpHeight: 2.8
   jumpInterval: 0.34
+  jumpBufferTime: 0.2
   coyoteTime: 0.3
-  climbDist: -0.32
-  wallCheckYPadding: 0.01
-  onWallYSpd: -3
-  wallJumpXSpd: 6
-  wallJumpXSpdInterval: 0.15
   dashDist: 2.3
   dashPercents:
   - 0
@@ -312,12 +308,6 @@ MonoBehaviour:
   - 0.12
   - 0.16
   dashInterval: 0.5
-  downSlashJumpSpd: 8
-  slashInterval: 0.4
-  throwNailOffset: {x: -0.17, y: -0.22}
-  maxThrowChargeTime: 1
-  skillDist: 5
-  dashToNailSpd: 10
   leftBot: {x: -0.29, y: -0.72}
   rightBot: {x: 0.29, y: -0.72}
   leftTop: {x: -0.29, y: 0.38}
@@ -326,7 +316,6 @@ MonoBehaviour:
   hitAnimDuration: 0.15
   counterAnimDuration: 0.07
   timeStopInterval: 0.15
-  recoverInterval: 1
   rgb: {fileID: 340199581757163743}
   animator: {fileID: 0}
   inputx: 0
@@ -336,9 +325,7 @@ MonoBehaviour:
   prevOnGround: 0
   jumpKeyDown: 0
   jumpKeyUp: 0
-  climbTop: {x: -0.32, y: 0.36289027}
-  climbBot: {x: -0.32, y: -0.70681924}
-  onWall: 0
+  onGroundTime: 0
   dashing: 0
   canDash: 0
   dashKeyDown: 0
@@ -346,18 +333,9 @@ MonoBehaviour:
   dashDir: 0
   yspd: 0
   dir: 0
-  counterKeyDown: 0
-  throwKeyDown: 0
-  throwChargeTime: 0
-  throwKeyUp: 0
-  attack_down: 0
-  attackKeyDown: 0
-  lastAttackType: 0
-  allowSlashTime: 0
-  skillKeyDown: 0
-  recoverKeyDown: 0
-  recoverKeyUp: 0
   hitBy: {fileID: 0}
+  mouseWorldPos: {x: 0, y: 0}
+  mainCam: {fileID: 0}
 --- !u!114 &944679532592723482
 MonoBehaviour:
   m_ObjectHideFlags: 0

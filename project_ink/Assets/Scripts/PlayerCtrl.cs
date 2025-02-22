@@ -16,7 +16,7 @@ public class PlayerCtrl : MonoBehaviour
     public KeyCode jumpKey;
     public float jumpHeight;
     public float jumpInterval;
-    public float coyoteTime;
+    public float jumpBufferTime, coyoteTime;
     [Header("Dash")]
     public float dashDist;
     public float[] dashPercents;
@@ -44,6 +44,7 @@ public class PlayerCtrl : MonoBehaviour
     [HideInInspector] public bool onGround, prevOnGround;
     [HideInInspector] public float jumpKeyDown;
     [HideInInspector] public bool jumpKeyUp;
+    [HideInInspector] public float onGroundTime; //onGroundTime is used for coyote time
     [HideInInspector] public bool dashing, canDash;
     [HideInInspector] public float dashKeyDown, allowDashTime;
     [HideInInspector] public int dashDir;
@@ -52,6 +53,8 @@ public class PlayerCtrl : MonoBehaviour
     [HideInInspector] public MaterialPropertyBlock matPB;
     [HideInInspector] public Sequence hitAnim, invincibleAnim;
     [HideInInspector] public Collider2D hitBy;
+    [HideInInspector] public Vector2 mouseWorldPos;
+    [HideInInspector] public Camera mainCam;
     //read input
     bool readInput;
     //movable platform
@@ -68,6 +71,7 @@ public class PlayerCtrl : MonoBehaviour
     public int Dir{
         get=>dir;
         set{
+            if(dir==value) return;
             dir=value;
             leftTop.x*=-1;
             rightTop.x*=-1;
@@ -90,6 +94,7 @@ public class PlayerCtrl : MonoBehaviour
     }
     void Awake(){
         inst=this;
+        mainCam=Camera.main;
     }
     // Start is called before the first frame update
     void Start()
@@ -166,6 +171,7 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
     void FixedUpdate(){
+        UpdateMousePos();
         HandleInputs();
         CheckOnGround();
         UpdateVelocity();
@@ -181,8 +187,16 @@ public class PlayerCtrl : MonoBehaviour
         prevOnGround=onGround;
         Collider2D hit = Physics2D.OverlapArea((Vector2)transform.position+leftBot, (Vector2)transform.position+rightBot, GameManager.inst.groundLayer);
         onGround=hit;
-        if(onGround)
+        if(onGround){
             canDash=true;
+            onGroundTime=Time.time;
+        }
+    }
+    void UpdateMousePos(){
+        mouseWorldPos=mainCam.ScreenToWorldPoint(Input.mousePosition);
+    }
+    public void UpdateDir(){
+        Dir=mouseWorldPos.x>transform.position.x?-1:1;
     }
     IEnumerator PauseForSeconds(float sec){
         Time.timeScale=0;

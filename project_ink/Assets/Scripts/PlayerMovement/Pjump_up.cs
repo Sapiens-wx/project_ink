@@ -31,6 +31,7 @@ public class Pjump_up : PStateBase
     IEnumerator m_FixedUpdate(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
         while(true){
+            player.UpdateDir();
             Movement();
             Jump();
             Dash();

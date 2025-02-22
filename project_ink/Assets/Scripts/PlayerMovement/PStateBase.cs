@@ -10,17 +10,6 @@ public class PStateBase : StateMachineBehaviour
     {
         if(player==null) player=PlayerCtrl.inst;
     }
-    //execution order 
-    /*
-    void FixedUpdate(){
-        CheckWall();
-        Movement();
-        Jump();
-        CheckOnGround();
-        CeilingCheck();
-        ApplyGravity();
-        UpdateVelocity();
-    }*/
     internal void UpdateVelocity(){
         player.rgb.velocity=player.v;
     }
@@ -34,10 +23,6 @@ public class PStateBase : StateMachineBehaviour
     }
     virtual internal void Movement(){
         player.v.x=player.xspd*player.inputx;
-        //change direction
-        if(player.inputx!=0 && player.inputx!=-player.dir){
-            player.Dir=-player.inputx;
-        }
     }
     virtual internal void Dash(){
         //dash
@@ -55,7 +40,7 @@ public class PStateBase : StateMachineBehaviour
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
         float dashSpd=player.dashDist/Time.fixedDeltaTime;
         for(int i=0;i<player.dashPercents.Length;++i){
-            player.v.x=player.dir<=0?player.dashPercents[i]*dashSpd:-player.dashPercents[i]*dashSpd;
+            player.v.x=player.dashDir==1?player.dashPercents[i]*dashSpd:-player.dashPercents[i]*dashSpd;
             yield return wait;
         }
         player.animator.SetTrigger("dash_recover");
@@ -69,7 +54,10 @@ public class PStateBase : StateMachineBehaviour
         }
     }
     virtual internal void Jump(){
-        throw new System.Exception("Jump function not implemented");
+        if(Time.time-player.onGroundTime<player.coyoteTime && Time.time-player.jumpKeyDown<=player.jumpBufferTime){
+            player.jumpKeyDown=-100;
+            player.animator.SetTrigger("jump_up");
+        }
     }
     internal IEnumerator InvincibleTimer(){
         player.hitAnim.Restart();

@@ -28,6 +28,7 @@ public class Prun : PStateBase
     IEnumerator m_FixedUpdate(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
         while(true){
+            player.UpdateDir();
             Movement();
             Jump();
             Dash();
@@ -40,15 +41,6 @@ public class Prun : PStateBase
         //change direction
         if(player.inputx==0){
             player.animator.SetTrigger("idle");
-        }
-        else if(player.inputx!=-player.dir){
-            player.Dir=-player.inputx;
-        }
-    }
-    override internal void Jump(){
-        if(player.onGround && Time.time-player.jumpKeyDown<=player.coyoteTime){
-            player.jumpKeyDown=-100;
-            player.animator.SetTrigger("jump_up");
         }
     }
     override internal void ApplyGravity(){

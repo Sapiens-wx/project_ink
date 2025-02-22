@@ -32,6 +32,8 @@ public class Pidle : PStateBase
         while(true){
             //switch to run
             if(player.inputx!=0 && player.onGround) player.animator.SetTrigger("run");
+            //update dir
+            player.UpdateDir();
             //jump
             Jump();
             //dash
@@ -39,12 +41,6 @@ public class Pidle : PStateBase
             //apply gravity
             ApplyGravity();
             yield return wait;
-        }
-    }
-    override internal void Jump(){
-        if(player.onGround && Time.time-player.jumpKeyDown<=player.coyoteTime){
-            player.jumpKeyDown=-100;
-            player.animator.SetTrigger("jump_up");
         }
     }
     override internal void ApplyGravity(){
