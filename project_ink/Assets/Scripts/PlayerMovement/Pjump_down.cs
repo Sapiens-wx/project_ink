@@ -43,4 +43,11 @@ public class Pjump_down : PStateBase
         else if(player.v.y>=player.maxFallSpd)
             player.v.y+=player.gravity*Time.fixedDeltaTime;
     }
+    override internal void Jump(){
+        //the first detection is because of the coyote time: avoid double jump if the player left the ground by jumping
+        if(Mathf.Abs(player.onGroundTime-player.secondToLastJumpKeyDown)>.2f && Time.time-player.onGroundTime<player.coyoteTime && Time.time-player.jumpKeyDown<=player.jumpBufferTime){
+            player.jumpKeyDown=-100;
+            player.animator.SetTrigger("jump_up");
+        }
+    }
 }
