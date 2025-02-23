@@ -295,7 +295,7 @@ MonoBehaviour:
   jumpHeight: 2.8
   jumpInterval: 0.34
   jumpBufferTime: 0.2
-  coyoteTime: 0.3
+  coyoteTime: 0.25
   dashDist: 2.3
   dashPercents:
   - 0
@@ -324,6 +324,8 @@ MonoBehaviour:
   onGround: 0
   prevOnGround: 0
   jumpKeyDown: 0
+  lastJumpKeyDown: 0
+  secondToLastJumpKeyDown: 0
   jumpKeyUp: 0
   onGroundTime: 0
   dashing: 0

@@ -42,7 +42,7 @@ public class PlayerCtrl : MonoBehaviour
     [HideInInspector] public Vector2 v; //velocity
     [HideInInspector] public bool hittable;
     [HideInInspector] public bool onGround, prevOnGround;
-    [HideInInspector] public float jumpKeyDown;
+    [HideInInspector] public float jumpKeyDown, lastJumpKeyDown, secondToLastJumpKeyDown; //jumpKeyDown will be set to -100 when detected. lastJumpKeyDown stores the last JumpKeyDown time. (before setting jumpKeyDown to -100, jumpKeyDown=lastJumpKeyDown)
     [HideInInspector] public bool jumpKeyUp;
     [HideInInspector] public float onGroundTime; //onGroundTime is used for coyote time
     [HideInInspector] public bool dashing, canDash;
@@ -103,6 +103,8 @@ public class PlayerCtrl : MonoBehaviour
         hittable=true;
         Dir=-1;
         jumpKeyDown=-100;
+        lastJumpKeyDown=-100;
+        secondToLastJumpKeyDown=-100;
         dashKeyDown=-100;
 
         allowDashTime=0;
@@ -163,7 +165,9 @@ public class PlayerCtrl : MonoBehaviour
                 dashKeyDown=Time.time;
             }
             else if(Input.GetKeyDown(KeyCode.W)){ //jump
+                secondToLastJumpKeyDown=lastJumpKeyDown;
                 jumpKeyDown=Time.time;
+                lastJumpKeyDown=jumpKeyDown;
             }
             else if(Input.GetKeyUp(KeyCode.W)){ //jump key up
                 jumpKeyUp=true;
