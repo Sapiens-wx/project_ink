@@ -26,7 +26,7 @@ public class S_AirIdle : StateBase<EnemyBase_Air>
         ctrller.transform.localScale=scale;
     }
     Vector2 FindPlaceToStay(){
-        RaycastHit2D hit=Physics2D.Raycast(ctrller.transform.position, new Vector2(0, ctrller.restDir), float.MaxValue, GameManager.inst.groundLayer);
+        RaycastHit2D hit=Physics2D.Raycast(ctrller.transform.position, new Vector2(0, ctrller.restDir), float.MaxValue, GameManager.inst.groundMixLayer);
         if(!hit){
             Debug.LogError("S_AirIdle did not find a place to stay");
             return ctrller.transform.position;

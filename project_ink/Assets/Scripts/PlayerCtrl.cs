@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -55,6 +56,8 @@ public class PlayerCtrl : MonoBehaviour
     [HideInInspector] public Collider2D hitBy;
     [HideInInspector] public Vector2 mouseWorldPos;
     [HideInInspector] public Camera mainCam;
+    //ignore collision
+    [NonSerialized] public List<Collider2D> ignoredColliders;
     //read input
     bool readInput;
     //movable platform
@@ -99,6 +102,8 @@ public class PlayerCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ignoredColliders=new List<Collider2D>();
+
         readInput=true;
         hittable=true;
         Dir=-1;
@@ -189,7 +194,12 @@ public class PlayerCtrl : MonoBehaviour
     }
     void CheckOnGround(){
         prevOnGround=onGround;
-        Collider2D hit = Physics2D.OverlapArea((Vector2)transform.position+leftBot, (Vector2)transform.position+rightBot, GameManager.inst.groundLayer);
+        Collider2D hit = Physics2D.OverlapArea((Vector2)transform.position+leftBot, (Vector2)transform.position+rightBot, GameManager.inst.groundMixLayer);
+        foreach(Collider2D cd in ignoredColliders){
+            if(hit==cd){
+                hit=null;
+                break;
+        }}
         onGround=hit;
         if(onGround){
             canDash=true;
@@ -214,5 +224,20 @@ public class PlayerCtrl : MonoBehaviour
             hitBy=collider;
             onPlayerHit?.Invoke(collider);
         }
+    }
+    /// <summary>
+    /// ignore the collision between 'collider' and the player collider
+    /// </summary>
+    public void IgnoreCollision(Collider2D collider){
+        ignoredColliders.Add(collider);
+        Physics2D.IgnoreCollision(bc, collider);
+    }
+    /// <summary>
+    /// cancel all ignores of collision between the player and the colliders in 'ignoredColliders'.
+    /// </summary>
+    public void ClearIgnoredCollision(){
+        foreach(Collider2D cd in ignoredColliders)
+            Physics2D.IgnoreCollision(bc, cd);
+        ignoredColliders.Clear();
     }
 }

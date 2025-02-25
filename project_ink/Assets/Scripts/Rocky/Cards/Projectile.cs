@@ -72,14 +72,17 @@ public class Projectile : MonoBehaviour
         for(;;){
             float spd=rgb.velocity.magnitude;
             dir=rgb.velocity/spd;
-            newDir=((Vector2)(RoomManager.inst.ClosestEnemy(transform).transform.position-transform.position)).normalized;
-            float theta=Vector2.SignedAngle(dir, newDir);
-            if(theta>17f || theta<-17f){
-                theta=Mathf.Clamp(theta,-17f,17f);
-                newDir=MathUtil.Rotate(dir, theta*Mathf.Deg2Rad);
+            EnemyBase closestEnemy=RoomManager.inst.ClosestEnemy(transform);
+            if(closestEnemy!=null){
+                newDir=((Vector2)(closestEnemy.transform.position-transform.position)).normalized;
+                float theta=Vector2.SignedAngle(dir, newDir);
+                if(theta>17f || theta<-17f){
+                    theta=Mathf.Clamp(theta,-17f,17f);
+                    newDir=MathUtil.Rotate(dir, theta*Mathf.Deg2Rad);
+                }
+                rgb.velocity=spd*newDir;
+                AdjustRotation(newDir);
             }
-            rgb.velocity=spd*newDir;
-            AdjustRotation(newDir);
             yield return wait;
         }
     }

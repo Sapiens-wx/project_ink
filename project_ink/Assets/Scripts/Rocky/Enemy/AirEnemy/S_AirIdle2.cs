@@ -47,7 +47,7 @@ public class S_AirIdle2 : StateBase<EnemyBase_Air>
         }
     }
     void OnCollide(Collision2D collision){
-        if(collision==null || GameManager.IsLayer(GameManager.inst.groundLayer,collision.gameObject.layer)){
+        if(collision==null || GameManager.IsLayer(GameManager.inst.groundMixLayer,collision.gameObject.layer)){
             phy=MathUtil.SwitchDirection(6.28318f*ctrller.idle2_flyAngularSpd, phy, Time.time-periodStartTime);
         }
     }

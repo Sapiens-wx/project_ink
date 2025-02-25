@@ -38,7 +38,7 @@ public abstract class EliteBase_Ground : EliteBase
         Vector2 rightBot=leftBot;
         rightBot.x+=bounds.size.x*.9f;
         leftBot.x+=bounds.size.x*.1f;
-        onGround = Physics2D.OverlapArea(leftBot,rightBot,GameManager.inst.groundLayer);
+        onGround = Physics2D.OverlapArea(leftBot,rightBot,GameManager.inst.groundMixLayer);
     }
 }
 
@@ -48,6 +48,5 @@ public abstract class EliteBase : EnemyBase{
     /// </summary>
     public void Activate(){
         animator.SetTrigger("chase");
-        Debug.Log("set trigger chase");
     }
 }

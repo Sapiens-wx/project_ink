@@ -23,7 +23,7 @@ public class E_Goat_Ground : EnemyBase_Ground{
         };
     }
     void OnCollisionEnter2D(Collision2D collision){
-        if(isDashing && GameManager.IsLayer(GameManager.inst.groundLayer, collision.collider.gameObject.layer)){
+        if(isDashing && GameManager.IsLayer(GameManager.inst.groundMixLayer, collision.collider.gameObject.layer)){
             animator.SetTrigger("attack_hit_wall");
             rgb.velocity=Vector2.zero;
         }

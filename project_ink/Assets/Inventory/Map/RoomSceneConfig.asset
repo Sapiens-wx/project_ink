@@ -69,9 +69,6 @@ MonoBehaviour:
   - roomType: 41538
     prefabs:
     - {fileID: 7513356200807114852, guid: fff46a21fe8487040a888d6e58e263d0, type: 3}
-  - roomType: 41032
-    prefabs:
-    - {fileID: 302163878171800736, guid: a419e7daf493808498153392ced92e56, type: 3}
   - roomType: 41026
     prefabs:
     - {fileID: 8694360972082091075, guid: 11acf5e26080ff14d9164b16034463fb, type: 3}
@@ -114,9 +111,6 @@ MonoBehaviour:
   - roomType: 41482
     prefabs:
     - {fileID: 2079333287975948781, guid: e5a8ff43271ea2348b0ccfef410a60d4, type: 3}
-  - roomType: 41538
-    prefabs:
-    - {fileID: 1940552254209308284, guid: b66329c3cc5bf504a8e094dda148583f, type: 3}
   - roomType: 41474
     prefabs:
     - {fileID: 8438535650461684884, guid: 957df15252d25654f88349319cec42b8, type: 3}
@@ -126,24 +120,15 @@ MonoBehaviour:
   - roomType: 41602
     prefabs:
     - {fileID: 8441539942426565005, guid: 167e85ec573d658439e08d0d8c358601, type: 3}
-  - roomType: 41026
-    prefabs:
-    - {fileID: 4575207960885277590, guid: e8efa9fb8cd01444d9b2eaf4d2dbd41c, type: 3}
   - roomType: 40962
     prefabs:
     - {fileID: 8712087496388049882, guid: 564317cf00c6b524daa16b5aeeafad4d, type: 3}
   - roomType: 41097
     prefabs:
     - {fileID: 8359357084266379846, guid: cee80d2393c290f4c9e8d9e17b2acbe9, type: 3}
-  - roomType: 41097
-    prefabs:
-    - {fileID: 551544676345548440, guid: 607c4dfb539a1dd49944b3c1ca177289, type: 3}
   - roomType: 41096
     prefabs:
     - {fileID: 7859549008222650380, guid: fc79b6706455efe4e9bb7f7d9a6f4172, type: 3}
-  - roomType: 41025
-    prefabs:
-    - {fileID: 7049084095552182815, guid: c37277ca3eafc99428184ba1be797013, type: 3}
   - roomType: 41088
     prefabs:
     - {fileID: 2405360077096748898, guid: e5230d9efe39f824db359e3a22b8e160, type: 3}

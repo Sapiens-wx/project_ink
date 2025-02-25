@@ -16,10 +16,10 @@ public class E_Mouse_attack : StateBase<E_Mouse>
     }
     IEnumerator SelectAttackPos(){
         WaitForSeconds wait=new WaitForSeconds(.3f);
-        RaycastHit2D hit=Physics2D.Raycast(PlayerShootingController.inst.transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
+        RaycastHit2D hit=Physics2D.Raycast(PlayerShootingController.inst.transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundMixLayer);
         while(!hit){
             yield return wait;
-            hit=Physics2D.Raycast(PlayerShootingController.inst.transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
+            hit=Physics2D.Raycast(PlayerShootingController.inst.transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundMixLayer);
         }
         Vector2 pos=hit.point;
         pos.y+=ctrller.bc.bounds.extents.y+ctrller.bc.offset.y;
