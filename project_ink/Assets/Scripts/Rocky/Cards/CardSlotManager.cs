@@ -37,7 +37,14 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         //toggle card panel
         toggle_panel_ypos=transform.position.y;
-        //initilize card slot
+        InitializeCardSlotUI();
+        UpdateBagCards();
+    }
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Tab))
+            TogglePanel();
+    }
+    void InitializeCardSlotUI(){
         curSlot = 0;
         cardSlots = new CardSlot[numSlots];
         for(int i = 0; i < numSlots; ++i)
@@ -47,12 +54,13 @@ public class CardSlotManager : Singleton<CardSlotManager>
             cardSlots[i] = slot;
             slot.index = i;
         }
+    }
+    public void UpdateBagCards(){
+        for(int i=0;i<numSlots;++i){
+            cardSlots[i].card=null;
+        }
         cardDealer = new CardDealer(inventory.bagRuntime);
         DistributeCard();
-    }
-    void Update(){
-        if(Input.GetKeyDown(KeyCode.Tab))
-            TogglePanel();
     }
     #region Card Mechanics
     IEnumerator Anticipate(){
