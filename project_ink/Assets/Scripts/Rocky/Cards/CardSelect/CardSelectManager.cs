@@ -10,6 +10,7 @@ public class CardSelectManager : Singleton<CardSelectManager>
     [SerializeField] CardInvInfoUI cardInvInfoPrefab;
     [SerializeField] CardBagInfoUI cardBagInfoPrefab;
     [SerializeField] Transform invPanel, bagPanel;
+    public CardTips cardTips;
 
     CardInventory inv;
     void Start(){
@@ -19,8 +20,11 @@ public class CardSelectManager : Singleton<CardSelectManager>
         cardSelectionPanel.SetActive(false);
     }
     void Update(){
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.E)){
             cardSelectionPanel.SetActive(!cardSelectionPanel.activeSelf);
+            if(cardSelectionPanel.activeSelf==false)
+                CardSlotManager.inst.UpdateBagCards();
+        }
     }
     public void FromInvToBag(CardInvInfoUI cardInvInfoUI){
         CardInventory.CardInfo cardBagInfo=inv.bagRuntime[(int)cardInvInfoUI.cardInfo.card.type];
