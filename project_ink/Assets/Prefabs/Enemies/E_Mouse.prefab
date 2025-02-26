@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4571880495414494704
+--- !u!1 &4138033895477529202
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,81 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6036557438836297741}
-  - component: {fileID: 6585864903791699941}
-  - component: {fileID: 8312478206298781885}
-  - component: {fileID: 6271194188938054825}
-  - component: {fileID: 5765959012249378561}
-  - component: {fileID: 8356373485050021754}
-  m_Layer: 8
-  m_Name: E_Mouse
+  - component: {fileID: 2531321987128222855}
+  - component: {fileID: 4469267841811116918}
+  m_Layer: 0
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6036557438836297741
+--- !u!4 &2531321987128222855
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4571880495414494704}
+  m_GameObject: {fileID: 4138033895477529202}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.13, y: -1.35, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7810769033390781263}
-  - {fileID: 4786746802059140347}
-  m_Father: {fileID: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.18, y: 0.18, z: 0.18}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 6036557438836297741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6585864903791699941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4571880495414494704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c72edc3a03a716c438e6530043f3a904, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spr: {fileID: 8312478206298781885}
-  damageBox: {fileID: 5391728213471718154}
-  healthBar: {fileID: 9196114273298494856}
-  maxHealth: 10
-  id: 0
-  bc: {fileID: 0}
-  rgb: {fileID: 0}
-  animator: {fileID: 0}
-  hatredPersistent: 0
-  loseHatredInterval: 0
-  detectDist: 4.11
-  groupDetectDist: 9.34
-  chaseSpd: 0
-  inHatred: 0
-  prevInHatred: 0
-  playerInAttack: 0
-  prevPlayerInAttack: 0
-  attackTriggerBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 2.74, y: 0.6, z: 0}
-  walkSpd: 0
-  patrol_xmin: 0
-  patrol_xmax: 0
-  onGround: 0
-  prevOnGround: 0
-  attackDist: 2.2
---- !u!212 &8312478206298781885
+--- !u!212 &4469267841811116918
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4571880495414494704}
+  m_GameObject: {fileID: 4138033895477529202}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -117,17 +73,92 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &4571880495414494704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6036557438836297741}
+  - component: {fileID: 6585864903791699941}
+  - component: {fileID: 6271194188938054825}
+  - component: {fileID: 5765959012249378561}
+  - component: {fileID: 8356373485050021754}
+  m_Layer: 8
+  m_Name: E_Mouse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6036557438836297741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4571880495414494704}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.13, y: -1.35, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7810769033390781263}
+  - {fileID: 4786746802059140347}
+  - {fileID: 2531321987128222855}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6585864903791699941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4571880495414494704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c72edc3a03a716c438e6530043f3a904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spr: {fileID: 4469267841811116918}
+  damageBox: {fileID: 5391728213471718154}
+  healthBar: {fileID: 9196114273298494856}
+  maxHealth: 10
+  id: 0
+  rgb: {fileID: 0}
+  animator: {fileID: 0}
+  hatredPersistent: 0
+  loseHatredInterval: 0
+  detectDist: 4.11
+  groupDetectDist: 9.34
+  chaseSpd: 0
+  inHatred: 0
+  prevInHatred: 0
+  playerInAttack: 0
+  prevPlayerInAttack: 0
+  attackTriggerBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 2.74, y: 0.6, z: 0}
+  walkSpd: 0
+  patrol_xmin: 0
+  patrol_xmax: 0
+  onGround: 0
+  prevOnGround: 0
+  attackDist: 2.2
 --- !u!50 &6271194188938054825
 Rigidbody2D:
   serializedVersion: 4
