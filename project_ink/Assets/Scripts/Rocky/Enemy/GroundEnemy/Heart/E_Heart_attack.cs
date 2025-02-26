@@ -19,7 +19,7 @@ public class E_Heart_attack : StateBase<E_Heart>{
         float recoverEndTime=Time.time+ctrller.recoverDuration;
         while(Time.time<recoverEndTime){
             foreach(EnemyBase e in enemiesInRange)
-                e.CurHealth+=ctrller.recoverAmount;
+                e.OnHealed(ctrller.recoverAmount);
             yield return wait;
         }
         recoverCoro=null;
