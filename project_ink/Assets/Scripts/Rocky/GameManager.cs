@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public CardInventory cardInventory;
     public LayerMask groundMixLayer, groundLayer, platformLayer; //groundLayer: platform|ground, platformLayer: platform
     [NonSerialized] public int platformLayerIdx; //not layermask, this is the layer.
     public LayerMask enemyLayer;
@@ -15,6 +16,10 @@ public class GameManager : MonoBehaviour
     {
         inst=this;
         platformLayerIdx=MaskToLayer(platformLayer);
+        cardInventory.Init();
+    }
+    void OnDisable(){
+        cardInventory.SaveRunTimeCards();
     }
     public static bool IsLayer(LayerMask mask, int layer){
         return (mask.value&(1<<layer))!=0;

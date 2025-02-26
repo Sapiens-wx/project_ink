@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db3a177288af2c40bde95725d5f4d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardInventory: {fileID: 11400000, guid: 5dbfecc4c7753e34886c3b9e36ec24f6, type: 2}
   groundMixLayer:
     serializedVersion: 2
     m_Bits: 192

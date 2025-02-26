@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Card : ScriptableObject
 {
     public CardType type;
+    public CardGroup group;
     public Sprite image;
     [TextArea] public string description;
     public int damage;
@@ -144,5 +145,11 @@ public abstract class Card : ScriptableObject
         Card_P_Sun,
         Card_P_Jupiter,
         Card_P_Saturn,
+
+        Card_MaxCount
+    }
+    public enum CardGroup{
+        Discard,
+        Planet
     }
 }

@@ -47,7 +47,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
             cardSlots[i] = slot;
             slot.index = i;
         }
-        cardDealer = new CardDealer(inventory.cards);
+        cardDealer = new CardDealer(inventory.bagRuntime);
         DistributeCard();
     }
     void Update(){
@@ -210,14 +210,16 @@ public class CardDealer
     /// shuffled cards
     /// </summary>
 
-    public CardDealer(List<Card> initialCards)
+    public CardDealer(CardInventory.CardInfo[] initialCards)
     {
-        allCards = new List<Card>(initialCards.Count);
-        for (int i = 0; i < initialCards.Count; ++i)
-        {
-            Card card = initialCards[i].Copy();
-            card.ResetRuntimeParams(this);
-            allCards.Add(card);
+        allCards = new List<Card>(initialCards.Length);
+        foreach(CardInventory.CardInfo info in initialCards){
+            if(info==null) continue;
+            for(int i=0;i<info.count;++i){
+                Card card = info.card.Copy();
+                card.ResetRuntimeParams(this);
+                allCards.Add(card);
+            }
         }
         discardCardPile = new List<Card>(allCards);
     }
