@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
@@ -12,7 +13,8 @@ public abstract class EnemyBase : MonoBehaviour
         get=>curHealth;
         set{
             curHealth=value;
-            if(curHealth<0) curHealth=0;
+            if(curHealth<=0)
+                Die();
             else if(curHealth>maxHealth) curHealth=maxHealth;
             if(healthBar!=null)
                 healthBar.SetProgress((float)curHealth/maxHealth);
@@ -33,7 +35,7 @@ public abstract class EnemyBase : MonoBehaviour
         }
     }
     [HideInInspector] public int id; //id in a room
-    [HideInInspector] public Collider2D bc;
+    [NonSerialized] public Collider2D bc;
     [HideInInspector] public Rigidbody2D rgb;
     [HideInInspector] public Animator animator;
     /// <summary>
@@ -45,6 +47,7 @@ public abstract class EnemyBase : MonoBehaviour
     public void Die(){
         if(PlanetVisualizer.inst.uranusesDict.ContainsKey(this))
             PlanetVisualizer.inst.RemoveUranus(this);
+        Destroy(gameObject);
     }
     internal virtual void Start(){
         if(bc!=null) return; //it means start function is called else where. no need to initialize again
@@ -72,7 +75,7 @@ public abstract class EnemyBase : MonoBehaviour
     /// make the enemy stick to the ground by changing the y pos (raycast downward)
     /// </summary>
     public void ToTheGround(){
-        RaycastHit2D hit=Physics2D.Raycast(transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
+        RaycastHit2D hit=Physics2D.Raycast(transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundMixLayer);
         if(hit)
             transform.position=new Vector3(transform.position.x, hit.point.y+bc.bounds.extents.y+bc.offset.y, 0);
     }

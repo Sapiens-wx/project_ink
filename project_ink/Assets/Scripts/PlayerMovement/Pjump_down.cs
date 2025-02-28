@@ -23,6 +23,7 @@ public class Pjump_down : PStateBase
     {
         player.StopCoroutine(coro);
         coro=null;
+        player.ClearIgnoredCollision();
     }
     IEnumerator m_FixedUpdate(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();

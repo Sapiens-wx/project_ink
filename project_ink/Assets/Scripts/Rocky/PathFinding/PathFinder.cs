@@ -576,7 +576,7 @@ public class PathNavigator {
         return v;
     }
     Vector2 GetJumpVelocity_exact(Vector2 from, Vector2 to){
-        RaycastHit2D hit = Physics2D.Raycast(to, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(to, Vector2.down, float.MaxValue, GameManager.inst.groundMixLayer);
         if(!hit){
             Debug.LogError("no platform to land on");
             return Vector2.zero;

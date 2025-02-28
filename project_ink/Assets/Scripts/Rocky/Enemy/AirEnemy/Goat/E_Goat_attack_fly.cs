@@ -19,8 +19,8 @@ public class E_Goat_attack_fly : StateBase<E_Goat_Ground>{
         ctrller.rgb.velocity=new Vector2(ctrller.rgb.velocity.x,0);
     }
     void SetTargetHeight(){
-        RaycastHit2D hit_down = Physics2D.Raycast(ctrller.transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundLayer);
-        RaycastHit2D hit_up = Physics2D.Raycast(ctrller.transform.position, Vector2.up, float.MaxValue, GameManager.inst.groundLayer);
+        RaycastHit2D hit_down = Physics2D.Raycast(ctrller.transform.position, Vector2.down, float.MaxValue, GameManager.inst.groundMixLayer);
+        RaycastHit2D hit_up = Physics2D.Raycast(ctrller.transform.position, Vector2.up, float.MaxValue, GameManager.inst.groundMixLayer);
         if(!hit_down){
             Debug.LogWarning("Goat attack_fly: ray didn't hit ground");
             targetHeight=ctrller.flyHeight+ctrller.transform.position.y;

@@ -37,7 +37,14 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         //toggle card panel
         toggle_panel_ypos=transform.position.y;
-        //initilize card slot
+        InitializeCardSlotUI();
+        UpdateBagCards();
+    }
+    void Update(){
+        if(Input.GetKeyDown(KeyCode.Tab))
+            TogglePanel();
+    }
+    void InitializeCardSlotUI(){
         curSlot = 0;
         cardSlots = new CardSlot[numSlots];
         for(int i = 0; i < numSlots; ++i)
@@ -47,12 +54,13 @@ public class CardSlotManager : Singleton<CardSlotManager>
             cardSlots[i] = slot;
             slot.index = i;
         }
-        cardDealer = new CardDealer(inventory.cards);
-        DistributeCard();
     }
-    void Update(){
-        if(Input.GetKeyDown(KeyCode.Tab))
-            TogglePanel();
+    public void UpdateBagCards(){
+        for(int i=0;i<numSlots;++i){
+            cardSlots[i].card=null;
+        }
+        cardDealer = new CardDealer(inventory.bagRuntime);
+        DistributeCard();
     }
     #region Card Mechanics
     IEnumerator Anticipate(){
@@ -210,14 +218,16 @@ public class CardDealer
     /// shuffled cards
     /// </summary>
 
-    public CardDealer(List<Card> initialCards)
+    public CardDealer(CardInventory.CardInfo[] initialCards)
     {
-        allCards = new List<Card>(initialCards.Count);
-        for (int i = 0; i < initialCards.Count; ++i)
-        {
-            Card card = initialCards[i].Copy();
-            card.ResetRuntimeParams(this);
-            allCards.Add(card);
+        allCards = new List<Card>(initialCards.Length);
+        foreach(CardInventory.CardInfo info in initialCards){
+            if(info==null) continue;
+            for(int i=0;i<info.count;++i){
+                Card card = info.card.Copy();
+                card.ResetRuntimeParams(this);
+                allCards.Add(card);
+            }
         }
         discardCardPile = new List<Card>(allCards);
     }

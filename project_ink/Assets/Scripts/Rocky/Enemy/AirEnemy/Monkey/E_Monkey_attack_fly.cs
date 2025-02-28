@@ -76,7 +76,7 @@ const float angleRangeInRad = 30*Mathf.Deg2Rad;
         flyCoro=null;
     }
     void OnCollide(Collision2D collision){
-        if(collision==null || GameManager.IsLayer(GameManager.inst.groundLayer,collision.gameObject.layer)){
+        if(collision==null || GameManager.IsLayer(GameManager.inst.groundMixLayer,collision.gameObject.layer)){
             float x=Time.time-periodStartTime;
             phy=MathUtil.SwitchDirection(6.28318f*angularSpd, phy, x);
         }
