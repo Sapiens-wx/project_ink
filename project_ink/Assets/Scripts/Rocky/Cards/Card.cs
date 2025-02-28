@@ -129,6 +129,7 @@ public abstract class Card : ScriptableObject
     }
     public enum CardType
     {
+        //discard
         Card_1_1,
         Card_1_2,
         Card_1_3,
@@ -136,7 +137,7 @@ public abstract class Card : ScriptableObject
         Card_1_5,
         Card_1_6,
         Card_1_7,
-
+        //planet
         Card_P_Earth,
         Card_P_Mercury,
         Card_P_Venus,
@@ -145,11 +146,16 @@ public abstract class Card : ScriptableObject
         Card_P_Sun,
         Card_P_Jupiter,
         Card_P_Saturn,
+        //normal
+        Card_N_Dmg1,
+        Card_N_Dmg2,
+        Card_N_Discard,
 
         Card_MaxCount
     }
     public enum CardGroup{
         Discard,
-        Planet
+        Planet,
+        Normal
     }
 }
