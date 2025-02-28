@@ -56,6 +56,7 @@ public class E_Frog_attack_prep : StateBase<E_Frog>{
             do{
                 ctrller.rgb.velocity=v;
                 yield return detectInterval;
+                if(ctrller.rgb.velocity==Vector2.zero) break; //the frog is stucked
                 Vector2 distv=(Vector2)ctrller.transform.position-cur.worldPos;
                 dist=distv.x*distv.x+distv.y*distv.y;
             }while(dist>epsilon);

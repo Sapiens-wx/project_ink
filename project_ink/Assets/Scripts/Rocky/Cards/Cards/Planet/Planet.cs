@@ -23,7 +23,7 @@ public class Planet {
                 break;
             case PlanetType.Uranus:
                 Uranus u = (Uranus)this;
-                u.surroundingEnemy.CurHealth-=2*u.charge;
+                u.surroundingEnemy.OnDamaged(2*u.charge);
                 break;
             case PlanetType.Mars:
                 CardSlotManager.inst.buffP_5.DoubleEnable();
@@ -57,7 +57,7 @@ public class Planet {
                 break;
             case PlanetType.Uranus:
                 Uranus u = (Uranus)this;
-                u.surroundingEnemy.CurHealth-=u.charge;
+                u.surroundingEnemy.OnDamaged(u.charge);
                 break;
             case PlanetType.Mars:
                 CardSlotManager.inst.buffP_5.Enable();
