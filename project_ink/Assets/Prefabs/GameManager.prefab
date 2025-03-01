@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5767117497732373713}
   - component: {fileID: 3040801714471790660}
   - component: {fileID: 419862369736518472}
+  - component: {fileID: 115192632539146472}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -83,3 +84,17 @@ MonoBehaviour:
   elf: {fileID: -4321483156019873006, guid: 44890755ce7dc5a4cad774a7645566a8, type: 3}
   elf_split: {fileID: 6032699446052605018, guid: 002519374a8eb024a8578d185d1ab7c2, type: 3}
   witch: {fileID: -1957974861279847571, guid: 642cd56d6ac4e7943a88f4f860f3af79, type: 3}
+--- !u!114 &115192632539146472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744755388659314665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a48fe260cb1214e8ed4152bdcf1e0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path: /log.log
+  log: 

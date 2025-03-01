@@ -86,6 +86,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     public void PrepareFire(Vector2 dir){
         if(anticipating) return;
+        CardLog.MouseFire();
         this.shootDir=dir;
         List<IEnumerator> actions=new List<IEnumerator>();
         cardSlots[curSlot].card.Prep_Fire(actions);

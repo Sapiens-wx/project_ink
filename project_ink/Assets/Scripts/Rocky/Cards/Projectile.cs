@@ -46,6 +46,7 @@ public class Projectile : MonoBehaviour
         s.AppendCallback(()=>fireEffect.SetActive(false));
         //trail effect
         trail.Clear();
+        CardLog.CardProjectileInstantiated(card);
     }
     public void InitProjectile(int damage, Vector2 pos, Vector2 velocity, bool chase){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
@@ -61,6 +62,7 @@ public class Projectile : MonoBehaviour
         s.AppendCallback(()=>fireEffect.SetActive(false));
         //trail effect
         trail.Clear();
+        CardLog.ProjectileInstantiated(this);
     }
     IEnumerator DelayDestroy(float seconds){
         yield return new WaitForSeconds(seconds);
