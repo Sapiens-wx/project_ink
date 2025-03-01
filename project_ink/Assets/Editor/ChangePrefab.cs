@@ -1,100 +1,111 @@
 using System;
-using System.IO;
+using System.Reflection;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class MyEditorWindow : EditorWindow
 {
-    GameObject newPrefab;
-    string dir;
+    UnityEngine.Object target;
+    VisualElement targetpptContainer;
+    int duration=5;
+    float currentTime=0;
     [MenuItem("Window/Replace")]
     public static void ShowExample()
     {
         MyEditorWindow wnd = GetWindow<MyEditorWindow>();
-        wnd.titleContent = new GUIContent("MyEditorWindow");
+        wnd.titleContent = new GUIContent("Window");
     }
 
     void OnGUI(){
-        newPrefab=(GameObject)EditorGUILayout.ObjectField("newPrefab", newPrefab, typeof(GameObject), false);
-        dir=EditorGUILayout.TextField("directory", dir);
-        if(GUILayout.Button("replace")){
-            DirectoryInfo dirInfo;
-            try{
-                dirInfo=new DirectoryInfo(Application.dataPath+'/'+dir);
-            } catch(Exception e){
-                Debug.LogError($"cannot open {Application.dataPath+'/'+dir}: {e}");
-                return;
-            }
-            string applicationPath=Application.dataPath.Replace('/','\\');
-            foreach(FileInfo f in dirInfo.GetFiles()){
-                string s=f.FullName.Replace(applicationPath, "Assets");
-                if(s.Contains(".meta")) continue;
-                ChangePrefab(s);
-            }
-        }
     }
-    void ChangePrefab(string path){
-        // 加载 Prefab
-        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-        if (prefab == null)
+    void CreateGUI(){
+        // Root visual element
+        var root = rootVisualElement;
+
+        //object field
+        ObjectField targetObjField=new ObjectField();
+        targetObjField.objectType=typeof(MonoBehaviour);
+        targetObjField.value=target;
+        targetObjField.RegisterValueChangedCallback(OnTargetChanged);
+        root.Add(targetObjField);
+
+
+        //timeline container
+        VisualElement container=new VisualElement();
+        root.Add(container);
+        //target object property container
+        targetpptContainer=new VisualElement();
+        targetpptContainer.style.flexBasis=Length.Percent(.3f);
+        container.Add(targetpptContainer);
+
+        // Create the timeline
+        var timeline = new VisualElement();
+        timeline.style.backgroundColor = new Color(0.1f, 0.1f, 0.1f);
+        container.Add(timeline);
+
+        // Draw timeline ticks
+        for (float i = 0; i <= duration; i += 1f)
         {
-            Debug.LogError("fail to load prefab at: " + path);
-            return;
+            var tick = new VisualElement();
+            tick.style.position = Position.Absolute;
+            tick.style.left = (i / duration) * 100; // Percentage-based positioning
+            tick.style.width = 1;
+            tick.style.height = 10;
+            tick.style.backgroundColor = Color.white;
+
+            // Add a label for the tick
+            var label = new Label(i.ToString());
+            label.style.position = Position.Absolute;
+            label.style.left = (i / duration) * 100 - 10; // Offset for centering
+            label.style.top = 12;
+            label.style.color = Color.white;
+
+            timeline.Add(tick);
+            timeline.Add(label);
         }
 
-        // 实例化 Prefab
-        GameObject instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        // Current time indicator
+        var timeIndicator = new VisualElement();
+        timeIndicator.style.position = Position.Absolute;
+        timeIndicator.style.width = 2;
+        timeIndicator.style.height = 30;
+        timeIndicator.style.backgroundColor = Color.red;
+        timeline.Add(timeIndicator);
 
-        // 找到需要替换的游戏物体
-        Transform targetObject = instance.transform.Find("==MustHaveObjects==_1");
-        if (targetObject == null) {
-            Debug.LogError("cannot find object: ==MustHaveObjects==");
-            return;
-        }
-        if(!targetObject.name.Contains("==MustHaveObjects==")){
-            Debug.Log($"prefab {targetObject.name} is already replaced");
-            return;
-        }
-
-        // 实例化新的游戏物体
-        GameObject newInstance = PrefabUtility.InstantiatePrefab(newPrefab) as GameObject;
-
-        // 替换游戏物体
-        newInstance.transform.SetParent(targetObject.parent);
-        newInstance.transform.localScale=Vector3.one;
-
-        // 销毁旧的游戏物体
-        DestroyImmediate(targetObject.gameObject);
-
-        // 保存修改后的 Prefab
-        PrefabUtility.SaveAsPrefabAsset(instance, path);
-        Debug.Log("success with " + path);
-
-        // 销毁实例
-        DestroyImmediate(instance);
+        // Slider to control the current time
+        var timeSlider = new Slider("Time", 0, duration);
+        timeSlider.RegisterValueChangedCallback(evt =>
+        {
+            currentTime = evt.newValue;
+            timeIndicator.style.left = (currentTime / duration) * 100; // Update indicator position
+        });
+        root.Add(timeSlider);
     }
-    /*
-    public void CreateGUI()
-    {
-        // Each editor window contains a root VisualElement object
-        VisualElement root = rootVisualElement;
+    void OnTargetChanged(ChangeEvent<UnityEngine.Object> evt){
+        target=evt.newValue;
+        targetpptContainer.Clear();
+        if(target==null)
+            return;
+        // Use reflection to get the object's properties and fields
+        SerializedObject sdTarget=new SerializedObject(target);
+        SerializedProperty it=sdTarget.GetIterator();
+        
+        //skip useless fields
+        it.Next(true);
+        for(int i=0;i<9;++i)
+            it.Next(false);
+        //create propertyfield
+        while(it.Next(false)){
+            PropertyField field=new PropertyField(it);
+            field.Bind(sdTarget);
+            targetpptContainer.Add(field);
+        }
+        return;
 
-        // VisualElements objects can contain other VisualElement following a tree hierarchy
-        Label label = new Label("Hello World!");
-        root.Add(label);
-
-        // Create button
-        Button button = new Button();
-        button.name = "button";
-        button.text = "Button";
-        root.Add(button);
-        button.clicked+=
-
-        // Create toggle
-        Toggle toggle = new Toggle();
-        toggle.name = "toggle";
-        toggle.label = "Toggle";
-        root.Add(toggle);
-    }*/
+        System.Type objectType = target.GetType();
+        PropertyInfo[] properties = objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        FieldInfo[] fields = objectType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+    }
 }
