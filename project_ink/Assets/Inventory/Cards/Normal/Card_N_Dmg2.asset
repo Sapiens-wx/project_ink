@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37638b321c122fa44ae0f24a0749cf42, type: 3}
   m_Name: Card_N_Dmg2
   m_EditorClassIdentifier: 
-  type: 0
-  group: 0
+  type: 16
+  group: 2
   image: {fileID: 0}
-  description: 
-  damage: 0
-  anticipation: 0
-  recovery: 0
+  description: Deal 2 damage
+  damage: 2
+  anticipation: 0.5
+  recovery: 0.1
