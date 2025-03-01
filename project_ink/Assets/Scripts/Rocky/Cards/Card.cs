@@ -83,12 +83,14 @@ public abstract class Card : ScriptableObject
         actions.Add(Discard());
     }
     internal IEnumerator Fire(){
+        CardLog.LogFire(this);
         CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         CardSlotManager.inst.InstantiateProjectile(this, false);
         ReturnToCardPool();
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator AutoFire(){
+        CardLog.LogAutoFire(this);
         if(slotIndex>=0)
             CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         CardSlotManager.inst.InstantiateProjectile(this, true);

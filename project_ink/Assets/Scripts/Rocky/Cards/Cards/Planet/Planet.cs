@@ -24,6 +24,7 @@ public class Planet {
             case PlanetType.Uranus:
                 Uranus u = (Uranus)this;
                 u.surroundingEnemy.OnDamaged(2*u.charge);
+                CardLog.Log($"Uranus Activation Effect: deal {u.charge*2} damage to {u.surroundingEnemy.name}");
                 break;
             case PlanetType.Mars:
                 CardSlotManager.inst.buffP_5.DoubleEnable();
@@ -57,6 +58,7 @@ public class Planet {
                 break;
             case PlanetType.Uranus:
                 Uranus u = (Uranus)this;
+                CardLog.Log($"Uranus Activation Effect: deal {u.charge} damage to {u.surroundingEnemy.name}");
                 u.surroundingEnemy.OnDamaged(u.charge);
                 break;
             case PlanetType.Mars:
@@ -99,18 +101,24 @@ public class Sun : Planet{
     }
     public override void Activate()
     {
+        CardLog.ActivatePlanetEffect($"Sun: destroy all its planets and deal 5*charge damage (charge={charge})");
+        CardLog.Indent();
         foreach(Planet p in planets){
             if(p!=null)
                 p.Activate();
         }
         CardSlotManager.inst.InstantiateProjectile(5*charge, true);
+        CardLog.UnIndent();
     }
     public void DoubleActivate_Sun(){
+        CardLog.ActivatePlanetEffect($"Sun: destroy all its planets and deal 5*charge damage (charge={charge})", true);
+        CardLog.Indent();
         foreach(Planet p in planets){
             if(p!=null)
                 p.Activate();
         }
         CardSlotManager.inst.InstantiateProjectile(10*charge, true);
+        CardLog.UnIndent();
     }
     public void AddPlanet(Planet planet){
         int idx=-1, nullIdx=-1;

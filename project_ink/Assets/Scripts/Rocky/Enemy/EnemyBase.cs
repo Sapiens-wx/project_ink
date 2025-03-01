@@ -53,7 +53,6 @@ public abstract class EnemyBase : MonoBehaviour
     public void Die(){
         if(PlanetVisualizer.inst.uranusesDict.ContainsKey(this))
             PlanetVisualizer.inst.RemoveUranus(this);
-        Debug.Log("die");
         Destroy(gameObject);
     }
     internal virtual void Start(){
