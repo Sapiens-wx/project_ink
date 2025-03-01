@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Card_P_Mercury
   m_EditorClassIdentifier: 
   type: 8
+  group: 0
   image: {fileID: 21300000, guid: 1e41eae9c2e720a4586c5168a8d8da0d, type: 3}
-  description: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u5982\u679C\u547D\u4E2D\u654C\u4EBA\u5219\u751F\u6210\u6C34\u661F\uFF1B\u6C34\u661F\u73AF\u7ED5\u6548\u679C\uFF1A\u589E\u52A020%\u653B\u901F\uFF0C\u89E6\u53D1\uFF1A\u4E0B\u4E09\u5F20\u724C\u6253\u51FA\u65F6\u4F1A\u589E\u52A060%\u7684\u653B\u901F"
+  description: 'Deal 1 damage, if hit an enemy, generate Mercury. Mercury Oritbit:
+    reduce all cards'' 20% prepartion time. Trigger: reduce 60% prepartion time of
+    next three cards.'
   damage: 1
-  anticipation: 0.1
-  recovery: 0.1
+  anticipation: 0.6
+  recovery: 0.2
   planetType: 2

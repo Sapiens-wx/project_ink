@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Card_1_6
   m_EditorClassIdentifier: 
   type: 5
+  group: 0
   image: {fileID: 21300000, guid: efadb4b383fdd6446839a736fd78af18, type: 3}
   description: Discard cards in next three slots, then draw three cards to fill slots.
   damage: 0
-  anticipation: 0.5
-  recovery: 0.5
+  anticipation: 0.2
+  recovery: 0

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Card_1_4
   m_EditorClassIdentifier: 
   type: 3
+  group: 0
   image: {fileID: 21300000, guid: cd1baf4b5c188454c8c8d7d9d052af5f, type: 3}
-  description: Destroy this card after being played in one room. The first discarded
-    card in each loop will be Autoeffected once.
+  description: 'Whennever this is discarded: the first discarded card in each loop
+    will be Autoeffected once more.'
   damage: 0
-  anticipation: 0.5
+  anticipation: 0.2
   recovery: 0
