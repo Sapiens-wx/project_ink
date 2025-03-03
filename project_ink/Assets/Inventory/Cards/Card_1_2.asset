@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Card_1_2
   m_EditorClassIdentifier: 
   type: 1
+  group: 0
   image: {fileID: 21300000, guid: 942a73a06fa9c48429f186a76fb6cd32, type: 3}
-  description: Deal 3 damage, discard cards in next two slots.
-  damage: 3
-  anticipation: 0.8
-  recovery: 0.3
+  description: Deal 4 damage, discard cards in next two slots.
+  damage: 4
+  anticipation: 0.6
+  recovery: 0.2

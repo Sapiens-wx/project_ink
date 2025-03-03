@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Card_P_Saturn
   m_EditorClassIdentifier: 
   type: 14
+  group: 0
   image: {fileID: 21300000, guid: cc370a8463371584f8f93320a7414abe, type: 3}
-  description: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u5982\u679C\u547D\u4E2D\u654C\u4EBA\u5219\u751F\u6210\u571F\u661F\uFF1B\u571F\u661F\u73AF\u7ED5\u6548\u679C\uFF1A\u4F60\u7684\u6240\u6709\u884C\u661F\u7684\u73AF\u7ED5\u6548\u679C\u7FFB\u500D\uFF1B\u89E6\u53D1\uFF1A\u968F\u673A\u89E6\u53D1\u4E09\u4E2A\u884C\u661F\u7684\u6548\u679C\uFF08\u53EF\u4EE5\u5305\u62EC\u571F\u661F\u7684\u6548\u679C\uFF09"
+  description: 'Deal 1 damage, if hit an enemy, generate Saturn. Saturn Orbit: double
+    the orbit effects of all your planets. Trigger: randomly trigger three planets''
+    trigger effects.'
   damage: 1
-  anticipation: 0.1
-  recovery: 0.1
+  anticipation: 0.6
+  recovery: 0.2
   planetType: 128
