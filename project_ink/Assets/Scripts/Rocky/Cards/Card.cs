@@ -10,6 +10,7 @@ public abstract class Card : ScriptableObject
     [TextArea] public string description;
     public int damage;
     public float anticipation, recovery;
+    [TextArea] public string explanation;
 
     //Runtime variables
     /// <summary>
@@ -128,6 +129,7 @@ public abstract class Card : ScriptableObject
         card.anticipation=anticipation;
         card.recovery=recovery;
         card.description=description;
+        card.explanation=explanation;
     }
     public enum CardType
     {

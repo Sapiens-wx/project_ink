@@ -251,8 +251,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   line: {fileID: 8270398635079422717}
-  clip_attack: {fileID: 0}
-  clip_recover: {fileID: 0}
   anchors:
   - {fileID: 6740173995226529871}
   - {fileID: 7649034327574510333}

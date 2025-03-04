@@ -59,7 +59,6 @@ public class CardLog : Singleton<CardLog>{
         {
             // Append the string to the file
             string fullPath=Application.dataPath+path;
-            Debug.Log($"data path={Application.dataPath}, path={path}, fullPath={fullPath}");
             using (StreamWriter writer = new StreamWriter(fullPath, false))
             {
                 writer.Write(sb);
