@@ -83,23 +83,38 @@ public abstract class Card : ScriptableObject
     public virtual void Prep_Discard(List<IEnumerator> actions){
         actions.Add(Discard());
     }
+    /// <summary>
+    /// fired and auto fired card returns to card pool. activated card does not
+    /// </summary>
+    /// <param name="autoChase"></param>
+    /// <param name="returnToCardPool"></param>
+    /// <returns></returns>
+    public Projectile FireCard(bool autoChase, bool returnToCardPool){
+        if(slotIndex>=0)
+            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
+        Projectile p = CardSlotManager.inst.InstantiateProjectile(this, autoChase);
+        if(returnToCardPool)
+            ReturnToCardPool();
+        return p;
+    }
     internal IEnumerator Fire(){
         CardLog.LogFire(this);
-        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.inst.InstantiateProjectile(this, false);
-        ReturnToCardPool();
+        FireCard(false, true);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator AutoFire(){
         CardLog.LogAutoFire(this);
-        if(slotIndex>=0)
-            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.inst.InstantiateProjectile(this, true);
-        ReturnToCardPool();
+        if(group==CardGroup.Discard)
+            CardSlotManager.inst.AddAutoFireCard(this);
+        else
+            FireCard(true, true);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator Activate(){
-        CardSlotManager.inst.InstantiateProjectile(this, true);
+        if(group==CardGroup.Discard)
+            CardSlotManager.inst.AddActivateCard(this);
+        else
+            FireCard(true, false);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator OnDiscardBuffCheck(){

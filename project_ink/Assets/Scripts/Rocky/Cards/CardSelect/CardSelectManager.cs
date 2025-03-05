@@ -22,8 +22,10 @@ public class CardSelectManager : Singleton<CardSelectManager>
     void Update(){
         if(Input.GetKeyDown(KeyCode.E)){
             cardSelectionPanel.SetActive(!cardSelectionPanel.activeSelf);
-            if(cardSelectionPanel.activeSelf==false)
+            if(cardSelectionPanel.activeSelf==false){
                 CardSlotManager.inst.UpdateBagCards();
+                CardZoomInTip.HideTip();
+            }
         }
     }
     public void FromInvToBag(CardInvInfoUI cardInvInfoUI){

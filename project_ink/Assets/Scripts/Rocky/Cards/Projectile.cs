@@ -31,6 +31,13 @@ public class Projectile : MonoBehaviour
     public void AdjustRotation(Vector2 dir){
         transform.rotation=Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.right, dir), Vector3.forward);
     }
+    /// <summary>
+    /// change the fly direction of the card
+    /// </summary>
+    /// <param name="dir">must be normalized</param>
+    public void AdjustFlyDir(Vector2 dir){
+        rgb.velocity=rgb.velocity.magnitude*dir;
+    }
     public void InitProjectile(Card card, Vector2 pos, Vector2 velocity, bool chase){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         this.card=card;
