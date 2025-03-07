@@ -107,7 +107,7 @@ public class Sun : Planet{
             if(p!=null)
                 p.Activate();
         }
-        CardSlotManager.inst.InstantiateProjectile(5*charge, true);
+        CardSlotManager.inst.InstantiateProjectile(3*charge, true);
         CardLog.UnIndent();
     }
     public void DoubleActivate_Sun(){
@@ -117,7 +117,7 @@ public class Sun : Planet{
             if(p!=null)
                 p.Activate();
         }
-        CardSlotManager.inst.InstantiateProjectile(10*charge, true);
+        CardSlotManager.inst.InstantiateProjectile(6*charge, true);
         CardLog.UnIndent();
     }
     public void AddPlanet(Planet planet){
