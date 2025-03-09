@@ -29,6 +29,10 @@ public abstract class Card : ScriptableObject
     /// index in CardSlotManager.cardSlots if applicable
     /// </summary>
     protected int slotIndex;
+    public int SlotIndex{
+        set=>slotIndex=value;
+        get=>slotIndex;
+    }
     private float anticipation_backup;
 
     /// <summary>
@@ -39,16 +43,21 @@ public abstract class Card : ScriptableObject
         isConsumed = false;
         cardDealer = dealer;
     }
-    protected virtual void ReturnToCardPool()
+    public virtual void ReturnToCardPool()
     {
-        OnExitSlot();
-        if (!isConsumed)
+        if (!isConsumed){
+            if(slotIndex>=0)
+                CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
             cardDealer.ReturnToCardPool(this);
+            OnExitSlot();
+        }
     }
     public virtual void OnEnterSlot(int slot) {
         slotIndex = slot;
     }
     public void OnExitSlot(){
+        if(slotIndex==-1) Debug.LogError("returning a card that is already returned");
+        if(slotIndex==-1) CardLog.Log($"Error: returning a card that is already returned");
         slotIndex=-1;
     }
     /// <summary>
@@ -90,8 +99,6 @@ public abstract class Card : ScriptableObject
     /// <param name="returnToCardPool"></param>
     /// <returns></returns>
     public Projectile FireCard(bool autoChase, bool returnToCardPool){
-        if(slotIndex>=0)
-            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         Projectile p = CardSlotManager.inst.InstantiateProjectile(this, autoChase);
         if(returnToCardPool)
             ReturnToCardPool();
@@ -130,7 +137,6 @@ public abstract class Card : ScriptableObject
         while(ienum.MoveNext())
             yield return ienum.Current;
 
-        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         ReturnToCardPool();
         yield break;
     }

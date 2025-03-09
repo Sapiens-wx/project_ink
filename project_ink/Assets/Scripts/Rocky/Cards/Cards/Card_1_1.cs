@@ -13,6 +13,7 @@ public class Card_1_1 : Card
     }
     public override void Prep_Discard(List<IEnumerator> actions)
     {
+        CardLog.DiscardCardEffect($"card 1: discarded->auto fire, randomly assign a card to the card slot");
         actions.Add(AutoFire());
         actions.Add(OnDiscardBuffCheck());
         actions.Add(CardSlotManager.inst.AssignCardToSlotRandomly_ienum(slotIndex));

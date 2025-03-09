@@ -65,7 +65,7 @@ public class Buff_ReduceAntic : Buff{
 public class Buff1_4 : Buff
 {
     [HideInInspector] public bool firstCardOfRound;
-    int activateCount=1;
+    int activateCount=0;
     public override void Enable()
     {
         base.Enable();
@@ -85,6 +85,7 @@ public class Buff1_4 : Buff
                 yield return action.Current;
             }
         }
+        CardLog.Buff("1_4: activate the discarded card "+activateCount+" times");
     }
 }
 [System.Serializable]
