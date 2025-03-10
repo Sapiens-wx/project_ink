@@ -2,6 +2,8 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+project_ink/Assets/log.log
+project_ink/Assets/log.log.meta
 /project_ink/[Ll]ibrary/
 /project_ink/[Tt]emp/
 /project_ink/[Oo]bj/

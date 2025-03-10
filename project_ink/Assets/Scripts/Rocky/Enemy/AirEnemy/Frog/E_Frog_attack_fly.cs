@@ -16,5 +16,6 @@ public class E_Frog_attack_fly : StateBase<E_Frog>{
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
         ctrller.rgb.velocity=new Vector2(ctrller.rgb.velocity.x,0);
+        ctrller.UpdateDir();
     }
 }

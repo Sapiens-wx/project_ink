@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Text;
 
 public class CardSlotManager : Singleton<CardSlotManager>
 {
@@ -9,6 +10,11 @@ public class CardSlotManager : Singleton<CardSlotManager>
     [SerializeField] CardInventory inventory;
     [SerializeField] Transform cardSlotGridLayoutGroup,slotPointer;
     [SerializeField] GameObject cardSlotPrefab;
+    /// <summary>
+    /// in degree
+    /// </summary>
+    [Header("Auto Fire")]
+    [SerializeField] float autoFireAngleRange;
     [Header("UI")]
     [SerializeField] ProgressBar anticipationBar;
     public CardTips cardTips;
@@ -21,6 +27,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     //toggle panel
     bool toggle_panel=true;
     float toggle_panel_ypos;
+    private List<Card> autoFireCards, autoActivateCards;
     //-----card effects-----
     public Buff_ReduceAntic buff1_3;
     public Buff1_4 buff1_4;
@@ -37,6 +44,8 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         //toggle card panel
         toggle_panel_ypos=transform.position.y;
+        autoFireCards=new List<Card>();
+        autoActivateCards=new List<Card>();
         InitializeCardSlotUI();
         UpdateBagCards();
     }
@@ -84,8 +93,22 @@ public class CardSlotManager : Singleton<CardSlotManager>
         anticipating=false;
         yield break;
     }
+    public void AddAutoFireCard(Card card){
+        card.ReturnToCardPool();
+        autoFireCards.Add(card);
+    }
+    public void AddActivateCard(Card card){
+        autoActivateCards.Add(card);
+    }
     public void PrepareFire(Vector2 dir){
         if(anticipating) return;
+        CardLog.MouseFire();
+        int cardCnt=0;
+        for(int i=0;i<cardSlots.Length;++i){
+            if(cardSlots[i].card!=null) ++cardCnt;
+        }
+        CardLog.Log($"CNT {cardCnt} {cardDealer.DiscardPileCount()}");
+        if(cardCnt+cardDealer.DiscardPileCount()!=10) Debug.LogError("lost card");
         this.shootDir=dir;
         List<IEnumerator> actions=new List<IEnumerator>();
         cardSlots[curSlot].card.Prep_Fire(actions);
@@ -103,6 +126,23 @@ public class CardSlotManager : Singleton<CardSlotManager>
             }
             yield return new WaitForFixedUpdate();
         }
+        //fire auto fired cards
+        int cardNum=autoFireCards.Count+autoActivateCards.Count;
+        float halfRangeInRad=Mathf.Deg2Rad*autoFireAngleRange*.5f;
+        float deltaTheta=-halfRangeInRad*2/cardNum;
+        Vector2 dir=MathUtil.Rotate(shootDir, halfRangeInRad+deltaTheta/2);
+        foreach(Card card in autoFireCards){
+            Projectile p=card.FireCard(true, false); //don't return it to card pool because this card is already returned to card pool when it is added to autoFiredCards.
+            p.AdjustFlyDir(dir);
+            dir=MathUtil.Rotate(dir,deltaTheta);
+        }
+        foreach(Card card in autoActivateCards){
+            Projectile p=card.FireCard(true, false);
+            p.AdjustFlyDir(dir);
+            dir=MathUtil.Rotate(dir,deltaTheta);
+        }
+        autoFireCards.Clear();
+        autoActivateCards.Clear();
         IncCurSlot();
     }
     /// <summary>
@@ -166,16 +206,15 @@ public class CardSlotManager : Singleton<CardSlotManager>
     {
         if(cardSlots[slot].card!=null){
             Debug.LogError("In assignCardToSlot(), there is already a card in the slot");
+            CardLog.Log($"assign {card.type} to [{slot}], but already has a card");
+            card.ReturnToCardPool();
             return;
-        }
+        } else CardLog.Log($"assign {card.type} to [{slot}]");
         card.OnEnterSlot(slot);
         cardSlots[slot].SetCard_Anim(card);
     }
     public void AssignCardToSlotRandomly(int slotIndex)
     {
-        if(cardSlots[slotIndex].card!=null){
-            return;
-        }
         AssignCardToSlot(slotIndex, cardDealer.GetCard());
     }
     public IEnumerator AssignCardToSlotRandomly_ienum(int slotIndex){
@@ -201,6 +240,16 @@ public class CardSlotManager : Singleton<CardSlotManager>
         if(toggle_panel)
             transform.DOMoveY(toggle_panel_ypos, .3f);
         else transform.DOMoveY(toggle_panel_ypos-550, .3f);
+    }
+    public StringBuilder CurCardSlotState(){
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<cardSlots.Length;++i){
+            if(cardSlots[i].card==null)
+                sb.Append("null | ");
+            else
+                sb.Append(cardSlots[i].card.type+" | ");
+        }
+        return sb;
     }
 }
 
@@ -238,7 +287,9 @@ public class CardDealer
         Card ret = discardCardPile[rd];
         discardCardPile[rd] = discardCardPile[discardCardPile.Count - 1];
         discardCardPile.RemoveAt(discardCardPile.Count - 1);
+        ret.SlotIndex=-2; //-2 means the card is dealt but is not yet assigned to a slot. this is to avoid the case where a card is dealt to a slot, but the slot already has a card, so return the dealt card. if slotIndex==-1, then there will be an error
 
+        CardLog.DealCard(ret);
         return ret;
     }
     public List<Card> GetCards(int num)
@@ -257,6 +308,7 @@ public class CardDealer
     }
     public void ReturnToCardPool(Card card)
     {
+        CardLog.ReturnCard(card);
         discardCardPile.Add(card);
     }
     public void ConsumeCardsOfType(Card.CardType type)
@@ -271,5 +323,8 @@ public class CardDealer
             if (allCards[i].type == type)
                 allCards[i].Consume();
         }
+    }
+    public int DiscardPileCount(){
+        return discardCardPile.Count;
     }
 }

@@ -9,9 +9,9 @@ public abstract class EnemyBase : MonoBehaviour
     [SerializeField] internal int maxHealth;
 
     int curHealth;
-    internal int CurHealth{
+    public int CurHealth{
         get=>curHealth;
-        set{
+        protected set{
             curHealth=value;
             if(curHealth<=0)
                 Die();
@@ -42,7 +42,13 @@ public abstract class EnemyBase : MonoBehaviour
     /// called when the enemy gets hit.
     /// </summary>
     public virtual void OnHit(Projectile proj){
-        CurHealth-=proj.damage;
+        OnDamaged(proj.damage);
+    }
+    public virtual void OnDamaged(int damage){
+        CurHealth-=damage;
+    }
+    public virtual void OnHealed(int amount){
+        CurHealth+=amount;
     }
     public void Die(){
         if(PlanetVisualizer.inst.uranusesDict.ContainsKey(this))

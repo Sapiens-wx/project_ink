@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public Animator swordAnimator;
     public BoxCollider2D bc;
     public SpriteRenderer spr;
     public float gravity, maxFallSpd;
@@ -29,6 +28,8 @@ public class PlayerCtrl : MonoBehaviour
     public Vector2 leftTop;
     public Vector2 rightTop;
     [Header("Hit")]
+    [SerializeField] ProgressBar healthBar;
+    [SerializeField] int maxHealth;
     public float invincibleTime;
     public float hitAnimDuration, counterAnimDuration;
     public float timeStopInterval;
@@ -37,25 +38,26 @@ public class PlayerCtrl : MonoBehaviour
     [HideInInspector] public Animator animator;
 
     //inputs
-    [HideInInspector] public int inputx;
+    [NonSerialized][HideInInspector] public int inputx;
 
     [HideInInspector] public static PlayerCtrl inst;
-    [HideInInspector] public Vector2 v; //velocity
-    [HideInInspector] public bool hittable;
-    [HideInInspector] public bool onGround, prevOnGround;
-    [HideInInspector] public float jumpKeyDown, lastJumpKeyDown, secondToLastJumpKeyDown; //jumpKeyDown will be set to -100 when detected. lastJumpKeyDown stores the last JumpKeyDown time. (before setting jumpKeyDown to -100, jumpKeyDown=lastJumpKeyDown)
-    [HideInInspector] public bool jumpKeyUp;
-    [HideInInspector] public float onGroundTime; //onGroundTime is used for coyote time
-    [HideInInspector] public bool dashing, canDash;
-    [HideInInspector] public float dashKeyDown, allowDashTime;
-    [HideInInspector] public int dashDir;
-    [HideInInspector] public float yspd;
-    [HideInInspector] public int dir;
-    [HideInInspector] public MaterialPropertyBlock matPB;
-    [HideInInspector] public Sequence hitAnim, invincibleAnim;
-    [HideInInspector] public Collider2D hitBy;
-    [HideInInspector] public Vector2 mouseWorldPos;
-    [HideInInspector] public Camera mainCam;
+    private int hp;
+    [NonSerialized][HideInInspector] public Vector2 v; //velocity
+    [NonSerialized][HideInInspector] public bool hittable;
+    [NonSerialized][HideInInspector] public bool onGround, prevOnGround;
+    [NonSerialized][HideInInspector] public float jumpKeyDown, lastJumpKeyDown, secondToLastJumpKeyDown; //jumpKeyDown will be set to -100 when detected. lastJumpKeyDown stores the last JumpKeyDown time. (before setting jumpKeyDown to -100, jumpKeyDown=lastJumpKeyDown)
+    [NonSerialized][HideInInspector] public bool jumpKeyUp;
+    [NonSerialized][HideInInspector] public float onGroundTime; //onGroundTime is used for coyote time
+    [NonSerialized][HideInInspector] public bool dashing, canDash;
+    [NonSerialized][HideInInspector] public float dashKeyDown, allowDashTime;
+    [NonSerialized][HideInInspector] public int dashDir;
+    [NonSerialized][HideInInspector] public float yspd;
+    [NonSerialized][HideInInspector] public int dir;
+    [NonSerialized][HideInInspector] public MaterialPropertyBlock matPB;
+    [NonSerialized][HideInInspector] public Sequence hitAnim, invincibleAnim;
+    [NonSerialized][HideInInspector] public Collider2D hitBy;
+    [NonSerialized][HideInInspector] public Vector2 mouseWorldPos;
+    [NonSerialized][HideInInspector] public Camera mainCam;
     //ignore collision
     [NonSerialized] public List<Collider2D> ignoredColliders;
     //read input
@@ -70,6 +72,14 @@ public class PlayerCtrl : MonoBehaviour
             }
         }
     }
+    public int Health{
+        get=>hp;
+        set{
+            hp=value;
+            if(hp<0) hp=0;
+            healthBar.SetProgress((float)hp/maxHealth);
+        }
+    }
     public event Action<Collider2D> onPlayerHit;
     public int Dir{
         get=>dir;
@@ -81,6 +91,10 @@ public class PlayerCtrl : MonoBehaviour
             leftBot.x*=-1;
             rightBot.x*=-1;
             transform.localScale=new Vector3(dir,1,1);
+            //not to flip the healthBar
+            Vector3 localScale=healthBar.transform.localScale;
+            localScale.x=dir==1?Mathf.Abs(localScale.x):-Mathf.Abs(localScale.x);
+            healthBar.transform.localScale=localScale;
             return;
         }
     }
@@ -106,6 +120,7 @@ public class PlayerCtrl : MonoBehaviour
 
         readInput=true;
         hittable=true;
+        Health=maxHealth;
         Dir=-1;
         jumpKeyDown=-100;
         lastJumpKeyDown=-100;
@@ -217,12 +232,19 @@ public class PlayerCtrl : MonoBehaviour
         yield return new WaitForSecondsRealtime(sec);
         Time.timeScale=1;
     }
+    void OnPlayerHit(Collider2D collider){
+        EnemyBulletBase bullet=collider.GetComponent<EnemyBulletBase>();
+        if(bullet!=null){
+            Health-=bullet.damage;
+        }
+    }
     void OnTriggerStay2D(Collider2D collider){
         //if is enemy, player is hit
         if(hittable && GameManager.IsLayer(GameManager.inst.enemyBulletLayer, collider.gameObject.layer)){ 
             PlayerCtrl.inst.animator.SetTrigger("hit");
             hitBy=collider;
             onPlayerHit?.Invoke(collider);
+            OnPlayerHit(collider);
         }
     }
     /// <summary>

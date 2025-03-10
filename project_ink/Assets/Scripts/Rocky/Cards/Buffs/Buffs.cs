@@ -65,9 +65,11 @@ public class Buff_ReduceAntic : Buff{
 public class Buff1_4 : Buff
 {
     [HideInInspector] public bool firstCardOfRound;
+    int activateCount=0;
     public override void Enable()
     {
         base.Enable();
+        activateCount++;
     }
     public override void Disable()
     {
@@ -78,9 +80,12 @@ public class Buff1_4 : Buff
         if(!firstCardOfRound) yield break;
         Activated();
         firstCardOfRound=false;
-        while(action.MoveNext()){
-            yield return action.Current;
+        for(int i=0;i<activateCount;++i){
+            while(action.MoveNext()){
+                yield return action.Current;
+            }
         }
+        CardLog.Buff("1_4: activate the discarded card "+activateCount+" times");
     }
 }
 [System.Serializable]
@@ -95,7 +100,7 @@ public class Buff1_5 : Buff{
         for(int i=0;i<shootCount;++i){
             Activated();
             yield return new WaitForSeconds(0.3f);
-            CardSlotManager.inst.InstantiateProjectile(2, true).gameObject.name="buff 5";
+            CardSlotManager.inst.InstantiateProjectile(3, true).gameObject.name="buff 5";
         }
     }
     public void Activate(){
@@ -114,6 +119,7 @@ public class Buff1_5 : Buff{
     }
 }
 
+//行星环绕效果的Effects
 [System.Serializable]
 public class PlanetBuff : Buff{
     IEnumerator DelayShoot(int shootCount){
@@ -125,8 +131,10 @@ public class PlanetBuff : Buff{
     //dec anticipation by 20%
     public float Mercury(float anticipation){
         if(PlanetManager.inst.HasPlanet(PlanetType.Mercury)){
+            bool hasSaturn=PlanetManager.inst.HasPlanet(PlanetType.Saturn);
+            CardLog.PlanetOrbitEffect("Mercury: decrease anticipation by 20%", hasSaturn);
             //saturn effect
-            if(PlanetManager.inst.HasPlanet(PlanetType.Saturn))
+            if(hasSaturn)
                 return anticipation*.6f;
             else
                 return anticipation*.8f;
@@ -136,22 +144,26 @@ public class PlanetBuff : Buff{
     //auto shoot a 1-damage card for every damage card shot
     public void Venus(Card cardShot, List<IEnumerator> actions){
         if(PlanetManager.inst.HasPlanet(PlanetType.Venus) && cardShot.damage>0){
+            bool hasSaturn=PlanetManager.inst.HasPlanet(PlanetType.Saturn);
+            CardLog.PlanetOrbitEffect("Venus: auto shoot a 1-damage card for every damage card shot", hasSaturn);
             //saturn effect
-            if(PlanetManager.inst.HasPlanet(PlanetType.Saturn))
+            if(hasSaturn)
                 actions.Add(DelayShoot(2));
             else
                 actions.Add(DelayShoot(1));
         }
     }
     public void Uranus(){
+        bool hasSaturn=PlanetManager.inst.HasPlanet(PlanetType.Saturn);
+        CardLog.PlanetOrbitEffect("Uranus: charge 1", hasSaturn);
         //saturn effect
-        if(PlanetManager.inst.HasPlanet(PlanetType.Saturn)){
+        if(hasSaturn){
             foreach(Uranus u in PlanetVisualizer.inst.uranuses)
-                u.charge+=6;
+                u.charge+=2;
         }
         else{
             foreach(Uranus u in PlanetVisualizer.inst.uranuses)
-                u.charge+=3;
+                u.charge+=1;
         }
     }
     int marsEffectCounter=0;
@@ -163,8 +175,10 @@ public class PlanetBuff : Buff{
         if(PlanetManager.inst.HasPlanet(PlanetType.Mars) && cardShot.damage>0){
             if(marsEffectCounter>3){
                 marsEffectCounter=0;
+                bool hasSaturn=PlanetManager.inst.HasPlanet(PlanetType.Saturn);
+                CardLog.PlanetOrbitEffect("Mars: activate the next damage card for every 3 damage card shot.",hasSaturn);
                 //saturn effect
-                if(PlanetManager.inst.HasPlanet(PlanetType.Saturn))
+                if(hasSaturn)
                     actions.Add(cardShot.Activate());
                 actions.Add(cardShot.Activate());
             }
@@ -180,27 +194,33 @@ public class PlanetBuff : Buff{
         if(PlanetManager.inst.HasPlanet(PlanetType.Jupiter)){
             if(jupiterEffectCounter>2){
                 jupiterEffectCounter=0;
+                bool hasSaturn=PlanetManager.inst.HasPlanet(PlanetType.Saturn);
+                CardLog.PlanetOrbitEffect("Jupiter: auto fire the next card in discard pile for every 3 cards shot", hasSaturn);
                 //saturn effect
-                if(PlanetManager.inst.HasPlanet(PlanetType.Saturn))
+                if(hasSaturn)
                     actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
                 actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
             }
             ++jupiterEffectCounter;
         }
     }
+    //destroy the closest planet and double activate its effect
     public void Earth(){
         Planet planet=PlanetManager.inst.RandomPlanet();
         if(planet!=null){
+            CardLog.PlanetOrbitEffect("Earth: destroy the closest planet and double activate its effect",false);
+            CardLog.Indent();
             //double activate the planet
             planet.DoubleActivate();
             //destroy the planet
             PlanetManager.inst.RemovePlanet(planet);
+            CardLog.UnIndent();
         }
     }
 }
 
 /// <summary>
-/// deal a 3-damage card after the next 3 cards are dealt
+/// Venus: deal a 2-damage card every 3 cards are shot
 /// </summary>
 [System.Serializable]
 public class BuffP_3 : Buff{
@@ -210,12 +230,12 @@ public class BuffP_3 : Buff{
     {
         base.Enable();
         count=3;
-        damage=3;
+        damage=2;
     }
     public void DoubleEnable()
     {
         Enable();
-        damage=6;
+        damage=4;
     }
     IEnumerator DelayShoot(){
 		yield return new WaitForSeconds(0.3f);
@@ -228,6 +248,7 @@ public class BuffP_3 : Buff{
             --count;
         }
         actions.Add(DelayShoot());
+        CardLog.ActivatePlanetEffect("Venus: deal a 2-damage card every 3 cards are shot", damage/3==2);
         if(count==0){
             Disable();
         }
@@ -263,11 +284,12 @@ public class BuffP_5 : Buff{
         actions.Add(cardShot.Activate());
         if(doubleActivate)
             actions.Add(cardShot.Activate());
+        CardLog.ActivatePlanetEffect("Mars: activate next two damage card when shot", doubleActivate);
     }
 }
 
 /// <summary>
-/// Sun activation effect:
+/// Sun: destroy all planets of sun, then shoot a 5*n damage fire ball
 /// </summary>
 [System.Serializable]
 public class BuffP_6 : Buff{
@@ -300,6 +322,7 @@ public class BuffP_7 : Buff{
             actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
             actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
         }
+        CardLog.ActivatePlanetEffect("Jupiter: auto fire the next two cards in the discard pile", doubleActivate);
         Disable();
     }
 }
@@ -312,6 +335,8 @@ public class BuffP_8 : Buff{
     public void Activate(bool doubleActivate=false){
         if(PlanetManager.inst.sun!=null)
             PlanetManager.inst.sun.charge+=3;
+        CardLog.ActivatePlanetEffect("Saturn activation effect: randomly activates three planet effects", doubleActivate);
+        CardLog.Indent();
         for(int i=doubleActivate?6:3;i>0;--i){
             switch(UnityEngine.Random.Range(1,9)){
                 //TODO: fill in the effects for saturn activation effect
@@ -346,5 +371,6 @@ public class BuffP_8 : Buff{
                     break;
             }
         }
+        CardLog.UnIndent();
     }
 }

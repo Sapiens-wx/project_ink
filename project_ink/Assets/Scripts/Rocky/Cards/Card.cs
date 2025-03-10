@@ -10,6 +10,7 @@ public abstract class Card : ScriptableObject
     [TextArea] public string description;
     public int damage;
     public float anticipation, recovery;
+    [TextArea] public string explanation;
 
     //Runtime variables
     /// <summary>
@@ -28,6 +29,10 @@ public abstract class Card : ScriptableObject
     /// index in CardSlotManager.cardSlots if applicable
     /// </summary>
     protected int slotIndex;
+    public int SlotIndex{
+        set=>slotIndex=value;
+        get=>slotIndex;
+    }
     private float anticipation_backup;
 
     /// <summary>
@@ -38,16 +43,21 @@ public abstract class Card : ScriptableObject
         isConsumed = false;
         cardDealer = dealer;
     }
-    protected virtual void ReturnToCardPool()
+    public virtual void ReturnToCardPool()
     {
-        OnExitSlot();
-        if (!isConsumed)
+        if (!isConsumed){
+            if(slotIndex>=0)
+                CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
             cardDealer.ReturnToCardPool(this);
+            OnExitSlot();
+        }
     }
     public virtual void OnEnterSlot(int slot) {
         slotIndex = slot;
     }
     public void OnExitSlot(){
+        if(slotIndex==-1) Debug.LogError("returning a card that is already returned");
+        if(slotIndex==-1) CardLog.Log($"Error: returning a card that is already returned");
         slotIndex=-1;
     }
     /// <summary>
@@ -82,21 +92,36 @@ public abstract class Card : ScriptableObject
     public virtual void Prep_Discard(List<IEnumerator> actions){
         actions.Add(Discard());
     }
+    /// <summary>
+    /// fired and auto fired card returns to card pool. activated card does not
+    /// </summary>
+    /// <param name="autoChase"></param>
+    /// <param name="returnToCardPool"></param>
+    /// <returns></returns>
+    public Projectile FireCard(bool autoChase, bool returnToCardPool){
+        Projectile p = CardSlotManager.inst.InstantiateProjectile(this, autoChase);
+        if(returnToCardPool)
+            ReturnToCardPool();
+        return p;
+    }
     internal IEnumerator Fire(){
-        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.inst.InstantiateProjectile(this, false);
-        ReturnToCardPool();
+        CardLog.LogFire(this);
+        FireCard(false, true);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator AutoFire(){
-        if(slotIndex>=0)
-            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
-        CardSlotManager.inst.InstantiateProjectile(this, true);
-        ReturnToCardPool();
+        CardLog.LogAutoFire(this);
+        if(group==CardGroup.Discard)
+            CardSlotManager.inst.AddAutoFireCard(this);
+        else
+            FireCard(true, true);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator Activate(){
-        CardSlotManager.inst.InstantiateProjectile(this, true);
+        if(group==CardGroup.Discard)
+            CardSlotManager.inst.AddActivateCard(this);
+        else
+            FireCard(true, false);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator OnDiscardBuffCheck(){
@@ -112,7 +137,6 @@ public abstract class Card : ScriptableObject
         while(ienum.MoveNext())
             yield return ienum.Current;
 
-        CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         ReturnToCardPool();
         yield break;
     }
@@ -126,9 +150,11 @@ public abstract class Card : ScriptableObject
         card.anticipation=anticipation;
         card.recovery=recovery;
         card.description=description;
+        card.explanation=explanation;
     }
     public enum CardType
     {
+        //discard
         Card_1_1,
         Card_1_2,
         Card_1_3,
@@ -136,7 +162,7 @@ public abstract class Card : ScriptableObject
         Card_1_5,
         Card_1_6,
         Card_1_7,
-
+        //planet
         Card_P_Earth,
         Card_P_Mercury,
         Card_P_Venus,
@@ -145,11 +171,16 @@ public abstract class Card : ScriptableObject
         Card_P_Sun,
         Card_P_Jupiter,
         Card_P_Saturn,
+        //normal
+        Card_N_Dmg1,
+        Card_N_Dmg2,
+        Card_N_Discard,
 
         Card_MaxCount
     }
     public enum CardGroup{
         Discard,
-        Planet
+        Planet,
+        Normal
     }
 }

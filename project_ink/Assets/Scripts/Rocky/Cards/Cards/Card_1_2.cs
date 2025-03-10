@@ -21,5 +21,6 @@ public class Card_1_2 : Card
                 CardSlotManager.inst.cardSlots[i].card.Prep_Discard(actions);
             }
         }
+        CardLog.DiscardCardEffect("Card2: discard the next 2 cards");
     }
 }

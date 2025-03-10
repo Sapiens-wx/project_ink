@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class StateBase<T> : StateMachineBehaviour where T : EnemyBase
+public abstract class StateBase<T> : StateMachineBehaviour where T : MonoBehaviour
 {
     internal T ctrller;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

@@ -27,13 +27,8 @@ public class PlanetManager:MonoBehaviour{
         Planet planet=Planet.FromType(planetType);
         mask|=(int)planetType;
 
-StringBuilder sb=new StringBuilder();
         int idx=-1, nullIdx=-1;
         for(int i=0;i<planets.Length;++i){
-            if(planets[i]==null)
-                sb.Append($"i={i}, planets[i]=null\n");
-            else
-                sb.Append($"i={i}, planets[i]={planets[i].type}\n");
             //find the first null slot
             if(planets[i]==null){
                 if(nullIdx==-1)
