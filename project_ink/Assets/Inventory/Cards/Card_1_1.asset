@@ -20,3 +20,6 @@ MonoBehaviour:
   damage: 3
   anticipation: 0.5
   recovery: 0.1
+  explanation: '123
+
+    ABC'
