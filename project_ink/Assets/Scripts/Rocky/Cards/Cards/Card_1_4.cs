@@ -11,10 +11,9 @@ public class Card_1_4 : Card
         CopyTo(ret);
         return ret;
     }
-    public override void Prep_Fire(List<IEnumerator> actions)
+    public override void Prep_Discard(List<IEnumerator> actions)
     {
-        Consume();
+        base.Prep_Discard(actions);
         CardSlotManager.inst.buff1_4.Enable();
-        base.Prep_Fire(actions);
     }
 }

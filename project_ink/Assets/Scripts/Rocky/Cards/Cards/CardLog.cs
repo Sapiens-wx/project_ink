@@ -4,15 +4,18 @@ using System.Text;
 
 public class CardLog : Singleton<CardLog>{
     public string path;
-    [TextArea] public string log;
+    public bool log;
     StringBuilder sb;
     int indent;
-    void Start(){
+    internal override void Awake()
+    {
+        base.Awake();
         sb=new StringBuilder();
         indent=0;
     }
     void OnDisable(){
-        Write();
+        if(log)
+            Write();
     }
     public static void Indent(){
         ++inst.indent;
@@ -26,11 +29,20 @@ public class CardLog : Singleton<CardLog>{
     public static void LogAutoFire(Card card){
         Log($"A {card.type}, Dmg={card.damage}");
     }
-    public static void Log(string msg){
+    private static void _Log(string msg){
         for(int i=0;i<inst.indent;++i)
             inst.sb.Append("    ");
         inst.sb.Append(msg);
         inst.sb.Append('\n');
+    }
+    public static void Log(string msg){
+        if(inst.log){
+            LogCurCardSlotState();
+            _Log(msg);
+        }
+    }
+    public static void LogCurCardSlotState(){
+        _Log("CS: "+CardSlotManager.inst.CurCardSlotState());
     }
     public static void MouseFire(){
         Log("-----Mouse Click-----");
@@ -52,6 +64,18 @@ public class CardLog : Singleton<CardLog>{
             Log("Double Orbit Effect "+msg);
         else
             Log("Orbit Effect "+msg);
+    }
+    public static void DiscardCardEffect(string msg){
+        Log("E" + msg);
+    }
+    public static void Buff(string msg){
+        Log("B "+msg);
+    }
+    public static void DealCard(Card card){
+        Log("D "+card.type);
+    }
+    public static void ReturnCard(Card card){
+        Log("R "+card.type);
     }
     public void Write()
     {

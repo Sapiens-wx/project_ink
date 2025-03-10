@@ -22,6 +22,7 @@ public class Card_1_3 : Card
             if(CardSlotManager.inst.cardSlots[i].card!=null)
                 CardSlotManager.inst.cardSlots[i].card.Prep_Discard(actions);
         }
+        CardLog.DiscardCardEffect("Card3: discard the next 2 cards");
     }
     IEnumerator Effect(){
         CardSlotManager.inst.buff1_3.Enable(3, .5f);

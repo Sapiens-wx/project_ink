@@ -65,9 +65,11 @@ public class Buff_ReduceAntic : Buff{
 public class Buff1_4 : Buff
 {
     [HideInInspector] public bool firstCardOfRound;
+    int activateCount=0;
     public override void Enable()
     {
         base.Enable();
+        activateCount++;
     }
     public override void Disable()
     {
@@ -78,9 +80,12 @@ public class Buff1_4 : Buff
         if(!firstCardOfRound) yield break;
         Activated();
         firstCardOfRound=false;
-        while(action.MoveNext()){
-            yield return action.Current;
+        for(int i=0;i<activateCount;++i){
+            while(action.MoveNext()){
+                yield return action.Current;
+            }
         }
+        CardLog.Buff("1_4: activate the discarded card "+activateCount+" times");
     }
 }
 [System.Serializable]
@@ -95,7 +100,7 @@ public class Buff1_5 : Buff{
         for(int i=0;i<shootCount;++i){
             Activated();
             yield return new WaitForSeconds(0.3f);
-            CardSlotManager.inst.InstantiateProjectile(2, true).gameObject.name="buff 5";
+            CardSlotManager.inst.InstantiateProjectile(3, true).gameObject.name="buff 5";
         }
     }
     public void Activate(){
@@ -150,15 +155,15 @@ public class PlanetBuff : Buff{
     }
     public void Uranus(){
         bool hasSaturn=PlanetManager.inst.HasPlanet(PlanetType.Saturn);
-        CardLog.PlanetOrbitEffect("Uranus: charge 3", hasSaturn);
+        CardLog.PlanetOrbitEffect("Uranus: charge 1", hasSaturn);
         //saturn effect
         if(hasSaturn){
             foreach(Uranus u in PlanetVisualizer.inst.uranuses)
-                u.charge+=6;
+                u.charge+=2;
         }
         else{
             foreach(Uranus u in PlanetVisualizer.inst.uranuses)
-                u.charge+=3;
+                u.charge+=1;
         }
     }
     int marsEffectCounter=0;
@@ -215,7 +220,7 @@ public class PlanetBuff : Buff{
 }
 
 /// <summary>
-/// Venus: deal a 3-damage card every 3 cards are shot
+/// Venus: deal a 2-damage card every 3 cards are shot
 /// </summary>
 [System.Serializable]
 public class BuffP_3 : Buff{
@@ -225,12 +230,12 @@ public class BuffP_3 : Buff{
     {
         base.Enable();
         count=3;
-        damage=3;
+        damage=2;
     }
     public void DoubleEnable()
     {
         Enable();
-        damage=6;
+        damage=4;
     }
     IEnumerator DelayShoot(){
 		yield return new WaitForSeconds(0.3f);
@@ -243,7 +248,7 @@ public class BuffP_3 : Buff{
             --count;
         }
         actions.Add(DelayShoot());
-        CardLog.ActivatePlanetEffect("Venus: deal a 3-damage card every 3 cards are shot", damage/3==2);
+        CardLog.ActivatePlanetEffect("Venus: deal a 2-damage card every 3 cards are shot", damage/3==2);
         if(count==0){
             Disable();
         }

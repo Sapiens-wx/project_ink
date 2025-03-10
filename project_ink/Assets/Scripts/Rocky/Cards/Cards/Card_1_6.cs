@@ -23,5 +23,6 @@ public class Card_1_6 : Card
         for(int i=slotIndex+1;i<n;++i){
             actions.Add(CardSlotManager.inst.AssignCardToSlotRandomly_ienum(i));
         }
+        CardLog.DiscardCardEffect("Card6: discard next 3 cards, deal 3 cards");
     }
 }
