@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 8
   group: 0
-  image: {fileID: 21300000, guid: 1e41eae9c2e720a4586c5168a8d8da0d, type: 3}
+  image: {fileID: 21300000, guid: faaa9797046356a4592bc5004f59e28f, type: 3}
   description: 'Deal 1 damage, if hit an enemy, generate Mercury. Mercury Oritbit:
     reduce all cards'' 20% prepartion time. Trigger: reduce 60% prepartion time of
     next three cards.'
   damage: 1
   anticipation: 0.6
   recovery: 0.2
+  explanation: 
   planetType: 2

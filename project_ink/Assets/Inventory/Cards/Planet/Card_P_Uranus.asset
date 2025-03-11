@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 10
   group: 0
-  image: {fileID: 21300000, guid: 82be7d227ef2791499ad05554c46d372, type: 3}
+  image: {fileID: 21300000, guid: ad7ca1ef73500af4ca093369d1e01d6c, type: 3}
   description: 'Deal 1 damage, If hit an enemy, generate Uranus. Uranus orbit enemy.
     Uranus Orbit: whenever the player triggers a plannet, store 3 damage. Trigger:
     Deal 3 * n damage to the orbited enemy (n = stored damage).'
   damage: 3
   anticipation: 0.6
   recovery: 0.2
+  explanation: 

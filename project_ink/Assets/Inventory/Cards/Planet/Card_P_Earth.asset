@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 13
   group: 0
-  image: {fileID: 21300000, guid: f6a3efae771cc0e46a1718343de2cde9, type: 3}
+  image: {fileID: 21300000, guid: 72abb497720f0284794c837d0604c209, type: 3}
   description: Trigger your oldest planet's effect twice.
   damage: 1
   anticipation: 0.6
   recovery: 0.2
+  explanation: 
   planetType: 64
