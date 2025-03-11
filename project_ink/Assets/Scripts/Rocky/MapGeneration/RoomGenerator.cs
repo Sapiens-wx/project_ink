@@ -621,6 +621,7 @@ public enum RoomType
 
     OnlySizeInfo=0b111111000000000000,
     OnlyDoorsInfo=0b111111111111,
+    Error=0
 }
 public class Room
 {
@@ -771,7 +772,7 @@ public class Room
         doors[2] = new Door(this, 2, x + randomNum, y - 1, (w << 1) + h - 1 - randomNum);
         randomNum = UnityEngine.Random.Range(0, h);
         doors[3] = new Door(this, 3, x - 1, y + randomNum, (w << 1) + h + randomNum);
-        //ÏÈremove [except], ÔÙËæ»úremoveÒ»¸öÃÅ£¬ÒòÎªÒ»¸ö·¿¼ä×î¶àÈý¸öÃÅ
+        //ï¿½ï¿½remove [except], ï¿½ï¿½ï¿½ï¿½ï¿½removeÒ»ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ÎªÒ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         this.doors = DeleteFromArray(DeleteFromArray(doors, except), UnityEngine.Random.Range(0, 3));
         return this.doors;
     }
