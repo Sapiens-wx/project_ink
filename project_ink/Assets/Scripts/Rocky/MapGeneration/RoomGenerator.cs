@@ -11,6 +11,8 @@ public class RoomGenerator : MonoBehaviour
 {
     [Header("Debug")]
     public int testTimes;
+    [Header("Configs")]
+    public bool generateBossRoom;
     [Header("Generate HUD Map")]
     public GameObject img_prefab;
     public Sprite spr_room1x1, spr_room1x2, spr_room2x1, spr_room2x2, spr_roomBoss;
@@ -27,7 +29,7 @@ public class RoomGenerator : MonoBehaviour
     /// <summary>
     /// the width of a 1x1 room
     /// </summary>
-    public float roomSceneWidth;
+    public float roomSceneWidth, roomSceneHeight;
     /// <summary>
     /// parent of the room gameobects
     /// </summary>
@@ -214,7 +216,7 @@ public class RoomGenerator : MonoBehaviour
             List<GameObject> roomPrefabs = GetRoomPrefabs(curRoom);
             GameObject roomScene = Instantiate(roomPrefabs[UnityEngine.Random.Range(0, roomPrefabs.Count)], roomSceneParent); //randomly selected one
             roomScene.name = $"{curRoom.w}x{curRoom.h} ({curRoom.x},{curRoom.y})";
-            roomScene.transform.position = new Vector3(curRoom.x * roomSceneWidth, curRoom.y * roomSceneWidth, 0);
+            roomScene.transform.position = new Vector3(curRoom.x * roomSceneWidth, curRoom.y * roomSceneHeight, 0);
             needsToBeCenteredObjects.Add(roomScene.transform);
             center += roomScene.transform.position; //add this room's position to center (Vector3), then calculate actual center after the loop
             for(int i = 0; i < curRoom.children.Length; ++i)
@@ -328,7 +330,7 @@ public class RoomGenerator : MonoBehaviour
             --totalCount;
             RandomlyEnqueue(q, selectedRoom.GenerateDoorsRandomly(position.z));
         }
-        if(!GenerateBossRoom(roomGrid, q))
+        if(generateBossRoom && !GenerateBossRoom(roomGrid, q))
             root = GenerateRoom();
         return root;
     }

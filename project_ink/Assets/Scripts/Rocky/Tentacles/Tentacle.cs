@@ -7,10 +7,12 @@ using UnityEngine;
 public class Tentacle : MonoBehaviour
 {
     public LineRenderer line;
+    public Transform anchorParent;
     //first point is the origin
     public Transform[] anchors;
-    public float len_idle,len_attack;
+    public float maxLength,len_idle,len_attack;
 
+    Animator animator;
     [NonSerialized][HideInInspector] public float len;
     void OnValidate(){
         UpdateLine();
@@ -18,9 +20,30 @@ public class Tentacle : MonoBehaviour
     void Start()
     {
         len=len_idle;
+        animator=GetComponent<Animator>();
     }
     void FixedUpdate(){
         UpdateLine();
+    }
+    void Update(){
+        if(Input.GetMouseButtonDown(0)){
+            Attack(PlayerCtrl.inst.mouseWorldPos);
+        }
+    }
+    public void Attack(Vector2 point){
+        Vector2 dir=point-(Vector2)anchors[0].transform.position;
+        float length=Mathf.Min(dir.magnitude,maxLength);
+        dir/=length;
+        if(point.x<anchors[0].position.x){
+            dir=MathUtil.Rotate(dir, -Mathf.PI/2);
+            anchorParent.localScale=new Vector3(1,1,1);
+        } else{
+            dir=MathUtil.Rotate(dir, Mathf.PI/2);
+            anchorParent.localScale=new Vector3(-1,1,1);
+        }
+        animator.SetTrigger("attack");
+        len_attack=length;
+        anchorParent.eulerAngles=new Vector3(0,0,Vector2.SignedAngle(Vector2.up, dir));
     }
     Vector3[] ToVectors(float length){
         Vector3[] res=new Vector3[anchors.Length];
