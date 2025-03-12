@@ -11,6 +11,8 @@ public class RoomGenerator : MonoBehaviour
 {
     [Header("Debug")]
     public int testTimes;
+    [Header("Configs")]
+    public bool generateBossRoom;
     [Header("Generate HUD Map")]
     public GameObject img_prefab;
     public Sprite spr_room1x1, spr_room1x2, spr_room2x1, spr_room2x2, spr_roomBoss;
@@ -27,7 +29,7 @@ public class RoomGenerator : MonoBehaviour
     /// <summary>
     /// the width of a 1x1 room
     /// </summary>
-    public float roomSceneWidth;
+    public float roomSceneWidth, roomSceneHeight;
     /// <summary>
     /// parent of the room gameobects
     /// </summary>
@@ -214,7 +216,7 @@ public class RoomGenerator : MonoBehaviour
             List<GameObject> roomPrefabs = GetRoomPrefabs(curRoom);
             GameObject roomScene = Instantiate(roomPrefabs[UnityEngine.Random.Range(0, roomPrefabs.Count)], roomSceneParent); //randomly selected one
             roomScene.name = $"{curRoom.w}x{curRoom.h} ({curRoom.x},{curRoom.y})";
-            roomScene.transform.position = new Vector3(curRoom.x * roomSceneWidth, curRoom.y * roomSceneWidth, 0);
+            roomScene.transform.position = new Vector3(curRoom.x * roomSceneWidth, curRoom.y * roomSceneHeight, 0);
             needsToBeCenteredObjects.Add(roomScene.transform);
             center += roomScene.transform.position; //add this room's position to center (Vector3), then calculate actual center after the loop
             for(int i = 0; i < curRoom.children.Length; ++i)
@@ -328,7 +330,7 @@ public class RoomGenerator : MonoBehaviour
             --totalCount;
             RandomlyEnqueue(q, selectedRoom.GenerateDoorsRandomly(position.z));
         }
-        if(!GenerateBossRoom(roomGrid, q))
+        if(generateBossRoom && !GenerateBossRoom(roomGrid, q))
             root = GenerateRoom();
         return root;
     }
@@ -621,6 +623,7 @@ public enum RoomType
 
     OnlySizeInfo=0b111111000000000000,
     OnlyDoorsInfo=0b111111111111,
+    Error=0
 }
 public class Room
 {
@@ -771,7 +774,7 @@ public class Room
         doors[2] = new Door(this, 2, x + randomNum, y - 1, (w << 1) + h - 1 - randomNum);
         randomNum = UnityEngine.Random.Range(0, h);
         doors[3] = new Door(this, 3, x - 1, y + randomNum, (w << 1) + h + randomNum);
-        //ÏÈremove [except], ÔÙËæ»úremoveÒ»¸öÃÅ£¬ÒòÎªÒ»¸ö·¿¼ä×î¶àÈý¸öÃÅ
+        //ï¿½ï¿½remove [except], ï¿½ï¿½ï¿½ï¿½ï¿½removeÒ»ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ÎªÒ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         this.doors = DeleteFromArray(DeleteFromArray(doors, except), UnityEngine.Random.Range(0, 3));
         return this.doors;
     }

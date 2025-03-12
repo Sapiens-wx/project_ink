@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 9
   group: 0
-  image: {fileID: 21300000, guid: 1e41eae9c2e720a4586c5168a8d8da0d, type: 3}
+  image: {fileID: 21300000, guid: a6262f80b18a2e74c8d259b5240bb1a3, type: 3}
   description: 'Deal 1 damage, if hit an enemy, generate Venus. Venus Orbit: whenever
     the player plays a damage card, fire a homing projectile dealing 1 damage. Trigger:
     fires a homing projectile dealing 2 damage for the next three attack card the
@@ -22,4 +22,5 @@ MonoBehaviour:
   damage: 1
   anticipation: 0.6
   recovery: 0.2
+  explanation: 
   planetType: 4

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 15
   group: 2
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 6ef3bffcab7e2bf41a51a29df358e233, type: 3}
   description: Deal 1 damage.
   damage: 1
   anticipation: 0.5
   recovery: 0.1
+  explanation: 

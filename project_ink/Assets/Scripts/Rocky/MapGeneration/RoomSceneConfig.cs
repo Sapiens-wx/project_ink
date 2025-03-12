@@ -42,7 +42,10 @@ public class RoomSceneConfig : ScriptableObject
         roomPrefabs_dictionary = new Dictionary<RoomType, List<GameObject>>(roomPrefabs_arrayList.Count);
         foreach(Element element in roomPrefabs_arrayList)
         {
-            roomPrefabs_dictionary.Add(element.roomType, element.prefabs);
+            if(roomPrefabs_dictionary.ContainsKey(element.roomType))
+                roomPrefabs_dictionary[element.roomType].AddRange(element.prefabs);
+            else
+                roomPrefabs_dictionary.Add(element.roomType, element.prefabs);
         }
     }
 }

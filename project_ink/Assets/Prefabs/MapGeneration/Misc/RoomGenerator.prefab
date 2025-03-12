@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6413988392005622924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3112433836613801001}
+  - component: {fileID: 4829192148364662140}
+  - component: {fileID: 2073675887849313878}
+  m_Layer: 0
+  m_Name: RoomGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3112433836613801001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6413988392005622924}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4829192148364662140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6413988392005622924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19ee1f78c0a6fbc44a101e29d8663805, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridWidth: 12
+  gridHeight: 12
+  mapConfig: {fileID: 11400000, guid: 94ef36644c6841544a5664d6c31d3c9e, type: 2}
+--- !u!114 &2073675887849313878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6413988392005622924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cae476088dae642897f922bc8371fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testTimes: 1
+  generateBossRoom: 0
+  img_prefab: {fileID: 0}
+  spr_room1x1: {fileID: 21300000, guid: fbb7a1f8b334f394e9dd8fe343ea6123, type: 3}
+  spr_room1x2: {fileID: 21300000, guid: a46eb0a481e07844b993d3bcbf98d8d7, type: 3}
+  spr_room2x1: {fileID: 21300000, guid: 71a8b4872622d1544866df0c780ff7ad, type: 3}
+  spr_room2x2: {fileID: 21300000, guid: 0ee2fcd96614cb044a8e12582c88a432, type: 3}
+  spr_roomBoss: {fileID: 21300000, guid: 0ee2fcd96614cb044a8e12582c88a432, type: 3}
+  mapWidth: 230
+  mapHeight: 450
+  spr_door: {fileID: 21300000, guid: eecfa36c872da8147ad7a388aede974b, type: 3}
+  doorRatio: 0.192
+  mapContainer: {fileID: 0}
+  doorsParent: {fileID: 0}
+  roomSceneConfig: {fileID: 11400000, guid: eb53f23b60dac8140adc2394129121d8, type: 2}
+  roomSceneWidth: 19.2
+  roomSceneHeight: 10.4
+  roomSceneParent: {fileID: 0}

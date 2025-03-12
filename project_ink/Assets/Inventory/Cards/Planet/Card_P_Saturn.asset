@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 14
   group: 0
-  image: {fileID: 21300000, guid: cc370a8463371584f8f93320a7414abe, type: 3}
+  image: {fileID: 21300000, guid: 1a39b991c1bfa8d4aa1d4ee0507025c9, type: 3}
   description: 'Deal 1 damage, if hit an enemy, generate Saturn. Saturn Orbit: double
     the orbit effects of all your planets. Trigger: randomly trigger three planets''
     trigger effects.'
   damage: 1
   anticipation: 0.6
   recovery: 0.2
+  explanation: 
   planetType: 128

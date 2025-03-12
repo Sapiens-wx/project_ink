@@ -31,7 +31,6 @@ public class Pjump_up : PStateBase
         for(int i=0;i<j;){
             //if player is touching the platform when starts to jump down, then still ignore the collision
             if(!IsTouching(player.bc, player.ignoredColliders[i])){
-                Debug.Log($"player is not touching {player.ignoredColliders[i].name}");
                 //cancel collision ignore
                 Physics2D.IgnoreCollision(player.bc, player.ignoredColliders[i], false);
                 player.ignoredColliders[i]=player.ignoredColliders[--j];
