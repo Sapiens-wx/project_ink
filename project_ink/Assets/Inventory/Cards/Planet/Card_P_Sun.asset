@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 12
   group: 0
-  image: {fileID: 21300000, guid: ff93a0f7d9098634eb6a6b3a1194eef2, type: 3}
+  image: {fileID: 21300000, guid: 4064fdff21f87ea4dbca5ae9480dfa8e, type: 3}
   description: "Deal 3 damage, if hit an enemy, generate the Sun. Sun Orbit: whenever
     the player generates a second identical planet, it orbits the Sun and provides
     its orbit effect an additional time; each planet orbiting sun triggered grants
@@ -23,4 +23,5 @@ MonoBehaviour:
   damage: 3
   anticipation: 0.6
   recovery: 1
+  explanation: 
   planetType: 32

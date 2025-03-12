@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 17
   group: 2
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 125d7600a1ba74f42aa812db2e05e777, type: 3}
   description: Deal 3 damage. Discard the card in next slot.
   damage: 3
   anticipation: 0.5
   recovery: 0.1
+  explanation: 
