@@ -98,35 +98,41 @@ public abstract class Card : ScriptableObject
     /// <param name="autoChase"></param>
     /// <param name="returnToCardPool"></param>
     /// <returns></returns>
-    public Projectile FireCard(bool autoChase, bool returnToCardPool){
-        Projectile p = CardSlotManager.inst.InstantiateProjectile(this, autoChase);
+    public Projectile FireCard(Projectile.ProjectileType type, bool returnToCardPool){
+        Projectile p = CardSlotManager.inst.InstantiateProjectile(this, type);
         if(returnToCardPool)
             ReturnToCardPool();
         return p;
     }
     internal IEnumerator Fire(){
         CardLog.LogFire(this);
-        FireCard(false, true);
+        FireCard(Projectile.ProjectileType.Normal, true);
         yield return new WaitForSeconds(recovery);
     }
-    internal IEnumerator AutoFire(){
+    /// <summary>
+    /// Auto Fire the card
+    /// </summary>
+    /// <param name="fireInGroup">cards auto fired by effects from the discard group should set fireInGroup to true. Otherwise set it to false</param>
+    /// <returns></returns>
+    internal IEnumerator AutoFire(bool fireInGroup){
         CardLog.LogAutoFire(this);
-        if(group==CardGroup.Discard)
+        if(fireInGroup)
             CardSlotManager.inst.AddAutoFireCard(this);
         else
-            FireCard(true, true);
+            FireCard(Projectile.ProjectileType.AutoFire, true);
         yield return new WaitForSeconds(recovery);
     }
-    internal IEnumerator Activate(){
-        if(group==CardGroup.Discard)
+    /// <param name="fireInGroup">cards auto fired by effects from the discard group should set fireInGroup to true. Otherwise set it to false</param>
+    internal IEnumerator Activate(bool fireInGroup){
+        if(fireInGroup)
             CardSlotManager.inst.AddActivateCard(this);
         else
-            FireCard(true, false);
+            FireCard(Projectile.ProjectileType.AutoFire, false);
         yield return new WaitForSeconds(recovery);
     }
     internal IEnumerator OnDiscardBuffCheck(){
         //buff1_4
-        IEnumerator ienum=CardSlotManager.inst.buff1_4.Activate(Activate());
+        IEnumerator ienum=CardSlotManager.inst.buff1_4.Activate(Activate(true));
         while(ienum.MoveNext())
             yield return ienum.Current;
         //buff1_5

@@ -100,7 +100,7 @@ public class Buff1_5 : Buff{
         for(int i=0;i<shootCount;++i){
             Activated();
             yield return new WaitForSeconds(0.3f);
-            CardSlotManager.inst.InstantiateProjectile(3, true).gameObject.name="buff 5";
+            CardSlotManager.inst.InstantiateProjectile(3, Projectile.ProjectileType.AutoChase).gameObject.name="buff 5";
         }
     }
     public void Activate(){
@@ -125,7 +125,7 @@ public class PlanetBuff : Buff{
     IEnumerator DelayShoot(int shootCount){
         for(int i=0;i<shootCount;++i){
             yield return new WaitForSeconds(0.3f);
-            CardSlotManager.inst.InstantiateProjectile(1, true).gameObject.name="venus buff";
+            CardSlotManager.inst.InstantiateProjectile(1, Projectile.ProjectileType.AutoChase).gameObject.name="venus buff";
         }
     }
     //dec anticipation by 20%
@@ -179,8 +179,8 @@ public class PlanetBuff : Buff{
                 CardLog.PlanetOrbitEffect("Mars: activate the next damage card for every 3 damage card shot.",hasSaturn);
                 //saturn effect
                 if(hasSaturn)
-                    actions.Add(cardShot.Activate());
-                actions.Add(cardShot.Activate());
+                    actions.Add(cardShot.Activate(false));
+                actions.Add(cardShot.Activate(false));
             }
             ++marsEffectCounter;
         }
@@ -198,8 +198,8 @@ public class PlanetBuff : Buff{
                 CardLog.PlanetOrbitEffect("Jupiter: auto fire the next card in discard pile for every 3 cards shot", hasSaturn);
                 //saturn effect
                 if(hasSaturn)
-                    actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
-                actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
+                    actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire(false));
+                actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire(false));
             }
             ++jupiterEffectCounter;
         }
@@ -239,7 +239,7 @@ public class BuffP_3 : Buff{
     }
     IEnumerator DelayShoot(){
 		yield return new WaitForSeconds(0.3f);
-		CardSlotManager.inst.InstantiateProjectile(damage, true).gameObject.name="venus buff activated";
+		CardSlotManager.inst.InstantiateProjectile(damage, Projectile.ProjectileType.AutoChase).gameObject.name="venus buff activated";
     }
     public void Activate(Card cardShot, List<IEnumerator> actions, bool forceActivate=false){
         if(!forceActivate){
@@ -281,9 +281,9 @@ public class BuffP_5 : Buff{
                 Disable();
             }
         }
-        actions.Add(cardShot.Activate());
+        actions.Add(cardShot.Activate(false));
         if(doubleActivate)
-            actions.Add(cardShot.Activate());
+            actions.Add(cardShot.Activate(false));
         CardLog.ActivatePlanetEffect("Mars: activate next two damage card when shot", doubleActivate);
     }
 }
@@ -316,11 +316,11 @@ public class BuffP_7 : Buff{
     }
     public void Activate(List<IEnumerator> actions, bool forceActivate=false){
         if(!forceActivate&&!enabled) return;
-        actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
-        actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
+        actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire(false));
+        actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire(false));
         if(doubleActivate){
-            actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
-            actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire());
+            actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire(false));
+            actions.Add(CardSlotManager.inst.cardDealer.GetCard().AutoFire(false));
         }
         CardLog.ActivatePlanetEffect("Jupiter: auto fire the next two cards in the discard pile", doubleActivate);
         Disable();

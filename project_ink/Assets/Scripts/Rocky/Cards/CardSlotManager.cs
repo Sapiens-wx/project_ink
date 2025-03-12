@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System.Text;
+using Unity.VisualScripting;
 
 public class CardSlotManager : Singleton<CardSlotManager>
 {
@@ -132,12 +133,12 @@ public class CardSlotManager : Singleton<CardSlotManager>
         float deltaTheta=-halfRangeInRad*2/cardNum;
         Vector2 dir=MathUtil.Rotate(shootDir, halfRangeInRad+deltaTheta/2);
         foreach(Card card in autoFireCards){
-            Projectile p=card.FireCard(true, false); //don't return it to card pool because this card is already returned to card pool when it is added to autoFiredCards.
+            Projectile p=card.FireCard(Projectile.ProjectileType.AutoFire, false); //don't return it to card pool because this card is already returned to card pool when it is added to autoFiredCards.
             p.AdjustFlyDir(dir);
             dir=MathUtil.Rotate(dir,deltaTheta);
         }
         foreach(Card card in autoActivateCards){
-            Projectile p=card.FireCard(true, false);
+            Projectile p=card.FireCard(Projectile.ProjectileType.AutoFire, false);
             p.AdjustFlyDir(dir);
             dir=MathUtil.Rotate(dir,deltaTheta);
         }
@@ -150,18 +151,18 @@ public class CardSlotManager : Singleton<CardSlotManager>
     /// </summary>
     /// <param name="card"></param>
     /// <returns></returns>
-    public Projectile InstantiateProjectile(Card card, bool chase)
+    public Projectile InstantiateProjectile(Card card, Projectile.ProjectileType type)
     {
         Projectile p = ProjectileManager.inst.CreateProjectile();
         p.AdjustRotation(shootDir);
-        p.InitProjectile(card, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed, chase);
+        p.InitProjectile(card, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed, type);
         return p;
     }
-    public Projectile InstantiateProjectile(int damage, bool chase)
+    public Projectile InstantiateProjectile(int damage, Projectile.ProjectileType type)
     {
         Projectile p = ProjectileManager.inst.CreateProjectile();
         p.AdjustRotation(shootDir);
-        p.InitProjectile(damage, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed, chase);
+        p.InitProjectile(damage, PlayerShootingController.inst.transform.position, shootDir*ProjectileManager.inst.projectileSpeed, type);
         return p;
     }
     public Card ActivateCard(int index, System.Action callback)
