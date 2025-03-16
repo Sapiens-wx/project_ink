@@ -11,8 +11,10 @@ public class RoomManager : Singleton<RoomManager>
 
     [HideInInspector] public List<EnemyBase> enemies;
 
+    static RoomManager currentRoom;
     public static RoomManager CurrentRoom{
-        get=>inst;
+        get=>currentRoom;
+        private set{currentRoom=value; if(value!=null)Debug.Log("player is in "+currentRoom.name);}
     }
     public Bounds RoomBounds{
         get=>roomBounds;
@@ -37,7 +39,28 @@ public class RoomManager : Singleton<RoomManager>
     }
     void Start(){
         ActivateElites();
+        StartCoroutine(CheckCurrentRoom());
     }
+    #region CurrentRoom
+    IEnumerator CheckCurrentRoom(){
+        WaitForSeconds wait=new WaitForSeconds(.3f);
+        while(true){
+            //when player is not in any room, check which room player is in
+            if(currentRoom==null && PlayerInsideRoom())
+                CurrentRoom=this;
+            //when player is inside a room, check whether player is inside the room
+            else if(currentRoom==this && !PlayerInsideRoom())
+                CurrentRoom=null;
+            yield return wait;
+        }
+    }
+    bool PlayerInsideRoom(){
+        Vector2 min=roomBounds.min, max=roomBounds.max;
+        Vector2 pos=PlayerCtrl.inst.transform.position;
+        return pos.x>=min.x && pos.x<=max.x && pos.y>=min.y && pos.y<=max.y;
+    }
+    #endregion
+    #region Enemy
     public int RegisterEnemy(EnemyBase enemy){
         enemy.id=enemies.Count;
         enemies.Add(enemy);
@@ -120,4 +143,5 @@ public class RoomManager : Singleton<RoomManager>
         e.Start();
         return e;
     }
+    #endregion
 }

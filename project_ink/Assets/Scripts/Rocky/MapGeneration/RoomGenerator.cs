@@ -9,8 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class RoomGenerator : MonoBehaviour
 {
-    [Header("Debug")]
-    public int testTimes;
     [Header("Configs")]
     public bool generateBossRoom;
     [Header("Generate HUD Map")]
@@ -56,18 +54,16 @@ public class RoomGenerator : MonoBehaviour
     [ContextMenu("test")]
     public void Test()
     {
-        for(int i = 0; i < testTimes; ++i)
-        {
-            DeleteChildren();
-            Room root = GenerateRoom();
-            GenerateRoomMap(root, mapContainer);
-            GenerateRoomScene(root);
-        }
+        DeleteChildren();
+        Room root = GenerateRoom();
+        GenerateRoomMap(root, mapContainer);
+        GenerateRoomScene(root);
+        return;
     }
     [ContextMenu("delete children")]
     public void DeleteChildren()
     {
-        for(int i = roomSceneParent.childCount; i > 0; --i) 
+        for(int i = roomSceneParent.childCount; i > 0; --i)
             DestroyImmediate(roomSceneParent.GetChild(0).gameObject);
         for(int i = mapContainer.childCount; i > 0; --i) 
             DestroyImmediate(mapContainer.GetChild(0).gameObject);

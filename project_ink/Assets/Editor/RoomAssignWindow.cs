@@ -13,7 +13,9 @@ public class RoomAssignWindow : EditorWindow
     GameObject prefab;
     Tilemap tilemap;
     RoomSceneConfig config;
+    RoomType searchForType;
     int w=24,h=13;
+    string path;
     void Init(){
         if(sb==null){
             sb=new StringBuilder();
@@ -37,8 +39,17 @@ public class RoomAssignWindow : EditorWindow
         RoomAssignWindow wnd = GetWindow<RoomAssignWindow>();
         wnd.titleContent = new GUIContent("Window");
     }
-
-    Dictionary<Vector2Int,int> GetCells(Tilemap tilemap, out Vector2Int min, out Vector2Int max){
+    Transform FindChild(Transform p, string child, int depth){
+        Transform ret=p.Find(child);
+        if(depth==1||ret!=null) return ret;
+        depth--;
+        foreach(Transform c in p){
+            ret=FindChild(c, child, depth);
+            if(ret!=null) return ret;
+        }
+        return ret;
+    }
+    static Dictionary<Vector2Int,int> GetCells(Tilemap tilemap, out Vector2Int min, out Vector2Int max){
         Dictionary<Vector2Int,int> cells=new Dictionary<Vector2Int, int>(tilemap.transform.childCount/2);
         min=new Vector2Int(int.MaxValue,int.MaxValue);
         max=new Vector2Int(int.MinValue,int.MinValue);
@@ -71,11 +82,16 @@ public class RoomAssignWindow : EditorWindow
         return cells;
     }
     RoomType GetType(GameObject go){
-        Tilemap tilemap=go.transform.Find("Tilemap").GetComponent<Tilemap>();
-        if(tilemap==null)
-            tilemap=go.transform.Find("tilemap").GetComponent<Tilemap>();
-        if(tilemap==null){
+        Transform tilemap_transform=FindChild(go.transform,"Tilemap", 3);
+        if(tilemap_transform==null)
+            tilemap_transform=FindChild(go.transform, "tilemap", 3);
+        if(tilemap_transform==null){
             Debug.LogError("cannot find the tilemap in "+go.name);
+            return RoomType.Error;
+        }
+        Tilemap tilemap=tilemap_transform.GetComponent<Tilemap>();
+        if(tilemap==null){
+            Debug.LogError("cannot find the tilemap component in "+tilemap_transform.name);
             return RoomType.Error;
         }
         Vector2Int min,max;
@@ -122,19 +138,19 @@ public class RoomAssignWindow : EditorWindow
         roomType=(roomWidth<<15)|(roomHeight<<12)|(doorU<<9)|(doorR<<6)|(doorD<<3)|doorL;
         return (RoomType)roomType;
     }
-    void AddPrefabToConfig(GameObject prefab){
+    bool AddPrefabToConfig(GameObject prefab){
         if(config==null){
             Debug.LogError("you need to assign config");
-            return;
+            return false;
         }
         if(prefab==null){
             Debug.LogError("you need to assign a room prefab");
-            return;
+            return false;
         }
         RoomType type=GetType(prefab);
         if(type==RoomType.Error){
             Debug.LogError("room type is RoomType.Error. stopped");
-            return;
+            return false;
         }
         int i=0;
         foreach(RoomSceneConfig.Element e in config.roomPrefabs_arrayList){
@@ -143,17 +159,39 @@ public class RoomAssignWindow : EditorWindow
                 foreach(GameObject go in e.prefabs){
                     if(go==prefab){
                         Debug.LogError($"already contains {prefab.name} in index {i}.");
-                        return;
+                        return false;
                     }
                 }
                 e.prefabs.Add(prefab);
                 Debug.Log($"{prefab.name} added in index {i} as type {type}");
-                return;
+                return true;
             }
             ++i;
         }
         config.roomPrefabs_arrayList.Add(new RoomSceneConfig.Element(type, prefab));
         Debug.Log($"{prefab.name} added in index {i} as type {type}");
+        return true;
+    }
+    private void ProcessPrefabsInDirectory()
+    {
+        // Get all prefab files in the directory
+        string fullPath=path;
+        Debug.Log($"full path={fullPath}");
+        string[] prefabPaths = Directory.GetFiles(fullPath, "*.prefab", SearchOption.AllDirectories);
+
+        foreach (string prefabPath in prefabPaths)
+        {
+            // Load the prefab
+            GameObject prefab = (GameObject)AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject));
+            if(prefab==null){
+                Debug.LogError($"cannot find prefab at path {prefabPath}");
+                break;
+            }
+
+            AddPrefabToConfig(prefab);
+        }
+
+        Debug.Log("Prefab processing complete!");
     }
     void CreateGUI(){
         // Root visual element
@@ -166,6 +204,14 @@ public class RoomAssignWindow : EditorWindow
         configField.RegisterValueChangedCallback(ConfigValueChanged);
         configField.label="config";
         root.Add(configField);
+        //path field
+        TextField pathField=new TextField();
+        pathField.label="directory";
+        pathField.RegisterValueChangedCallback(PathValueChanged);
+        pathField.value="/Prefabs/MapGeneration";
+        path="/Prefabs/MapGeneration";
+        pathField.SetEnabled(false);
+        root.Add(pathField);
         //width and height
         IntegerField wField=new IntegerField();
         wField.label="w";
@@ -185,13 +231,58 @@ public class RoomAssignWindow : EditorWindow
         targetObjField.label="room";
         root.Add(targetObjField);
 
+        //buttons
         UnityEngine.UIElements.Button button=new UnityEngine.UIElements.Button();
-        button.text="test";
+        button.text="Add Prefab";
         button.clicked+=OnClick;
         root.Add(button);
+
+        button=new UnityEngine.UIElements.Button();
+        button.text="Print Type";
+        button.clicked+=PrintTypeOnClick;
+        root.Add(button);
+
+        button=new UnityEngine.UIElements.Button();
+        button.text="Add Prefabs in directory";
+        button.clicked+=AddPrefabsInDirectoryOnClick;
+        button.SetEnabled(false);
+        root.Add(button);
+
+        //search for the index of a type
+        EnumField typeField=new EnumField();
+        typeField.Init(RoomType.Error);
+        typeField.RegisterValueChangedCallback(TypeValueChanged);
+        typeField.label="Search For Type";
+        root.Add(typeField);
+
+        button=new UnityEngine.UIElements.Button();
+        button.text="Search";
+        button.clicked+=SearchTypeOnClick;
+        root.Add(button);
+    }
+    void TypeValueChanged(ChangeEvent<System.Enum> evt){
+        searchForType=(RoomType)evt.newValue;
+    }
+    void PrintTypeOnClick(){
+        Debug.Log("type="+GetType(prefab));
+    }
+    void SearchTypeOnClick(){
+        int i=0;
+        foreach(RoomSceneConfig.Element e in config.roomPrefabs_arrayList){
+            //is the target type
+            if(e.roomType==searchForType){
+                Debug.Log($"type {searchForType} at index {i}");
+                return;
+            }
+            i++;
+        }
+        Debug.Log($"did not find type {searchForType}");
     }
     void ValueChanged(ChangeEvent<Object> evt){
         prefab=evt.newValue as GameObject;
+    }
+    void PathValueChanged(ChangeEvent<string> evt){
+        path=evt.newValue;
     }
     void ConfigValueChanged(ChangeEvent<Object> evt){
         config=evt.newValue as RoomSceneConfig;
@@ -204,5 +295,8 @@ public class RoomAssignWindow : EditorWindow
     }
     void OnClick(){
         AddPrefabToConfig(prefab);
+    }
+    void AddPrefabsInDirectoryOnClick(){
+        ProcessPrefabsInDirectory();
     }
 }

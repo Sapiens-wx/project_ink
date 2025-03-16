@@ -38,6 +38,7 @@ public class ChildrenReplace : EditorWindow
         button.clicked+=OnClick;
         root.Add(button);
     }
+    //categorize children in tilemap base on their layer (into ground and platform)
     bool ProcessPrefab(GameObject prefab, string prefabPath){
         // Find the Tilemap GameObject
         Transform tilemap = prefab.transform.Find("Tilemap");
