@@ -85,6 +85,9 @@ public class PlayerCtrl : MonoBehaviour
         get=>dir;
         set{
             if(dir==value) return;
+            //not flip the tentacle
+            Tentacle.inst.Dir=-Tentacle.inst.Dir;
+            //
             dir=value;
             leftTop.x*=-1;
             rightTop.x*=-1;
@@ -95,7 +98,6 @@ public class PlayerCtrl : MonoBehaviour
             Vector3 localScale=healthBar.transform.localScale;
             localScale.x=dir==1?Mathf.Abs(localScale.x):-Mathf.Abs(localScale.x);
             healthBar.transform.localScale=localScale;
-            return;
         }
     }
     void OnDrawGizmosSelected(){

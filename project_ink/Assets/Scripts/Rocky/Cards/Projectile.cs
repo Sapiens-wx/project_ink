@@ -144,6 +144,6 @@ public class Projectile : MonoBehaviour
     public enum ProjectileType{
         Normal,
         AutoChase,
-        AutoFire
+        AutoFire,
     }
 }

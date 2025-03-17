@@ -6,6 +6,12 @@ public class MathUtil{
         float sin=Mathf.Sin(theta), cos=Mathf.Cos(theta);
         return new Vector2(dir.x*cos-dir.y*sin, dir.x*sin+dir.y*cos);
     }
+    public static Vector3 MultiplySeparately(Vector3 lhs, Vector3 rhs){
+        return new Vector3(lhs.x*rhs.x, lhs.y*rhs.y, lhs.z*rhs.z);
+    }
+    public static Vector3 DivideSeparately(Vector3 lhs, Vector3 rhs){
+        return new Vector3(lhs.x/rhs.x, lhs.y/rhs.y, lhs.z/rhs.z);
+    }
     /// <summary>
     /// f(x)=sin(wx+a)
     /// </summary>

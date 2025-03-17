@@ -33,7 +33,6 @@ public abstract class Card : ScriptableObject
         set=>slotIndex=value;
         get=>slotIndex;
     }
-    private float anticipation_backup;
 
     /// <summary>
     /// reset parameters needed in runtime. For example: this is called when the player first enters a round.
@@ -98,7 +97,7 @@ public abstract class Card : ScriptableObject
     /// <param name="autoChase"></param>
     /// <param name="returnToCardPool"></param>
     /// <returns></returns>
-    public Projectile FireCard(Projectile.ProjectileType type, bool returnToCardPool){
+    public virtual Projectile FireCard(Projectile.ProjectileType type, bool returnToCardPool){
         Projectile p = CardSlotManager.inst.InstantiateProjectile(this, type);
         if(returnToCardPool)
             ReturnToCardPool();
@@ -181,12 +180,15 @@ public abstract class Card : ScriptableObject
         Card_N_Dmg1,
         Card_N_Dmg2,
         Card_N_Discard,
+        //tentacle
+        Card_T_1,
 
         Card_MaxCount
     }
     public enum CardGroup{
         Discard,
         Planet,
-        Normal
+        Normal,
+        Tentacle
     }
 }
