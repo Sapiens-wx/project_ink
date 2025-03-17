@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5388041183662867609
 Transform:
   m_ObjectHideFlags: 0
@@ -56,7 +56,6 @@ MonoBehaviour:
   healthBar: {fileID: 8285838217273660520}
   maxHealth: 10
   id: 0
-  bc: {fileID: 0}
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
@@ -81,7 +80,7 @@ MonoBehaviour:
   flySpd: 2
   airDashSpd: 10
   groundDashSpd: 12
-  isAirDashing: 0
+  isDashing: 0
 --- !u!212 &1011739413842955365
 SpriteRenderer:
   m_ObjectHideFlags: 0

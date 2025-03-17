@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8777255867111519257
 Transform:
   m_ObjectHideFlags: 0
@@ -55,7 +55,6 @@ MonoBehaviour:
   healthBar: {fileID: 4813871886850677169}
   maxHealth: 20
   id: 0
-  bc: {fileID: 0}
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
