@@ -980,6 +980,7 @@ MonoBehaviour:
   cardSlotGridLayoutGroup: {fileID: 1608098722830224243}
   slotPointer: {fileID: 4883352496453762427}
   cardSlotPrefab: {fileID: 6498421545062556393, guid: bcced33e048066b4e894ee0f66bf8f5a, type: 3}
+  autoFireAngleRange: 120
   anticipationBar: {fileID: 9045290494270399330}
   cardTips: {fileID: 9134559316449632935}
   cardSlots: []
@@ -993,6 +994,16 @@ MonoBehaviour:
   planetBuff:
     indicator: {fileID: 0}
   buffP_2:
+    indicator: {fileID: 0}
+  buffP_3:
+    indicator: {fileID: 0}
+  buffP_5:
+    indicator: {fileID: 0}
+  buffP_6:
+    indicator: {fileID: 0}
+  buffP_7:
+    indicator: {fileID: 0}
+  buffP_8:
     indicator: {fileID: 0}
 --- !u!114 &4576415493943712413
 MonoBehaviour:
@@ -1010,6 +1021,10 @@ MonoBehaviour:
   hitPrefab: {fileID: 8032902103068574690, guid: 726853ce698fff04c9dd22d7f6a946bc, type: 3}
   hitAnimDuration: 0.25
   projectileSpeed: 17
+  autoChaseAngleConstraint: 25
+  af_time1: 0.1
+  af_stoptime: 0.35
+  af_angleConstraint: 10
 --- !u!114 &8248812775599936785
 MonoBehaviour:
   m_ObjectHideFlags: 0

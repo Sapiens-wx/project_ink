@@ -10,8 +10,10 @@ public class ProjectileManager : MonoBehaviour
     [SerializeField] GameObject projPrefab;
     [SerializeField] GameObject hitPrefab;
     [SerializeField] float hitAnimDuration;
-    public float projectileSpeed;
-
+    public float projectileSpeed, autoChaseAngleConstraint;
+    [Header("Discard Group AutoFire Effect")]
+    public float af_time1;
+    public float af_stoptime,af_angleConstraint;
 
     ObjectPool<Projectile> proj_pool;
     ObjectPool<GameObject> hit_pool;

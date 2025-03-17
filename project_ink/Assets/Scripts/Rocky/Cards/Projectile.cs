@@ -10,9 +10,9 @@ public class Projectile : MonoBehaviour
     [SerializeField] float fireEffectDuration;
     [HideInInspector] public Rigidbody2D rgb;
     [HideInInspector] public int damage;
-    [HideInInspector] public bool chase;
     [HideInInspector] public Card card;
 
+    Coroutine coro;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,13 +38,15 @@ public class Projectile : MonoBehaviour
     public void AdjustFlyDir(Vector2 dir){
         rgb.velocity=rgb.velocity.magnitude*dir;
     }
-    public void InitProjectile(Card card, Vector2 pos, Vector2 velocity, bool chase){
+    public void InitProjectile(Card card, Vector2 pos, Vector2 velocity, ProjectileType type){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         this.card=card;
         damage=card.damage;
         rgb.velocity=velocity;
         transform.position=pos;
-        if(chase) StartCoroutine(AutoChase());
+        if(coro!=null) StopCoroutine(coro);
+        if(type==ProjectileType.AutoChase) coro=StartCoroutine(AutoChase());
+        else if(type==ProjectileType.AutoFire) coro=StartCoroutine(AutoChase_AutoFire());
         //fire effect
         fireEffect.transform.position=transform.position;
         fireEffect.SetActive(true);
@@ -55,12 +57,14 @@ public class Projectile : MonoBehaviour
         trail.Clear();
         CardLog.CardProjectileInstantiated(card);
     }
-    public void InitProjectile(int damage, Vector2 pos, Vector2 velocity, bool chase){
+    public void InitProjectile(int damage, Vector2 pos, Vector2 velocity, ProjectileType type){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         this.damage=damage;
         rgb.velocity=velocity;
         transform.position=pos;
-        if(chase) StartCoroutine(AutoChase());
+        if(coro!=null) StopCoroutine(coro);
+        if(type==ProjectileType.AutoChase) coro=StartCoroutine(AutoChase());
+        else if(type==ProjectileType.AutoFire) coro=StartCoroutine(AutoChase_AutoFire());
         //fire effect
         fireEffect.transform.position=transform.position;
         fireEffect.SetActive(true);
@@ -75,29 +79,57 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         M_Destroy();
     }
+    /// <summary>
+    /// called by auto chase algorithm
+    /// </summary>
+    void ChaseEnemy_step(float angleConstraint){
+        float spd=rgb.velocity.magnitude;
+        Vector2 dir=rgb.velocity/spd, newDir;
+        EnemyBase closestEnemy=RoomManager.inst.ClosestEnemy(transform);
+        if(closestEnemy!=null){
+            newDir=((Vector2)(closestEnemy.transform.position-transform.position)).normalized;
+            float theta=Vector2.SignedAngle(dir, newDir);
+            if(theta>angleConstraint || theta<-angleConstraint){
+                theta=Mathf.Clamp(theta,-angleConstraint,angleConstraint);
+                newDir=MathUtil.Rotate(dir, theta*Mathf.Deg2Rad);
+            }
+            rgb.velocity=spd*newDir;
+            AdjustRotation(newDir);
+        }
+    }
+    /// <summary>
+    /// same as auto chase, but has a different auto fired effect
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator AutoChase_AutoFire(){
+        WaitForSeconds wait=new WaitForSeconds(.04f);
+        float toTime=Time.time+ProjectileManager.inst.af_time1;
+        while(Time.time<=toTime){
+            ChaseEnemy_step(ProjectileManager.inst.af_angleConstraint);
+            yield return wait;
+        }
+        Vector2 oldVelocity=rgb.velocity;
+        rgb.velocity=Vector2.zero;
+        yield return new WaitForSeconds(ProjectileManager.inst.af_stoptime);
+        rgb.velocity=oldVelocity;
+        for(;;){
+            ChaseEnemy_step(ProjectileManager.inst.autoChaseAngleConstraint);
+            yield return wait;
+        }
+    }
     IEnumerator AutoChase(){
         WaitForSeconds wait=new WaitForSeconds(.04f);
-        Vector2 newDir, dir;
         for(;;){
-            float spd=rgb.velocity.magnitude;
-            dir=rgb.velocity/spd;
-            EnemyBase closestEnemy=RoomManager.inst.ClosestEnemy(transform);
-            if(closestEnemy!=null){
-                newDir=((Vector2)(closestEnemy.transform.position-transform.position)).normalized;
-                float theta=Vector2.SignedAngle(dir, newDir);
-                if(theta>17f || theta<-17f){
-                    theta=Mathf.Clamp(theta,-17f,17f);
-                    newDir=MathUtil.Rotate(dir, theta*Mathf.Deg2Rad);
-                }
-                rgb.velocity=spd*newDir;
-                AdjustRotation(newDir);
-            }
+            ChaseEnemy_step(ProjectileManager.inst.autoChaseAngleConstraint);
             yield return wait;
         }
     }
     void M_Destroy(){
         if(gameObject.activeSelf==false) return; //eliminate repetitively calling on trigger enter
-        StopAllCoroutines();
+        if(coro!=null){
+            StopCoroutine(coro);
+            coro=null;
+        }
         ProjectileManager.inst.ReleaseProjectile(this);
     }
     void OnTriggerEnter2D(Collider2D collider){
@@ -108,5 +140,10 @@ public class Projectile : MonoBehaviour
         }
         ProjectileManager.inst.HitAnim(this);
         M_Destroy();
+    }
+    public enum ProjectileType{
+        Normal,
+        AutoChase,
+        AutoFire
     }
 }
