@@ -135,6 +135,7 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider){
         if(GameManager.IsLayer(GameManager.inst.enemyLayer, collider.gameObject.layer)){ //if is enemy
             EnemyBase enemy=collider.GetComponent<EnemyBase>();
+            if(enemy.CompareTag("IgnoreProjectile")) return; //if the hit collider ignores this projectile (like E_Pig does), then act as nothing happened.
             enemy.OnHit(this);
             if(card!=null) card.OnHitEnemy(enemy);
         }
