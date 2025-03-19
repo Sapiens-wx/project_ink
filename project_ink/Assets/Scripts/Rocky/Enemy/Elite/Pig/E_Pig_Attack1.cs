@@ -19,7 +19,17 @@ public class E_Pig_Attack1 : StateBase<E_Pig>
         oriPosPig[0]=ctrller.pig[0].transform.position;
         oriPosPig[1]=ctrller.pig[1].transform.position;
         oriPosPig[2]=ctrller.pig[2].transform.position;
+        ctrller.animators[0].SetBool("idle",true);
+        ctrller.animators[1].SetBool("idle",true);
+        ctrller.animators[2].SetBool("idle",true);
         ctrller.StartCoroutine(Jump());
+    }
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        base.OnStateExit(animator, stateInfo, layerIndex);
+        ctrller.animators[0].SetBool("idle",false);
+        ctrller.animators[1].SetBool("idle",false);
+        ctrller.animators[2].SetBool("idle",false);
     }
     Vector2 JumpVelocity(){
         ctrller.UpdateDir();

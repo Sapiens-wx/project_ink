@@ -15,10 +15,8 @@ MonoBehaviour:
   type: 18
   group: 3
   image: {fileID: 21300000, guid: 1e41eae9c2e720a4586c5168a8d8da0d, type: 3}
-  description: 'qwedfsfwesdfsfwefsf
-
-    1234werqwefsdf'
-  damage: 3
+  description: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u5982\u679C\u51FB\u4E2D\u4E86\u654C\u4EBA\uFF0C\u5219\u4EEA\u5F0F*1"
+  damage: 1
   anticipation: 0.3
   recovery: 0.3
   explanation: 

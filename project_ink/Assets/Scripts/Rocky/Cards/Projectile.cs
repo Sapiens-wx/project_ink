@@ -135,7 +135,8 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider){
         if(GameManager.IsLayer(GameManager.inst.enemyLayer, collider.gameObject.layer)){ //if is enemy
             EnemyBase enemy=collider.GetComponent<EnemyBase>();
-            enemy.OnHit(this);
+            if(enemy.CompareTag("IgnoreProjectile")) return; //if the hit collider ignores this projectile (like E_Pig does), then act as nothing happened.
+            enemy.OnHit(new HitEnemyInfo(this));
             if(card!=null) card.OnHitEnemy(enemy);
         }
         ProjectileManager.inst.HitAnim(this);
@@ -145,5 +146,25 @@ public class Projectile : MonoBehaviour
         Normal,
         AutoChase,
         AutoFire,
+    }
+}
+public class HitEnemyInfo{
+    public HitType hitType;
+    public Projectile projectile;
+    public Transform transform;
+    public int damage;
+    public HitEnemyInfo(Projectile p){
+        transform=p.transform;
+        hitType=HitType.Projectile;
+        damage=p.damage;
+    }
+    public HitEnemyInfo(Tentacle t){
+        transform=t.transform;
+        hitType=HitType.Tentacle;
+        damage=t.damage;
+    }
+    public enum HitType{
+        Projectile,
+        Tentacle
     }
 }

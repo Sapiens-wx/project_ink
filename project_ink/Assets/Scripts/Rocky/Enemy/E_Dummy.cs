@@ -8,6 +8,7 @@ public class E_Dummy : EnemyBase {
 
     Queue<Tuple<float,int>> q;
     float dps, dp10s;
+    public override int Dir { get => base.Dir; set{return;} }
     internal override void Start()
     {
         base.Start();
