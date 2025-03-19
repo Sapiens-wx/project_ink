@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tentacle : Singleton<Tentacle>
@@ -15,7 +16,9 @@ public class Tentacle : Singleton<Tentacle>
     public float besierCurveParams;
     [Header("Physics")]
     public float acceleration;
+    public float colliderRadius;
 
+    [NonSerialized][HideInInspector] public int damage;
     Animator animator;
     /// <summary>
     /// the length of the tentacle
@@ -25,7 +28,8 @@ public class Tentacle : Singleton<Tentacle>
     /// <summary>
     /// actual anchor positions. with physical simulation, but also affected by anchors.
     /// </summary>
-    Vector2[] positions;
+    Vector2[] positions, scaledPositions;
+    Stack<Collider2D> hitStack;
     int dir;
     public int Dir{
         get{
@@ -35,8 +39,8 @@ public class Tentacle : Singleton<Tentacle>
             transform.localScale=MathUtil.DivideSeparately(MathUtil.MultiplySeparately(new Vector3(value,1,1),transform.localScale),transform.lossyScale);
         }
     }
-    void OnValidate(){
-        //UpdateLine();
+    void OnDrawGizmosSelected(){
+        Gizmos.DrawWireSphere(transform.position, colliderRadius);
     }
     void Start()
     {
@@ -44,6 +48,7 @@ public class Tentacle : Singleton<Tentacle>
         len=len_idle;
         animator=GetComponent<Animator>();
         InitAnchorPos();
+        hitStack=new Stack<Collider2D>();
     }
     /// <summary>
     /// initialize the positions array based on anchors array
@@ -56,6 +61,7 @@ public class Tentacle : Singleton<Tentacle>
     }
     void FixedUpdate(){
         UpdateLine();
+        DetectCollision();
     }
     public void Attack(Vector2 point){
         target=point;
@@ -71,11 +77,11 @@ public class Tentacle : Singleton<Tentacle>
         return res;
     }
     void UpdateLineRenderer(){
-        if(len<=Mathf.Epsilon){
+        if(len==0){
             line.positionCount=0;
             return;
         }
-        Vector2[] scaledPositions=Scaled(positions, len);
+        scaledPositions=Scaled(positions, len);
         MathUtil.besierControlPointEffect=besierCurveParams;
         Vector2[] curve=MathUtil.BesierCubicCurve(scaledPositions, numPoints);
         if(line.positionCount!=curve.Length)
@@ -88,6 +94,7 @@ public class Tentacle : Singleton<Tentacle>
     /// update positions array based on physics simulation
     /// </summary>
     void UpdatePositions(){
+        if(len==0) return;
         Vector2 a;
         for(int i=0;i<positions.Length;++i){
             a=((Vector2)anchors[i].position-positions[i])*Mathf.Lerp(1,acceleration,(float)i/positions.Length);
@@ -99,5 +106,47 @@ public class Tentacle : Singleton<Tentacle>
             UpdatePositions();
             UpdateLineRenderer();
         }
+    }
+    /// <summary>
+    /// detects collision of a sphere centered at the last point of 'positions'
+    /// </summary>
+    void DetectCollision(){
+        if(len==0){ //no collision detection
+            while(hitStack.Count>0)
+                OnCollExit(hitStack.Pop());
+            return;
+        }
+        Debug.DrawLine(scaledPositions[^1]+new Vector2(-colliderRadius/2,0), scaledPositions[^1]+new Vector2(colliderRadius/2,0));
+        Collider2D hit=Physics2D.OverlapCircle(scaledPositions[^1], colliderRadius, GameManager.inst.enemyLayer);
+        if(hit==null){
+            while(hitStack.Count>0)
+                OnCollExit(hitStack.Pop());
+            return;
+        }
+        if(hitStack.Count==0){ //on hit enter
+            hitStack.Push(hit);
+            OnCollEnter(hit);
+        }
+        else if(hitStack.Peek()!=hit){
+            Collider2D top=hitStack.Pop();
+            if(hitStack.Count==0 || hitStack.Peek()==hit){ //on hit exit, exit collider top
+                OnCollExit(hit);
+            }
+            if(hitStack.Count==0 || hitStack.Peek()!=hit){ //on hit enter
+                OnCollEnter(hit);
+                hitStack.Push(top);
+                hitStack.Push(hit);
+            }
+        } else if(hitStack.Peek()==hit){ //on hit stay
+        }
+    }
+    void OnCollEnter(Collider2D collider){
+        //Debug.Log("enter "+collider.name+Time.time);
+        EnemyBase enemy=collider.GetComponent<EnemyBase>();
+        if(enemy.CompareTag("IgnoreProjectile")) return; //if the hit collider ignores this projectile (like E_Pig does), then act as nothing happened.
+        enemy.OnHit(new HitEnemyInfo(this));
+    }
+    void OnCollExit(Collider2D collider){
+        //Debug.Log("exit "+collider.name+Time.time);
     }
 }

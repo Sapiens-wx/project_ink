@@ -182,6 +182,13 @@ public abstract class Card : ScriptableObject
         Card_N_Discard,
         //tentacle
         Card_T_1,
+        Card_T_2,
+        Card_T_3,
+        Card_T_4,
+        Card_T_5,
+        Card_T_6,
+        Card_T_7,
+        Card_T_8,
 
         Card_MaxCount
     }

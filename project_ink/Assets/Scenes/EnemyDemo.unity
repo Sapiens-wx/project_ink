@@ -732,10 +732,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1797005883606678625, guid: d94602df478b8f44fa9c97658ccfd685, type: 3}
-      propertyPath: autoFireAngleRange
-      value: 120
-      objectReference: {fileID: 0}
     - target: {fileID: 2976034680660380086, guid: d94602df478b8f44fa9c97658ccfd685, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -750,11 +746,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3222704586259660747, guid: d94602df478b8f44fa9c97658ccfd685, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000056266785
+      value: 0.000062836356
       objectReference: {fileID: 0}
     - target: {fileID: 3460317608539543501, guid: d94602df478b8f44fa9c97658ccfd685, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000069737434
+      value: -0.0005157114
       objectReference: {fileID: 0}
     - target: {fileID: 3660971368892066488, guid: d94602df478b8f44fa9c97658ccfd685, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1384,6 +1380,10 @@ PrefabInstance:
     - target: {fileID: 1300536547972649988, guid: c06050f632b1cfe40a466799e1776d65, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3278597125391413296, guid: c06050f632b1cfe40a466799e1776d65, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

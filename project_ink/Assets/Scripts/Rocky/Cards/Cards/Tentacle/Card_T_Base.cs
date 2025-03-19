@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Card_T_Base : Card
 {
     public override Projectile FireCard(Projectile.ProjectileType type, bool returnToCardPool){
+        Tentacle.inst.damage=damage;
         switch(type){
             case Projectile.ProjectileType.AutoChase:
             case Projectile.ProjectileType.AutoFire:

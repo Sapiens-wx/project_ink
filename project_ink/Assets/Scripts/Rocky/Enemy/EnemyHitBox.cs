@@ -14,14 +14,8 @@ public class EnemyHitBox : EnemyBase
     }
     protected override void OnDestroy(){
     }
-    public override void OnHit(Projectile proj)
+    public override void OnHit(HitEnemyInfo proj)
     {
         connectedEnemy.OnHit(proj);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

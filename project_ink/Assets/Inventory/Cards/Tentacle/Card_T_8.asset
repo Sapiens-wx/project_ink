@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b6df32e3b1fef4b94177816a782c38, type: 3}
+  m_Name: Card_T_8
+  m_EditorClassIdentifier: 
+  type: 25
+  group: 3
+  image: {fileID: 21300000, guid: c616459b803be0a4b8c138f6be05a59b, type: 3}
+  description: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF1B\u6B64\u724C\u88AB\u6D88\u8017\u65F6\uFF0C\u989D\u5916\u81EA\u52A8\u751F\u6548\u6B64\u724C4\u6B21\uFF0C\u5E76\u4E14\u6B64\u724C\u4E0D\u4F1A\u6D88\u5931\uFF0C\u800C\u662F\u8FDB\u5165\u5F03\u724C\u5806\uFF1B"
+  damage: 0
+  anticipation: 0
+  recovery: 0
+  explanation: 

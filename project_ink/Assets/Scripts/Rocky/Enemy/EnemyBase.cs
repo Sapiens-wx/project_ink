@@ -19,8 +19,8 @@ public abstract class EnemyBase : MonoBehaviour
                 healthBar.SetProgress((float)curHealth/maxHealth);
         }
     }
-    int dir;
-    public int Dir{
+    protected int dir;
+    public virtual int Dir{
         get=>dir;
         set{
             if(dir==value) return;
@@ -41,8 +41,8 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// called when the enemy gets hit.
     /// </summary>
-    public virtual void OnHit(Projectile proj){
-        OnDamaged(proj.damage);
+    public virtual void OnHit(HitEnemyInfo info){
+        OnDamaged(info.damage);
     }
     public virtual void OnDamaged(int damage){
         CurHealth-=damage;
