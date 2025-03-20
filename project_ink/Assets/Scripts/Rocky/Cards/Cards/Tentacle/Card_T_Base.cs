@@ -5,17 +5,19 @@ using UnityEngine;
 public abstract class Card_T_Base : Card
 {
     public override Projectile FireCard(Projectile.ProjectileType type, bool returnToCardPool){
-        Tentacle.inst.damage=damage;
-        switch(type){
-            case Projectile.ProjectileType.AutoChase:
-            case Projectile.ProjectileType.AutoFire:
-                EnemyBase enemy=RoomManager.CurrentRoom.ClosestEnemy(PlayerCtrl.inst.transform);
-                if(enemy!=null)
-                    Tentacle.inst.Attack(enemy.transform.position);
-                break;
-            case Projectile.ProjectileType.Normal:
-                Tentacle.inst.Attack(PlayerCtrl.inst.mouseWorldPos);
-                break;
+        if(damage>0){
+            TentacleManager.inst.tentacle.damage=damage;
+            switch(type){
+                case Projectile.ProjectileType.AutoChase:
+                case Projectile.ProjectileType.AutoFire:
+                    EnemyBase enemy=RoomManager.CurrentRoom.ClosestEnemy(PlayerCtrl.inst.transform);
+                    if(enemy!=null)
+                        TentacleManager.inst.tentacle.Attack(enemy.transform.position);
+                    break;
+                case Projectile.ProjectileType.Normal:
+                    TentacleManager.inst.tentacle.Attack(PlayerCtrl.inst.mouseWorldPos);
+                    break;
+            }
         }
         if(returnToCardPool)
             ReturnToCardPool();

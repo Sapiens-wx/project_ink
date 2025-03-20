@@ -86,7 +86,7 @@ public class PlayerCtrl : MonoBehaviour
         set{
             if(dir==value) return;
             //not flip the tentacle
-            Tentacle.inst.Dir=-Tentacle.inst.Dir;
+            TentacleManager.inst.tentacle.Dir=-TentacleManager.inst.tentacle.Dir;
             //
             dir=value;
             leftTop.x*=-1;

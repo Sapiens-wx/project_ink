@@ -10,4 +10,14 @@ public class Card_T_1 : Card_T_Base
         CopyTo(ret);
         return ret;
     }
+    public override void Prep_Fire(List<IEnumerator> actions)
+    {
+        TentacleManager.inst.tentacle.onHitEnemy+=HitEnemyEffect;
+        base.Prep_Fire(actions);
+    }
+    //if hit, add a tentacle
+    void HitEnemyEffect(EnemyBase enemy){
+        TentacleManager.inst.AddNTentacles(1);
+        TentacleManager.inst.tentacle.onHitEnemy-=HitEnemyEffect;
+    }
 }

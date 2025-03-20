@@ -14,7 +14,7 @@ public class RoomManager : Singleton<RoomManager>
     static RoomManager currentRoom;
     public static RoomManager CurrentRoom{
         get=>currentRoom;
-        private set{currentRoom=value; if(value!=null)Debug.Log("player is in "+currentRoom.name);}
+        private set{currentRoom=value; if(value!=null) currentRoom.OnEnterRoom();}
     }
     public Bounds RoomBounds{
         get=>roomBounds;
@@ -42,6 +42,9 @@ public class RoomManager : Singleton<RoomManager>
         StartCoroutine(CheckCurrentRoom());
     }
     #region CurrentRoom
+    void OnEnterRoom(){
+        TentacleManager.inst.canReconcile=false;
+    }
     IEnumerator CheckCurrentRoom(){
         WaitForSeconds wait=new WaitForSeconds(.3f);
         while(true){

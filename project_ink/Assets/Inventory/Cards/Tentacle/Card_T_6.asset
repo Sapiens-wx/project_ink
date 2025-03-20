@@ -16,7 +16,7 @@ MonoBehaviour:
   group: 3
   image: {fileID: 21300000, guid: 82be7d227ef2791499ad05554c46d372, type: 3}
   description: "\u5C06\u5F53\u524D\u6240\u6709\u5361\u69FD\u4E2D\u7684\u5361\u724C\u6D88\u8017\uFF1B\u4EEA\u5F0F*5\uFF1B\u7948\u6C42*3\uFF1B\u5728\u6B64\u623F\u95F4\u5185\u65F6\uFF0C\u4F60\u4E0D\u518D\u4F1A\u5E73\u606F"
-  damage: 0
+  damage: 1
   anticipation: 0
   recovery: 0
   explanation: 

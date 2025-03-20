@@ -5,7 +5,7 @@ using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Tentacle : Singleton<Tentacle>
+public class Tentacle : MonoBehaviour
 {
     public LineRenderer line;
     public Transform anchorParent;
@@ -19,6 +19,7 @@ public class Tentacle : Singleton<Tentacle>
     public float colliderRadius;
 
     [NonSerialized][HideInInspector] public int damage;
+    public event System.Action<EnemyBase> onHitEnemy;
     Animator animator;
     /// <summary>
     /// the length of the tentacle
@@ -30,6 +31,7 @@ public class Tentacle : Singleton<Tentacle>
     /// </summary>
     Vector2[] positions, scaledPositions;
     Stack<Collider2D> hitStack;
+    Queue<Vector2> attacks;
     int dir;
     public int Dir{
         get{
@@ -49,6 +51,7 @@ public class Tentacle : Singleton<Tentacle>
         animator=GetComponent<Animator>();
         InitAnchorPos();
         hitStack=new Stack<Collider2D>();
+        attacks=new Queue<Vector2>();
     }
     /// <summary>
     /// initialize the positions array based on anchors array
@@ -64,8 +67,16 @@ public class Tentacle : Singleton<Tentacle>
         DetectCollision();
     }
     public void Attack(Vector2 point){
-        target=point;
-        animator.SetTrigger("attack");
+        attacks.Enqueue(point);
+        animator.SetInteger("numAttacks", attacks.Count);
+    }
+    /// <summary>
+    /// called by tentacle_attack_state only. gets the next target of attack.
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 GetNextAttack(){
+        animator.SetInteger("numAttacks", attacks.Count-1);
+        return attacks.Dequeue();
     }
     Vector2[] Scaled(Vector2[] arr, float length){
         Vector2[] res=new Vector2[arr.Length];
@@ -145,6 +156,7 @@ public class Tentacle : Singleton<Tentacle>
         EnemyBase enemy=collider.GetComponent<EnemyBase>();
         if(enemy.CompareTag("IgnoreProjectile")) return; //if the hit collider ignores this projectile (like E_Pig does), then act as nothing happened.
         enemy.OnHit(new HitEnemyInfo(this));
+        onHitEnemy?.Invoke(enemy);
     }
     void OnCollExit(Collider2D collider){
         //Debug.Log("exit "+collider.name+Time.time);

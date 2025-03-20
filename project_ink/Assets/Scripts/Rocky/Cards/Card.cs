@@ -72,6 +72,13 @@ public abstract class Card : ScriptableObject
     public virtual void Consume()
     {
         isConsumed = true;
+        if(SlotIndex>-1){
+            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
+            OnExitSlot();
+        }
+    }
+    public virtual void Prep_Consume(List<IEnumerator> actions){
+        actions.Add(Consume_IEnum());
     }
     public virtual void Prep_Fire(List<IEnumerator> actions){
         actions.Add(Fire());
@@ -102,6 +109,10 @@ public abstract class Card : ScriptableObject
         if(returnToCardPool)
             ReturnToCardPool();
         return p;
+    }
+    public IEnumerator FireCard_IEnum(Projectile.ProjectileType type, bool returnToCardPool){
+        FireCard(type, returnToCardPool);
+        yield break;
     }
     internal IEnumerator Fire(){
         CardLog.LogFire(this);
@@ -145,6 +156,18 @@ public abstract class Card : ScriptableObject
         ReturnToCardPool();
         yield break;
     }
+    protected IEnumerator Consume_IEnum(){
+        Consume();
+        yield break;
+    }
+    protected IEnumerator ConsumeCardAtSlot(int idx){
+        if(CardSlotManager.inst.cardSlots.Length<=idx){
+            Debug.LogError("Index Out of Range in ConsumeCardAtSlot");
+            yield break;
+        }
+        Card card=CardSlotManager.inst.cardSlots[idx].card;
+        if(card!=null) card.Consume();
+    }
     public virtual void OnHitEnemy(EnemyBase enemy){}
     public abstract Card Copy();
     public virtual void CopyTo(Card card)
@@ -156,6 +179,10 @@ public abstract class Card : ScriptableObject
         card.recovery=recovery;
         card.description=description;
         card.explanation=explanation;
+    }
+    protected static IEnumerator IEnumAction(System.Action action){
+        action();
+        yield break;
     }
     public enum CardType
     {

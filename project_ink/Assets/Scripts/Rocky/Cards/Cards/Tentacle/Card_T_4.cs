@@ -10,4 +10,22 @@ public class Card_T_4 : Card_T_Base
         CopyTo(ret);
         return ret;
     }
+    public override void Prep_Fire(List<IEnumerator> actions)
+    {
+        base.Prep_Fire(actions);
+        int i=TentacleManager.inst.BookCount;
+        //activate this card n times. n=book count
+        for(;i>1;--i){
+            actions.Add(Activate(false));
+        }
+        if(i>0) actions.Add(AutoFire(false));
+    }
+    #warning this is not fully implemented
+    //if hit an enemy, remove a tentacle and increase the damage of every tentacle by 1
+    void OnHitEnemy(){
+        TentacleManager.inst.RemoveATentacle();
+        for(int i=TentacleManager.inst.BookCount-1;i>-1;--i){
+            TentacleManager.inst.books[i].tentacle.damage++;
+        }
+    }
 }

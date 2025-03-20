@@ -10,4 +10,30 @@ public class Card_T_7 : Card_T_Base
         CopyTo(ret);
         return ret;
     }
+    public override void Prep_Fire(List<IEnumerator> actions)
+    {
+        base.Prep_Fire(actions);
+        //deal 1 damage three times
+        actions.Add(Activate(false));
+        actions.Add(Activate(false));
+        actions.Add(AutoFire(false));
+        //consume the next two cards
+        for(int i=Mathf.Min(SlotIndex+2,CardSlotManager.inst.cardSlots.Length-1);i>SlotIndex;--i){
+            Card card=CardSlotManager.inst.cardSlots[i].card;
+            if(card!=null) card.Prep_Consume(actions);
+        }
+        //add two more cards to card dealer
+        actions.Add(IEnumAction(()=>{
+            CardSlotManager.inst.cardDealer.ReturnToCardPool(Copy());
+            CardSlotManager.inst.cardDealer.ReturnToCardPool(Copy());
+            }));
+    }
+    public override void Prep_Consume(List<IEnumerator> actions)
+    {
+        base.Prep_Consume(actions);
+        actions.Add(IEnumAction(()=>{
+            TentacleManager.inst.Pray(2);
+            TentacleManager.inst.AddNTentacles(2);
+        }));
+    }
 }
