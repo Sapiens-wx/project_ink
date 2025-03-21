@@ -18,20 +18,24 @@ public class Tentacle : MonoBehaviour
     public float acceleration;
     public float colliderRadius;
 
-    [NonSerialized][HideInInspector] public int damage;
+    int damage;
+    public int Damage{ get=>damage;}
     public event System.Action<EnemyBase> onHitEnemy;
     Animator animator;
     /// <summary>
     /// the length of the tentacle
     /// </summary>
-    [NonSerialized][HideInInspector] public float len,len_attack;
+    [NonSerialized][HideInInspector] public float len, len_attack;
     [NonSerialized][HideInInspector] public Vector2 target;
     /// <summary>
     /// actual anchor positions. with physical simulation, but also affected by anchors.
     /// </summary>
     Vector2[] positions, scaledPositions;
     Stack<Collider2D> hitStack;
-    Queue<Vector2> attacks;
+    /// <summary>
+    /// stores a vector3 p. p.xy is the attack position, p.z is the damage
+    /// </summary>
+    Queue<Vector3> attacks;
     int dir;
     public int Dir{
         get{
@@ -51,7 +55,8 @@ public class Tentacle : MonoBehaviour
         animator=GetComponent<Animator>();
         InitAnchorPos();
         hitStack=new Stack<Collider2D>();
-        attacks=new Queue<Vector2>();
+        attacks=new Queue<Vector3>();
+        damage=0;
     }
     /// <summary>
     /// initialize the positions array based on anchors array
@@ -66,12 +71,12 @@ public class Tentacle : MonoBehaviour
         UpdateLine();
         DetectCollision();
     }
-    public void Attack(Vector2 point){
-        attacks.Enqueue(point);
+    public void Attack(Vector2 point, int _damage){
+        attacks.Enqueue(new Vector3(point.x, point.y, _damage));
         animator.SetInteger("numAttacks", attacks.Count);
     }
     /// <summary>
-    /// called by tentacle_attack_state only. gets the next target of attack.
+    /// called by tentacle_attack_state only. gets the next target of attack. automatically sets damage to desired damage
     /// </summary>
     /// <returns></returns>
     public Vector2 GetNextAttack(){

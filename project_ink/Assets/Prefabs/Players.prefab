@@ -288,6 +288,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bc: {fileID: 8883133825723922418}
   spr: {fileID: 7051691428630049942}
+  tentacle: {fileID: 4870289137564986169}
   gravity: -25
   maxFallSpd: -10
   keyDownBuffTime: 0.08
@@ -719,6 +720,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f2e6dc630ef8a84ab10d6c75acc9e3d, type: 3}
+--- !u!114 &4870289137564986169 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4421347999392638256, guid: 3f2e6dc630ef8a84ab10d6c75acc9e3d, type: 3}
+  m_PrefabInstance: {fileID: 9137089778128227849}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e788aa5b2eacfa3488360146e02e9150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7336582350188435200 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1953911846990665993, guid: 3f2e6dc630ef8a84ab10d6c75acc9e3d, type: 3}

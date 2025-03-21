@@ -10,10 +10,14 @@ public class TentacleManager : Singleton<TentacleManager>
     [SerializeField] Book prefab_book;
     [SerializeField] AnimationClip clip_attack, clip_recover;
     /// <summary>
+    /// used by OnCardDealDamage
+    /// </summary>
+    [SerializeField] float attackDistNear, attackDistFar, attackDistVeryFar;
+
+    /// <summary>
     /// the one that cards use to attack enemy. not inside a book
     /// </summary>
-    public Tentacle tentacle;
-
+    [NonSerialized][HideInInspector] public Tentacle tentacle;
     /// <summary>
     /// calculated by
     /// </summary>
@@ -22,6 +26,10 @@ public class TentacleManager : Singleton<TentacleManager>
     /// used by Card_T_6
     /// </summary>
     [NonSerialized][HideInInspector] public bool canReconcile;
+    /// <summary>
+    /// number of times player deals damage to an enemy (will be reset by OnCardDealDamage)
+    /// </summary>
+    int rank_damageCount=0;
     /// <summary>
     /// 苏醒程度
     /// </summary>
@@ -34,13 +42,81 @@ public class TentacleManager : Singleton<TentacleManager>
     }
     ObjectPool<Book> pool_book;
     [NonSerialized][HideInInspector] public List<Book> books;
+    void OnEnable(){
+        CardEventManager.onCardDealDamage+=onCardDealDamage;
+    }
+    void OnDisable(){
+        CardEventManager.onCardDealDamage-=onCardDealDamage;
+    }
     // Start is called before the first frame update
     void Start()
     {
         pool_book=new ObjectPool<Book>(PoolBook_Create, PoolBook_OnGet, PoolBook_OnRelease);
         books=new List<Book>();
         attackDuration=clip_attack.length+clip_recover.length;
+        rank=1;
+        tentacle=PlayerCtrl.inst.tentacle;
     }
+    void onCardDealDamage(HitEnemyInfo info){
+        ++rank_damageCount;
+        switch(rank){
+            case 1:
+                if(rank_damageCount>=2){
+                    rank_damageCount=0;
+                    Attack(1);
+                    SetAttackDist(attackDistNear);
+                }
+                break;
+            case 2:
+                if(rank_damageCount>=2){
+                    rank_damageCount=0;
+                    Attack(2);
+                    SetAttackDist(attackDistFar);
+                }
+                break;
+            case 3:
+                rank_damageCount=0;
+                Attack(2);
+                SetAttackDist(attackDistVeryFar);
+                break;
+        }
+    }
+    void SetAttackDist(float dist){
+        foreach(Book b in books){
+            b.tentacle.len_attack=dist;
+        }
+    }
+    public void Attack(int baseDamage){
+        foreach(Book b in books){
+            b.tentacle.Attack(PlayerCtrl.inst.transform.position, b.accumulatedDamage+baseDamage);
+        }
+    }
+    //----------Buff----------
+    /// <summary>
+    /// if rank==3, enter crazy mode
+    /// </summary>
+    public Card CrazyFireCardMode(Card card, List<IEnumerator> actions){
+        if(rank==3){
+            switch(UnityEngine.Random.Range(0,4)){
+                case 0:
+                case 1: //50% probability: randomly select a card in a cardslot and fire
+                    List<int> indices=new List<int>(CardSlotManager.inst.cardSlots.Length);
+                    for(int i=CardSlotManager.inst.cardSlots.Length-1;i>-1;--i){
+                        if(CardSlotManager.inst.cardSlots[i].card!=null) indices.Add(i);
+                    }
+                    return CardSlotManager.inst.cardSlots[indices[UnityEngine.Random.Range(0, indices.Count)]].card;
+                case 2: //25% probability: fire the card one more time
+                    actions.Add(card.Activate(false));
+                    CardSlotManager.inst.cardDealer.ReturnToCardPool(card.Copy());
+                    break;
+                case 3:
+                    card.IsConsumed=true;
+                    break;
+            }
+        }
+        return card;
+    }
+    //----------Modifier----------
     /// <summary>
     /// increase rank
     /// </summary>

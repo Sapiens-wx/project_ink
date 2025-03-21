@@ -18,14 +18,15 @@ public class Card_T_4 : Card_T_Base
         for(;i>1;--i){
             actions.Add(Activate(false));
         }
-        if(i>0) actions.Add(AutoFire(false));
+        //if hit an enemy, remove a tentacle and increase the damage of every tentacle by 1
+        TentacleManager.inst.tentacle.onHitEnemy+=OnHitEnemy;
     }
-    #warning this is not fully implemented
     //if hit an enemy, remove a tentacle and increase the damage of every tentacle by 1
     void OnHitEnemy(){
         TentacleManager.inst.RemoveATentacle();
         for(int i=TentacleManager.inst.BookCount-1;i>-1;--i){
-            TentacleManager.inst.books[i].tentacle.damage++;
+            TentacleManager.inst.books[i].accumulatedDamage++;
         }
+        TentacleManager.inst.tentacle.onHitEnemy-=OnHitEnemy;
     }
 }

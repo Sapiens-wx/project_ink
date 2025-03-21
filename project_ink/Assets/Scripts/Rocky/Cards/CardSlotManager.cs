@@ -104,15 +104,19 @@ public class CardSlotManager : Singleton<CardSlotManager>
     public void PrepareFire(Vector2 dir){
         if(anticipating) return;
         CardLog.MouseFire();
+        //count cards
         int cardCnt=0;
         for(int i=0;i<cardSlots.Length;++i){
             if(cardSlots[i].card!=null) ++cardCnt;
         }
         CardLog.Log($"CNT {cardCnt} {cardDealer.DiscardPileCount()}");
         if(cardCnt+cardDealer.DiscardPileCount()!=cardDealer.TotalCardCount()) Debug.LogError("lost card");
+        //shoot a card
         this.shootDir=dir;
         List<IEnumerator> actions=new List<IEnumerator>();
-        cardSlots[curSlot].card.Prep_Fire(actions);
+        Card firingCard=cardSlots[curSlot].card;
+        firingCard = TentacleManager.inst.CrazyFireCardMode(firingCard, actions);
+        firingCard.Prep_Fire(actions);
         StartCoroutine(Fire(actions));
     }
     public void SkipCard(){

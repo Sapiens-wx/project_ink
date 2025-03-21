@@ -161,7 +161,7 @@ public class HitEnemyInfo{
     public HitEnemyInfo(Tentacle t){
         transform=t.transform;
         hitType=HitType.Tentacle;
-        damage=t.damage;
+        damage=t.Damage;
     }
     public enum HitType{
         Projectile,

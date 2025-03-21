@@ -8,6 +8,7 @@ public class PlayerCtrl : MonoBehaviour
 {
     public BoxCollider2D bc;
     public SpriteRenderer spr;
+    public Tentacle tentacle;
     public float gravity, maxFallSpd;
     public float keyDownBuffTime;
     [Header("Movement")]
@@ -86,7 +87,7 @@ public class PlayerCtrl : MonoBehaviour
         set{
             if(dir==value) return;
             //not flip the tentacle
-            TentacleManager.inst.tentacle.Dir=-TentacleManager.inst.tentacle.Dir;
+            tentacle.Dir=-tentacle.Dir;
             //
             dir=value;
             leftTop.x*=-1;

@@ -20,7 +20,7 @@ public abstract class Card : ScriptableObject
     /// <summary>
     /// whether the card is consumed in one round
     /// </summary>
-    public bool IsConsumed { get { return isConsumed; } }
+    public bool IsConsumed { get { return isConsumed; } set=>isConsumed=value; }
     /// <summary>
     /// 
     /// </summary>
@@ -44,9 +44,9 @@ public abstract class Card : ScriptableObject
     }
     public virtual void ReturnToCardPool()
     {
+        if(slotIndex>=0)
+            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         if (!isConsumed){
-            if(slotIndex>=0)
-                CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
             cardDealer.ReturnToCardPool(this);
             OnExitSlot();
         }
@@ -55,8 +55,8 @@ public abstract class Card : ScriptableObject
         slotIndex = slot;
     }
     public void OnExitSlot(){
-        if(slotIndex==-1) Debug.LogError("returning a card that is already returned");
-        if(slotIndex==-1) CardLog.Log($"Error: returning a card that is already returned");
+        if(slotIndex==-1) Debug.LogError($"returning {type} that is already returned");
+        if(slotIndex==-1) CardLog.Log($"Error: returning {type} that is already returned");
         slotIndex=-1;
     }
     /// <summary>
@@ -179,6 +179,7 @@ public abstract class Card : ScriptableObject
         card.recovery=recovery;
         card.description=description;
         card.explanation=explanation;
+        card.cardDealer=cardDealer;
     }
     protected static IEnumerator IEnumAction(System.Action action){
         action();

@@ -16,7 +16,6 @@ public class Card_T_7 : Card_T_Base
         //deal 1 damage three times
         actions.Add(Activate(false));
         actions.Add(Activate(false));
-        actions.Add(AutoFire(false));
         //consume the next two cards
         for(int i=Mathf.Min(SlotIndex+2,CardSlotManager.inst.cardSlots.Length-1);i>SlotIndex;--i){
             Card card=CardSlotManager.inst.cardSlots[i].card;

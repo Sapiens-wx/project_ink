@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,12 @@ public class Book : MonoBehaviour
     [Header("physics")]
     [SerializeField] float acceleration,damping;
 
+    [NonSerialized][HideInInspector] public int accumulatedDamage;
     float radius=1;
     Vector3 prevPos;
     void Start()
     {
-        
+        accumulatedDamage=0;
     }
 
     void FixedUpdate()

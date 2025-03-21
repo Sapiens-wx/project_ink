@@ -42,6 +42,7 @@ public abstract class EnemyBase : MonoBehaviour
     /// called when the enemy gets hit.
     /// </summary>
     public virtual void OnHit(HitEnemyInfo info){
+        CardEventManager.onCardDealDamage?.Invoke(info);
         OnDamaged(info.damage);
     }
     public virtual void OnDamaged(int damage){
