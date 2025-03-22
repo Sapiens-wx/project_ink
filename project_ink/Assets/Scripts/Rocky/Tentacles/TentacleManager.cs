@@ -31,6 +31,10 @@ public class TentacleManager : Singleton<TentacleManager>
     /// </summary>
     int rank_damageCount=0;
     /// <summary>
+    /// number of continues card cycles where the rank is equal to 3
+    /// </summary>
+    int rank3cycles=0;
+    /// <summary>
     /// 苏醒程度
     /// </summary>
     int rank;
@@ -43,10 +47,12 @@ public class TentacleManager : Singleton<TentacleManager>
     ObjectPool<Book> pool_book;
     [NonSerialized][HideInInspector] public List<Book> books;
     void OnEnable(){
-        CardEventManager.onCardDealDamage+=onCardDealDamage;
+        CardEventManager.onCardDealDamage+=OnCardDealDamage;
+        CardEventManager.onDistributeCard+=OnDistributeCard;
     }
     void OnDisable(){
-        CardEventManager.onCardDealDamage-=onCardDealDamage;
+        CardEventManager.onCardDealDamage-=OnCardDealDamage;
+        CardEventManager.onDistributeCard-=OnDistributeCard;
     }
     // Start is called before the first frame update
     void Start()
@@ -57,38 +63,53 @@ public class TentacleManager : Singleton<TentacleManager>
         rank=1;
         tentacle=PlayerCtrl.inst.tentacle;
     }
-    void onCardDealDamage(HitEnemyInfo info){
+    void OnDistributeCard(){
+        if(rank==3){
+            ++rank3cycles;
+            if(rank3cycles>=3) Reconcile(1);
+        } else
+            rank3cycles=0;
+    }
+    void OnCardDealDamage(HitEnemyInfo info){
+        //enemy hit by "books" does not count
+        if(info.hitType==HitEnemyInfo.HitType.Tentacle && info.transform!=tentacle.transform) return;
         ++rank_damageCount;
         switch(rank){
             case 1:
                 if(rank_damageCount>=2){
                     rank_damageCount=0;
                     Attack(1);
-                    SetAttackDist(attackDistNear);
+                    SetAttackMaxDist(attackDistNear);
                 }
                 break;
             case 2:
                 if(rank_damageCount>=2){
                     rank_damageCount=0;
                     Attack(2);
-                    SetAttackDist(attackDistFar);
+                    SetAttackMaxDist(attackDistFar);
                 }
                 break;
             case 3:
                 rank_damageCount=0;
                 Attack(2);
-                SetAttackDist(attackDistVeryFar);
+                SetAttackMaxDist(attackDistVeryFar);
                 break;
         }
     }
-    void SetAttackDist(float dist){
+    void SetAttackMaxDist(float dist){
         foreach(Book b in books){
-            b.tentacle.len_attack=dist;
+            b.tentacle.maxLength=dist;
         }
     }
     public void Attack(int baseDamage){
-        foreach(Book b in books){
-            b.tentacle.Attack(PlayerCtrl.inst.transform.position, b.accumulatedDamage+baseDamage);
+        if(RoomManager.CurrentRoom==null)
+            return;
+        EnemyBase closestEnemy=RoomManager.CurrentRoom.ClosestEnemy(PlayerCtrl.inst.transform);
+        if(closestEnemy!=null){
+            Vector2 closestEnemyPos=closestEnemy.transform.position;
+            foreach(Book b in books){
+                b.tentacle.Attack(closestEnemyPos, b.accumulatedDamage+baseDamage);
+            }
         }
     }
     //----------Buff----------

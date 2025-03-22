@@ -110,7 +110,6 @@ public class CardSlotManager : Singleton<CardSlotManager>
             if(cardSlots[i].card!=null) ++cardCnt;
         }
         CardLog.Log($"CNT {cardCnt} {cardDealer.DiscardPileCount()}");
-        if(cardCnt+cardDealer.DiscardPileCount()!=cardDealer.TotalCardCount()) Debug.LogError("lost card");
         //shoot a card
         this.shootDir=dir;
         List<IEnumerator> actions=new List<IEnumerator>();
@@ -231,6 +230,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     IEnumerator DistributeCard_Anim()
     {
         buff1_4.firstCardOfRound=true;
+        CardEventManager.onDistributeCard?.Invoke();
         for(int i = 0; i < numSlots; ++i)
         {
             if (cardSlots[i].card == null)

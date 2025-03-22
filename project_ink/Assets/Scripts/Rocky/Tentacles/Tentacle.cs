@@ -25,7 +25,7 @@ public class Tentacle : MonoBehaviour
     /// <summary>
     /// the length of the tentacle
     /// </summary>
-    [NonSerialized][HideInInspector] public float len, len_attack;
+    [NonSerialized][HideInInspector] public float len;
     [NonSerialized][HideInInspector] public Vector2 target;
     /// <summary>
     /// actual anchor positions. with physical simulation, but also affected by anchors.

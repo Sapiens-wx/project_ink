@@ -707,10 +707,6 @@ PrefabInstance:
       propertyPath: damping
       value: 0.9
       objectReference: {fileID: 0}
-    - target: {fileID: 4421347999392638256, guid: 3f2e6dc630ef8a84ab10d6c75acc9e3d, type: 3}
-      propertyPath: len_idle
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6031054412778962489, guid: 3f2e6dc630ef8a84ab10d6c75acc9e3d, type: 3}
       propertyPath: m_Name
       value: Tentacle
