@@ -56,6 +56,18 @@ public class MathUtil{
         }
         return to;
     }
+    //---------------------noise------------------------
+    static float IntToFLoatneg1pos1(int i){
+        return ((float)i/int.MaxValue)*2-1f;
+    }
+    public static Vector2 InsideUnitCirclePerlinNoise(float t){
+        int l=(int)t,r=l+1;
+        System.Random lrandom=new System.Random(l), rrandom=new System.Random(r);
+        float rand=Mathf.Lerp(IntToFLoatneg1pos1(lrandom.Next()), IntToFLoatneg1pos1(rrandom.Next()), t-l);
+        float y=Mathf.Sqrt(1-rand*rand);
+        return new Vector2(rand, IntToFLoatneg1pos1(lrandom.Next())>0?y:-y);
+    }
+    //---------------------besier curve------------------------
     /// <summary>
     /// interpolates a point based on quadratic besier curve
     /// </summary>
