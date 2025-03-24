@@ -3,7 +3,6 @@ using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
 {
-    public SpriteRenderer spr;
     [SerializeField] internal Collider2D damageBox;
     [SerializeField] ProgressBar healthBar;
     [SerializeField] internal int maxHealth;
@@ -20,13 +19,14 @@ public abstract class EnemyBase : MonoBehaviour
                 healthBar.SetProgress((float)curHealth/maxHealth);
         }
     }
-    int dir;
-    public int Dir{
+    protected int dir;
+    public virtual int Dir{
         get=>dir;
         set{
             if(dir==value) return;
             dir=value;
-            spr.transform.localScale=new Vector3(dir==1?-Mathf.Abs(spr.transform.localScale.x):Mathf.Abs(spr.transform.localScale.x), spr.transform.localScale.y, spr.transform.localScale.z);
+            transform.localScale=new Vector3(dir==1?-Mathf.Abs(transform.localScale.x):Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            //spr.transform.localScale=new Vector3(dir==1?-Mathf.Abs(spr.transform.localScale.x):Mathf.Abs(spr.transform.localScale.x), spr.transform.localScale.y, spr.transform.localScale.z);
             if(healthBar!=null){ //make sure not to flip the health bar.
                 Vector3 localScale=healthBar.transform.localScale;
                 localScale.x=dir==1?Mathf.Abs(localScale.x):-Mathf.Abs(localScale.x);
@@ -41,8 +41,9 @@ public abstract class EnemyBase : MonoBehaviour
     /// <summary>
     /// called when the enemy gets hit.
     /// </summary>
-    public virtual void OnHit(Projectile proj){
-        OnDamaged(proj.damage);
+    public virtual void OnHit(HitEnemyInfo info){
+        CardEventManager.onCardDealDamage?.Invoke(info);
+        OnDamaged(info.damage);
     }
     public virtual void OnDamaged(int damage){
         CurHealth-=damage;
@@ -64,7 +65,7 @@ public abstract class EnemyBase : MonoBehaviour
         rgb=GetComponent<Rigidbody2D>();
         animator=GetComponent<Animator>();
     }
-    void OnDestroy(){
+    protected virtual void OnDestroy(){
         RoomManager.inst.UnRegisterEnemy(this);
     }
     public bool PlayerInRange(float dist){

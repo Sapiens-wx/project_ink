@@ -2,17 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UIElements.Experimental;
 
 //this class is copied entirely from S_GroundChase. only modified slightly.
 public class E_Pig_Attack2 : StateBase<E_Pig>
 {
     Vector3[] oriScalePig, oriPosPig;
     AnimParams[] animParams;
+    float prevx, maxDeltaX; //mexDeltaX
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         UpdateAnimParams();
         ctrller.StartCoroutine(Jump());
+        prevx=ctrller.transform.position.x;
+        maxDeltaX=RoomManager.CurrentRoom.RoomBounds.size.x/ctrller.ac2_jumpInterval*Time.fixedDeltaTime;
+    }
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
+        SetPigAnimatorsSpd(Mathf.Clamp01(Mathf.Abs(ctrller.transform.position.x-prevx)/maxDeltaX));
+        prevx=ctrller.transform.position.x;
+    }
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        base.OnStateExit(animator, stateInfo, layerIndex);
+        for(int i=0;i<3;++i){
+            ctrller.pig[i].transform.localPosition=oriPosPig[i];
+        }
+        SetAnimatorParams(true,true,true);
+        SetPigAnimatorsSpd(1);
+    }
+    void SetPigAnimatorsSpd(float spd){
+        ctrller.animators[0].speed=spd;
+        ctrller.animators[1].speed=spd;
+        ctrller.animators[2].speed=spd;
     }
     /// <summary>
     /// Generates a random sequence of 0,1,2
@@ -34,6 +56,14 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
         res[2]=3-res[1]-res[0];
         return res;
     }
+    /// <summary>
+    /// sets the three pigs' animators' parameters
+    /// </summary>
+    void SetAnimatorParams(bool b1, bool b2, bool b3){
+        ctrller.animators[0].SetBool("idle",b1);
+        ctrller.animators[1].SetBool("idle",b2);
+        ctrller.animators[2].SetBool("idle",b3);
+    }
     IEnumerator Jump(){
         Bounds roomBoundsGlobal=RoomManager.CurrentRoom.RoomGlobalBounds;
         float leftDest=roomBoundsGlobal.min.x+ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
@@ -42,6 +72,7 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
         ctrller.UpdateDir();
         int[] jumps=GetJump();
         //first jump
+        SetAnimatorParams(jumps[0]<=0,jumps[0]<=1,jumps[0]<=2);
         if(ctrller.Dir==1){
             lastDestIsLeft=false;
             yield return new WaitForSeconds(Jump(jumps[0], jumps[1], rightDest-ctrller.transform.position.x, true, false));
@@ -50,9 +81,11 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
             yield return new WaitForSeconds(Jump(jumps[0], jumps[1], leftDest-ctrller.transform.position.x, true, false));
         }
         //second jump
+        SetAnimatorParams(jumps[1]<=0,jumps[1]<=1,jumps[1]<=2);
         yield return new WaitForSeconds(Jump(jumps[1], jumps[2], (lastDestIsLeft?rightDest:leftDest)-ctrller.transform.position.x, false, false));
         //third jump
         lastDestIsLeft=!lastDestIsLeft;
+        SetAnimatorParams(jumps[2]<=0,jumps[2]<=1,jumps[2]<=2);
         yield return new WaitForSeconds(Jump(jumps[2], jumps[2], (lastDestIsLeft?rightDest:leftDest)-ctrller.transform.position.x, false, true));
         ctrller.animator.SetTrigger("idle");
     }
@@ -77,13 +110,6 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
             animParams[i].restorePosY=oriPosPig[i].y;
             animParams[i].squeezeX=oriScalePig[i].x*ctrller.animScaleXMax;
             animParams[i].restoreX=oriScalePig[i].x;
-        }
-    }
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        base.OnStateExit(animator, stateInfo, layerIndex);
-        for(int i=0;i<3;++i){
-            ctrller.pig[i].transform.localPosition=oriPosPig[i];
         }
     }
     float Jump(int idx, int nextIdx, float xDist, bool startAnim, bool endAnim){

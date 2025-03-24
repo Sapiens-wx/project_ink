@@ -314,7 +314,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u4E2D"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 58e7caf4ad952f44696d71844fd94fe7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2de8e8743833b8d44afdcb18365d2517, type: 2}
   m_sharedMaterial: {fileID: -1324505566569168460, guid: 58e7caf4ad952f44696d71844fd94fe7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -378,7 +378,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2523609546357469949

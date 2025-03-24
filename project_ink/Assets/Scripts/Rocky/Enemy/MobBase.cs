@@ -58,7 +58,7 @@ public abstract class MobBase : EnemyBase
             mob.SetDetectPlayer();
         }
     }
-    public override void OnHit(Projectile proj)
+    public override void OnHit(HitEnemyInfo proj)
     {
         base.OnHit(proj);
         SetDetectPlayer();

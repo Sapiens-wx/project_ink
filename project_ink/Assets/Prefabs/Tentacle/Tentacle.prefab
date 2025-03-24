@@ -258,11 +258,11 @@ MonoBehaviour:
   - {fileID: 8095064151494950850}
   - {fileID: 6201052453029419245}
   maxLength: 6
-  len_idle: 2
-  len_attack: 4
+  len_idle: 0
   numPoints: 5
   besierCurveParams: 3.87
   acceleration: 0.01
+  colliderRadius: 0.37
 --- !u!120 &8270398635079422717
 LineRenderer:
   serializedVersion: 2

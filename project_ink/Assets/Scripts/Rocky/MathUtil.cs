@@ -6,6 +6,12 @@ public class MathUtil{
         float sin=Mathf.Sin(theta), cos=Mathf.Cos(theta);
         return new Vector2(dir.x*cos-dir.y*sin, dir.x*sin+dir.y*cos);
     }
+    public static Vector3 MultiplySeparately(Vector3 lhs, Vector3 rhs){
+        return new Vector3(lhs.x*rhs.x, lhs.y*rhs.y, lhs.z*rhs.z);
+    }
+    public static Vector3 DivideSeparately(Vector3 lhs, Vector3 rhs){
+        return new Vector3(lhs.x/rhs.x, lhs.y/rhs.y, lhs.z/rhs.z);
+    }
     /// <summary>
     /// f(x)=sin(wx+a)
     /// </summary>
@@ -50,6 +56,18 @@ public class MathUtil{
         }
         return to;
     }
+    //---------------------noise------------------------
+    static float IntToFLoatneg1pos1(int i){
+        return ((float)i/int.MaxValue)*2-1f;
+    }
+    public static Vector2 InsideUnitCirclePerlinNoise(float t){
+        int l=(int)t,r=l+1;
+        System.Random lrandom=new System.Random(l), rrandom=new System.Random(r);
+        float rand=Mathf.Lerp(IntToFLoatneg1pos1(lrandom.Next()), IntToFLoatneg1pos1(rrandom.Next()), t-l);
+        float y=Mathf.Sqrt(1-rand*rand);
+        return new Vector2(rand, IntToFLoatneg1pos1(lrandom.Next())>0?y:-y);
+    }
+    //---------------------besier curve------------------------
     /// <summary>
     /// interpolates a point based on quadratic besier curve
     /// </summary>

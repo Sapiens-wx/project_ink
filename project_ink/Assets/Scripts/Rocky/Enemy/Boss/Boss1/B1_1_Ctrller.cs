@@ -24,7 +24,7 @@ public class B1_1_Ctrller : BossBase
         redHat.SetActive(false);
         a3_target.SetActive(false);
     }
-    public override void OnHit(Projectile proj)
+    public override void OnHit(HitEnemyInfo proj)
     {
         base.OnHit(proj);
         if(CurHealth<<1<maxHealth)

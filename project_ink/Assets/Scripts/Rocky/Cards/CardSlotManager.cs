@@ -104,15 +104,18 @@ public class CardSlotManager : Singleton<CardSlotManager>
     public void PrepareFire(Vector2 dir){
         if(anticipating) return;
         CardLog.MouseFire();
+        //count cards
         int cardCnt=0;
         for(int i=0;i<cardSlots.Length;++i){
             if(cardSlots[i].card!=null) ++cardCnt;
         }
         CardLog.Log($"CNT {cardCnt} {cardDealer.DiscardPileCount()}");
-        if(cardCnt+cardDealer.DiscardPileCount()!=10) Debug.LogError("lost card");
+        //shoot a card
         this.shootDir=dir;
         List<IEnumerator> actions=new List<IEnumerator>();
-        cardSlots[curSlot].card.Prep_Fire(actions);
+        Card firingCard=cardSlots[curSlot].card;
+        firingCard = TentacleManager.inst.CrazyFireCardMode(firingCard, actions);
+        firingCard.Prep_Fire(actions);
         StartCoroutine(Fire(actions));
     }
     public void SkipCard(){
@@ -134,11 +137,13 @@ public class CardSlotManager : Singleton<CardSlotManager>
         Vector2 dir=MathUtil.Rotate(shootDir, halfRangeInRad+deltaTheta/2);
         foreach(Card card in autoFireCards){
             Projectile p=card.FireCard(Projectile.ProjectileType.AutoFire, false); //don't return it to card pool because this card is already returned to card pool when it is added to autoFiredCards.
+            if(p==null) continue; //p is tentacle group
             p.AdjustFlyDir(dir);
             dir=MathUtil.Rotate(dir,deltaTheta);
         }
         foreach(Card card in autoActivateCards){
             Projectile p=card.FireCard(Projectile.ProjectileType.AutoFire, false);
+            if(p==null) continue; //p is tentacle group
             p.AdjustFlyDir(dir);
             dir=MathUtil.Rotate(dir,deltaTheta);
         }
@@ -225,6 +230,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     IEnumerator DistributeCard_Anim()
     {
         buff1_4.firstCardOfRound=true;
+        CardEventManager.onDistributeCard?.Invoke();
         for(int i = 0; i < numSlots; ++i)
         {
             if (cardSlots[i].card == null)
@@ -327,5 +333,8 @@ public class CardDealer
     }
     public int DiscardPileCount(){
         return discardCardPile.Count;
+    }
+    public int TotalCardCount(){
+        return allCards.Count;
     }
 }

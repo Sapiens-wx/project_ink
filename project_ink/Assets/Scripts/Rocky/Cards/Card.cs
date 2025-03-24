@@ -20,7 +20,7 @@ public abstract class Card : ScriptableObject
     /// <summary>
     /// whether the card is consumed in one round
     /// </summary>
-    public bool IsConsumed { get { return isConsumed; } }
+    public bool IsConsumed { get { return isConsumed; } set=>isConsumed=value; }
     /// <summary>
     /// 
     /// </summary>
@@ -33,7 +33,6 @@ public abstract class Card : ScriptableObject
         set=>slotIndex=value;
         get=>slotIndex;
     }
-    private float anticipation_backup;
 
     /// <summary>
     /// reset parameters needed in runtime. For example: this is called when the player first enters a round.
@@ -45,9 +44,9 @@ public abstract class Card : ScriptableObject
     }
     public virtual void ReturnToCardPool()
     {
+        if(slotIndex>=0)
+            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
         if (!isConsumed){
-            if(slotIndex>=0)
-                CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
             cardDealer.ReturnToCardPool(this);
             OnExitSlot();
         }
@@ -56,8 +55,8 @@ public abstract class Card : ScriptableObject
         slotIndex = slot;
     }
     public void OnExitSlot(){
-        if(slotIndex==-1) Debug.LogError("returning a card that is already returned");
-        if(slotIndex==-1) CardLog.Log($"Error: returning a card that is already returned");
+        if(slotIndex==-1) Debug.LogError($"returning {type} that is already returned");
+        if(slotIndex==-1) CardLog.Log($"Error: returning {type} that is already returned");
         slotIndex=-1;
     }
     /// <summary>
@@ -73,6 +72,13 @@ public abstract class Card : ScriptableObject
     public virtual void Consume()
     {
         isConsumed = true;
+        if(SlotIndex>-1){
+            CardSlotManager.inst.cardSlots[slotIndex].SetCard_Anim(null);
+            OnExitSlot();
+        }
+    }
+    public virtual void Prep_Consume(List<IEnumerator> actions){
+        actions.Add(Consume_IEnum());
     }
     public virtual void Prep_Fire(List<IEnumerator> actions){
         actions.Add(Fire());
@@ -98,11 +104,15 @@ public abstract class Card : ScriptableObject
     /// <param name="autoChase"></param>
     /// <param name="returnToCardPool"></param>
     /// <returns></returns>
-    public Projectile FireCard(Projectile.ProjectileType type, bool returnToCardPool){
+    public virtual Projectile FireCard(Projectile.ProjectileType type, bool returnToCardPool){
         Projectile p = CardSlotManager.inst.InstantiateProjectile(this, type);
         if(returnToCardPool)
             ReturnToCardPool();
         return p;
+    }
+    public IEnumerator FireCard_IEnum(Projectile.ProjectileType type, bool returnToCardPool){
+        FireCard(type, returnToCardPool);
+        yield break;
     }
     internal IEnumerator Fire(){
         CardLog.LogFire(this);
@@ -146,6 +156,18 @@ public abstract class Card : ScriptableObject
         ReturnToCardPool();
         yield break;
     }
+    protected IEnumerator Consume_IEnum(){
+        Consume();
+        yield break;
+    }
+    protected IEnumerator ConsumeCardAtSlot(int idx){
+        if(CardSlotManager.inst.cardSlots.Length<=idx){
+            Debug.LogError("Index Out of Range in ConsumeCardAtSlot");
+            yield break;
+        }
+        Card card=CardSlotManager.inst.cardSlots[idx].card;
+        if(card!=null) card.Consume();
+    }
     public virtual void OnHitEnemy(EnemyBase enemy){}
     public abstract Card Copy();
     public virtual void CopyTo(Card card)
@@ -157,6 +179,11 @@ public abstract class Card : ScriptableObject
         card.recovery=recovery;
         card.description=description;
         card.explanation=explanation;
+        card.cardDealer=cardDealer;
+    }
+    protected static IEnumerator IEnumAction(System.Action action){
+        action();
+        yield break;
     }
     public enum CardType
     {
@@ -181,12 +208,22 @@ public abstract class Card : ScriptableObject
         Card_N_Dmg1,
         Card_N_Dmg2,
         Card_N_Discard,
+        //tentacle
+        Card_T_1,
+        Card_T_2,
+        Card_T_3,
+        Card_T_4,
+        Card_T_5,
+        Card_T_6,
+        Card_T_7,
+        Card_T_8,
 
         Card_MaxCount
     }
     public enum CardGroup{
         Discard,
         Planet,
-        Normal
+        Normal,
+        Tentacle
     }
 }
