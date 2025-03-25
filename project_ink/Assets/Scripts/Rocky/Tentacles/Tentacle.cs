@@ -81,7 +81,9 @@ public class Tentacle : MonoBehaviour
     /// <returns></returns>
     public Vector2 GetNextAttack(){
         animator.SetInteger("numAttacks", attacks.Count-1);
-        return attacks.Dequeue();
+		Vector3 top=attacks.Dequeue();
+		damage=(int)top.z; //get damage
+        return top;
     }
     Vector2[] Scaled(Vector2[] arr, float length){
         Vector2[] res=new Vector2[arr.Length];
