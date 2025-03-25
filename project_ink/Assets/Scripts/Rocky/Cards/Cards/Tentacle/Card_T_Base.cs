@@ -22,4 +22,28 @@ public abstract class Card_T_Base : Card
             ReturnToCardPool();
         return null;
     }
+    internal override IEnumerator Activate(bool fireInGroup)
+    {
+        IEnumerator ienum=base.Activate(fireInGroup);
+        while(ienum.MoveNext()){
+            yield return ienum.Current;
+        }
+        yield return new WaitForSeconds(TentacleManager.inst.attackDuration);
+    }
+    internal override IEnumerator AutoFire(bool fireInGroup)
+    {
+        IEnumerator ienum=base.AutoFire(fireInGroup);
+        while(ienum.MoveNext()){
+            yield return ienum.Current;
+        }
+        yield return new WaitForSeconds(TentacleManager.inst.attackDuration);
+    }
+    internal override IEnumerator Fire()
+    {
+        IEnumerator ienum=base.Fire();
+        while(ienum.MoveNext()){
+            yield return ienum.Current;
+        }
+        yield return new WaitForSeconds(TentacleManager.inst.attackDuration);
+    }
 }
