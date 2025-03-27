@@ -114,7 +114,7 @@ public abstract class Card : ScriptableObject
         FireCard(type, returnToCardPool);
         yield break;
     }
-    internal IEnumerator Fire(){
+    internal virtual IEnumerator Fire(){
         CardLog.LogFire(this);
         FireCard(Projectile.ProjectileType.Normal, true);
         yield return new WaitForSeconds(recovery);
@@ -124,7 +124,7 @@ public abstract class Card : ScriptableObject
     /// </summary>
     /// <param name="fireInGroup">cards auto fired by effects from the discard group should set fireInGroup to true. Otherwise set it to false</param>
     /// <returns></returns>
-    internal IEnumerator AutoFire(bool fireInGroup){
+    internal virtual IEnumerator AutoFire(bool fireInGroup){
         CardLog.LogAutoFire(this);
         if(fireInGroup)
             CardSlotManager.inst.AddAutoFireCard(this);
@@ -133,7 +133,7 @@ public abstract class Card : ScriptableObject
         yield return new WaitForSeconds(recovery);
     }
     /// <param name="fireInGroup">cards auto fired by effects from the discard group should set fireInGroup to true. Otherwise set it to false</param>
-    internal IEnumerator Activate(bool fireInGroup){
+    internal virtual IEnumerator Activate(bool fireInGroup){
         if(fireInGroup)
             CardSlotManager.inst.AddActivateCard(this);
         else
@@ -160,13 +160,8 @@ public abstract class Card : ScriptableObject
         Consume();
         yield break;
     }
-    protected IEnumerator ConsumeCardAtSlot(int idx){
-        if(CardSlotManager.inst.cardSlots.Length<=idx){
-            Debug.LogError("Index Out of Range in ConsumeCardAtSlot");
-            yield break;
-        }
-        Card card=CardSlotManager.inst.cardSlots[idx].card;
-        if(card!=null) card.Consume();
+    protected IEnumerator Delay(float interval){
+        yield return new WaitForSeconds(interval);
     }
     public virtual void OnHitEnemy(EnemyBase enemy){}
     public abstract Card Copy();
