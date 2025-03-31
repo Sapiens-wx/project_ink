@@ -15,11 +15,13 @@ MonoBehaviour:
   type: 13
   group: 0
   image: {fileID: 21300000, guid: 8d43018d7e607f74ca00b25c66942e95, type: 3}
-  description: 'Deal 1 damage, if hits an enemy, generate Jupiter. Orbit: Every time
-    you play three cards, Autoplay the top card from your draw pile. Trigger: Autoplay
-    the top two cards of your draw pile.'
+  description: 'Deal 1 damage, if hits an enemy, generate Jupiter. '
   damage: 1
   anticipation: 0.6
   recovery: 0.2
-  explanation: 
+  explanation: 'Orbit: Every time you play three cards, Autoplay the top card from
+    your draw pile
+
+
+    Trigger: Autoplay the top two cards of your draw pile.'
   planetType: 64

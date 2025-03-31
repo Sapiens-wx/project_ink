@@ -15,12 +15,14 @@ MonoBehaviour:
   type: 11
   group: 0
   image: {fileID: 21300000, guid: 89e5be1818b13e24bbaa83281a86674c, type: 3}
-  description: 'Deal 1 damage, if hits an enemy, generate Mars. Mars Orbit: every
-    time you play three attack cards, the next attack card you play will activate
-    an additional time. Trigger: the next two attack cards you play will activate
-    an additional time.'
+  description: Deal 1 damage, if hits an enemy, generate Mars.
   damage: 1
   anticipation: 0.6
   recovery: 0.2
-  explanation: 
+  explanation: 'Mars Orbit: every time you play three attack cards, the next attack
+    card you play will activate an additional time
+
+
+    Trigger: the next two attack
+    cards you play will activate an additional time'
   planetType: 16

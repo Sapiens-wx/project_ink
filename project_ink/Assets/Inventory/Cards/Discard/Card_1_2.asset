@@ -19,4 +19,5 @@ MonoBehaviour:
   damage: 4
   anticipation: 0.6
   recovery: 0.2
-  explanation: 
+  explanation: 'Discard: Discard the card from its card slot and put it to the discard
+    pile'
