@@ -187,12 +187,12 @@ public class PlayerCtrl : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.LeftShift)){//dash
                 dashKeyDown=Time.time;
             }
-            else if(Input.GetKeyDown(KeyCode.W)){ //jump
+            else if(Input.GetKeyDown(KeyCode.Space)){ //jump
                 secondToLastJumpKeyDown=lastJumpKeyDown;
                 jumpKeyDown=Time.time;
                 lastJumpKeyDown=jumpKeyDown;
             }
-            else if(Input.GetKeyUp(KeyCode.W)){ //jump key up
+            else if(Input.GetKeyUp(KeyCode.Space)){ //jump key up
                 jumpKeyUp=true;
             }
         }

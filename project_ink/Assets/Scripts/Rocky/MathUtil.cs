@@ -20,16 +20,6 @@ public class MathUtil{
         float t=1/w*Mathf.PI*2;
         a-=2*((x0+a/w)%t)/t*6.28318f;
         return a;
-        // Compute the new phase shift
-        float aNew = a + Mathf.PI - 2 * (w * x0 + a);
-
-        // Normalize aNew to the range [0, 2π) to keep it small
-        aNew = aNew % (2 * Mathf.PI);
-        if (aNew < 0) {
-            aNew += 2 * Mathf.PI;
-        }
-
-        return aNew;
     }
     /// <summary>
     /// Vector2.up rotated theta (in rad)

@@ -65,7 +65,7 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
         ctrller.animators[2].SetBool("idle",b3);
     }
     IEnumerator Jump(){
-        Bounds roomBoundsGlobal=RoomManager.CurrentRoom.RoomGlobalBounds;
+        Bounds roomBoundsGlobal=RoomManager.CurrentRoom.RoomBounds;
         float leftDest=roomBoundsGlobal.min.x+ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
         float rightDest=roomBoundsGlobal.max.x-ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
         bool lastDestIsLeft;
