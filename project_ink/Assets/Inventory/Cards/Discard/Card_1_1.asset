@@ -15,9 +15,14 @@ MonoBehaviour:
   type: 0
   group: 0
   image: {fileID: 21300000, guid: 65a76f1c7a7b8e94fb691fa478f8771d, type: 3}
-  description: "Deal 3 damage. If this card is discarded, this card will be Autoplayed
+  description: "Deal 3 damage. If this card is Discarded, this card will be Autoplayed
     instead, then draw a card to fill this slot.\r"
   damage: 3
   anticipation: 0.5
   recovery: 0.1
-  explanation: 
+  explanation: 'Discard: Discard the card from its card slot and put it to the discard
+    pile
+
+
+    Autoplay: Automatically plays a card with no preparation time, it
+    will homing if it is a attack card'

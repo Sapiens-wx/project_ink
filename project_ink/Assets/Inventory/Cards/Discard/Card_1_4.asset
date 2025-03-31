@@ -20,4 +20,9 @@ MonoBehaviour:
   damage: 0
   anticipation: 0.2
   recovery: 0
-  explanation: 
+  explanation: 'Discard: Discard the card from its card slot and put it to the discard
+    pile
+
+
+    Autoeffect: Automatically triggers a card''s effect with no preparation
+    time, it will homing if it is a attack card'

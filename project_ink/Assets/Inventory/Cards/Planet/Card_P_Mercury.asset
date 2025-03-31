@@ -15,11 +15,13 @@ MonoBehaviour:
   type: 8
   group: 0
   image: {fileID: 21300000, guid: faaa9797046356a4592bc5004f59e28f, type: 3}
-  description: 'Deal 1 damage, if hit an enemy, generate Mercury. Mercury Oritbit:
-    reduce all cards'' 20% prepartion time. Trigger: reduce 60% prepartion time of
-    next three cards.'
+  description: 'Deal 1 damage, if hit an enemy, generate Mercury. '
   damage: 1
   anticipation: 0.6
   recovery: 0.2
-  explanation: 
+  explanation: 'Mercury Oritbit: reduce all cards'' 20% prepartion time
+
+
+    Trigger:
+    reduce 60% prepartion time of next three cards'
   planetType: 2
