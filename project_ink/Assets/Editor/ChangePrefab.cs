@@ -103,9 +103,5 @@ public class MyEditorWindow : EditorWindow
             targetpptContainer.Add(field);
         }
         return;
-
-        System.Type objectType = target.GetType();
-        PropertyInfo[] properties = objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        FieldInfo[] fields = objectType.GetFields(BindingFlags.Public | BindingFlags.Instance);
     }
 }

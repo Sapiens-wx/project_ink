@@ -17,9 +17,6 @@ public class RoomManager : Singleton<RoomManager>
         private set{currentRoom=value; if(value!=null) currentRoom.OnEnterRoom();}
     }
     public Bounds RoomBounds{
-        get=>roomBounds;
-    }
-    public Bounds RoomGlobalBounds{
         get{
             Bounds b=roomBounds;
             b.center+=transform.position;
@@ -29,7 +26,7 @@ public class RoomManager : Singleton<RoomManager>
 
     void OnDrawGizmosSelected(){
         Gizmos.color=Color.green;
-        Gizmos.DrawWireCube(roomBounds.center, roomBounds.extents*2);
+        Gizmos.DrawWireCube(transform.position+roomBounds.center, roomBounds.extents*2);
     }
     internal override void Awake()
     {

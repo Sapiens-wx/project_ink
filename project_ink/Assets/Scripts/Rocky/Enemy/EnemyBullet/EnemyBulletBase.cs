@@ -17,6 +17,9 @@ public class EnemyBulletBase : MonoBehaviour
         onTriggerEnter?.Invoke(this, collider);
         StartCoroutine(DelayDestroy());
     }
+    protected void InvokeOnTriggerEnterEvent(Collider2D collider){
+        onTriggerEnter?.Invoke(this, collider);
+    }
     IEnumerator DelayDestroy(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
         yield return wait;

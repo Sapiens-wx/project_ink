@@ -60,17 +60,17 @@ public class E_Witch_Attack : StateBase<E_Witch>
     }
     //
     IEnumerator Action2(){
-        Bounds roomBoundsGlobal=RoomManager.CurrentRoom.RoomGlobalBounds;
+        Bounds roomBounds=RoomManager.CurrentRoom.RoomBounds;
         float dest;
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
-        if(ctrller.transform.position.x<roomBoundsGlobal.center.x){ //closer to the left
-            dest=roomBoundsGlobal.min.x+ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
+        if(ctrller.transform.position.x<roomBounds.center.x){ //closer to the left
+            dest=roomBounds.min.x+ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
             ctrller.rgb.velocity=new Vector2(-ctrller.chaseSpd,0);
             while(ctrller.transform.position.x>dest)
                 yield return wait;
             ctrller.rgb.velocity=Vector2.zero;
             yield return new WaitForSeconds(ctrller.ac2_chargeTime);
-            ctrller.rgb.velocity=new Vector2(roomBoundsGlobal.size.x/ac2_flyDuration,0);
+            ctrller.rgb.velocity=new Vector2(roomBounds.size.x/ac2_flyDuration,0);
             for(int i=0;i<3;++i){
                 yield return new WaitForSeconds(0.5f);
                 EnemyBulletManager.InstantiateBullet_v(EnemyBulletManager.inst.witch, ctrller.transform.position, Vector2.zero).rgb.gravityScale=1;
@@ -78,13 +78,13 @@ public class E_Witch_Attack : StateBase<E_Witch>
             yield return new WaitForSeconds(ac2_flyDuration-1.5f);
         }
         else{ //close to the right
-            dest=roomBoundsGlobal.max.x-ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
+            dest=roomBounds.max.x-ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
             ctrller.rgb.velocity=new Vector2(ctrller.chaseSpd,0);
             while(ctrller.transform.position.x<dest)
                 yield return wait;
             ctrller.rgb.velocity=Vector2.zero;
             yield return new WaitForSeconds(ctrller.ac2_chargeTime);
-            ctrller.rgb.velocity=new Vector2(-roomBoundsGlobal.size.x/ac2_flyDuration,0);
+            ctrller.rgb.velocity=new Vector2(-roomBounds.size.x/ac2_flyDuration,0);
             for(int i=0;i<3;++i){
                 yield return new WaitForSeconds(0.5f);
                 EnemyBulletManager.InstantiateBullet_v(EnemyBulletManager.inst.witch, ctrller.transform.position, Vector2.zero).rgb.gravityScale=1;
