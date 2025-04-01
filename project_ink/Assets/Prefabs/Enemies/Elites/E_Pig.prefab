@@ -677,6 +677,8 @@ MonoBehaviour:
   animInterval: 0.25
   animScaleYMin: 0.6
   animScaleXMax: 1.5
+  animStretchY: 1.3
+  animStretchX: 0.85
   pig:
   - {fileID: 2143486709577209697}
   - {fileID: 1562796575648494970}
