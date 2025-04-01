@@ -294,8 +294,8 @@ MonoBehaviour:
   keyDownBuffTime: 0.08
   xspd: 6
   jumpKey: 107
-  jumpHeight: 3
-  jumpInterval: 0.34
+  jumpHeight: 2.5
+  jumpInterval: 0.25
   jumpBufferTime: 0.2
   coyoteTime: 0.25
   dashDist: 2.3
