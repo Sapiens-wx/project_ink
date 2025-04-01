@@ -12,7 +12,7 @@ public class E_Pig : EliteBase_Ground
     public float ac2_jumpInterval;
     [Header("Anim")]
     public float animInterval;
-    public float animScaleYMin, animScaleXMax;
+    public float animScaleYMin, animScaleXMax, animStretchY, animStretchX;
     public Collider2D[] pig; //0 is lower
     [NonSerialized][HideInInspector] public Animator[] animators;
     internal override void Start()

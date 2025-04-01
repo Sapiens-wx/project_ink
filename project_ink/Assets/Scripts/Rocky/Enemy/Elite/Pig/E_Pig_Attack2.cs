@@ -3,31 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UIElements.Experimental;
+using Unity.VisualScripting;
 
 //this class is copied entirely from S_GroundChase. only modified slightly.
 public class E_Pig_Attack2 : StateBase<E_Pig>
 {
     Vector3[] oriScalePig, oriPosPig;
     AnimParams[] animParams;
-    float prevx, maxDeltaX; //mexDeltaX
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         UpdateAnimParams();
         ctrller.StartCoroutine(Jump());
-        prevx=ctrller.transform.position.x;
-        maxDeltaX=RoomManager.CurrentRoom.RoomBounds.size.x/ctrller.ac2_jumpInterval*Time.fixedDeltaTime;
-    }
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
-        SetPigAnimatorsSpd(Mathf.Clamp01(Mathf.Abs(ctrller.transform.position.x-prevx)/maxDeltaX));
-        prevx=ctrller.transform.position.x;
     }
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
-        for(int i=0;i<3;++i){
-            ctrller.pig[i].transform.localPosition=oriPosPig[i];
-        }
         SetAnimatorParams(true,true,true);
         SetPigAnimatorsSpd(1);
     }
@@ -65,6 +56,7 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
         ctrller.animators[2].SetBool("idle",b3);
     }
     IEnumerator Jump(){
+        IEnumerator ienum;
         Bounds roomBoundsGlobal=RoomManager.CurrentRoom.RoomBounds;
         float leftDest=roomBoundsGlobal.min.x+ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
         float rightDest=roomBoundsGlobal.max.x-ctrller.bc.bounds.extents.x+ctrller.bc.offset.x;
@@ -75,22 +67,32 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
         SetAnimatorParams(false,jumps[0]<1,jumps[0]<2);
         if(ctrller.Dir==1){
             lastDestIsLeft=false;
-            yield return new WaitForSeconds(Jump(jumps[0], jumps[1], rightDest-ctrller.transform.position.x, true, false));
+            ienum=Jump(jumps[0], rightDest-ctrller.transform.position.x);
+            while(ienum.MoveNext())
+                yield return ienum.Current;
         } else{
             lastDestIsLeft=true;
-            yield return new WaitForSeconds(Jump(jumps[0], jumps[1], leftDest-ctrller.transform.position.x, true, false));
+            ienum=Jump(jumps[0], leftDest-ctrller.transform.position.x);
+            while(ienum.MoveNext())
+                yield return ienum.Current;
         }
         //second jump
+        ctrller.Dir=ctrller.Dir==1?-1:1;
         SetAnimatorParams(false,jumps[1]<1,jumps[1]<2);
-        yield return new WaitForSeconds(Jump(jumps[1], jumps[2], (lastDestIsLeft?rightDest:leftDest)-ctrller.transform.position.x, false, false));
+        ienum=Jump(jumps[1], (lastDestIsLeft?rightDest:leftDest)-ctrller.transform.position.x);
+        while(ienum.MoveNext())
+            yield return ienum.Current;
         //third jump
+        ctrller.Dir=ctrller.Dir==1?-1:1;
         lastDestIsLeft=!lastDestIsLeft;
         SetAnimatorParams(false,jumps[2]<1,jumps[2]<2);
-        yield return new WaitForSeconds(Jump(jumps[2], jumps[2], (lastDestIsLeft?rightDest:leftDest)-ctrller.transform.position.x, false, true));
+        ienum=Jump(jumps[2], (lastDestIsLeft?rightDest:leftDest)-ctrller.transform.position.x);
+        while(ienum.MoveNext())
+            yield return ienum.Current;
         ctrller.animator.SetTrigger("idle");
     }
     class AnimParams{
-        public float squeezey, restorey, squeezePosY, restorePosY, squeezeX, restoreX;
+        public float squeezeY, restoreY, squeezePosY, restorePosY, squeezeX, restoreX, stretchX, stretchY;
     }
     void UpdateAnimParams(){
         oriPosPig=new Vector3[3];
@@ -99,67 +101,83 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
         oriScalePig[0]=ctrller.pig[0].transform.localScale;
         oriScalePig[1]=ctrller.pig[1].transform.localScale;
         oriScalePig[2]=ctrller.pig[2].transform.localScale;
-        oriPosPig[0]=ctrller.pig[0].transform.localPosition;
-        oriPosPig[1]=ctrller.pig[1].transform.localPosition;
-        oriPosPig[2]=ctrller.pig[2].transform.localPosition;
+        oriPosPig[0]=ctrller.pig[0].transform.position;
+        oriPosPig[1]=ctrller.pig[1].transform.position;
+        oriPosPig[2]=ctrller.pig[2].transform.position;
         for(int i=0;i<3;++i){
             animParams[i]=new AnimParams();
-            animParams[i].squeezey=oriScalePig[i].y*ctrller.animScaleYMin;
-            animParams[i].restorey=oriScalePig[i].y;
+            animParams[i].squeezeY=oriScalePig[i].y*ctrller.animScaleYMin;
+            animParams[i].restoreY=oriScalePig[i].y;
             animParams[i].squeezePosY=oriPosPig[i].y+(ctrller.animScaleYMin-1)/2*ctrller.pig[i].bounds.size.y;
             animParams[i].restorePosY=oriPosPig[i].y;
             animParams[i].squeezeX=oriScalePig[i].x*ctrller.animScaleXMax;
             animParams[i].restoreX=oriScalePig[i].x;
+            animParams[i].stretchX=oriScalePig[i].x*ctrller.animStretchX;
+            animParams[i].stretchY=oriScalePig[i].y*ctrller.animStretchY;
         }
     }
-    float Jump(int idx, int nextIdx, float xDist, bool startAnim, bool endAnim){
+    object StartRoll(){
+        float spd=0;
+        DOTween.To(()=>spd,(t)=>SetPigAnimatorsSpd(t),1,ctrller.animInterval);
+        return new WaitForSeconds(ctrller.animInterval);
+    }
+    //duration=ctrller.animInterval
+    IEnumerator EndRoll(int idx){
+        AnimatorStateInfo info=ctrller.animators[idx].GetCurrentAnimatorStateInfo(0);
+        float endTime=Time.time+ctrller.animInterval;
+        WaitForFixedUpdate wait=new WaitForFixedUpdate();
+        while(Time.time<endTime){
+            if(info.normalizedTime<0.05f || info.normalizedTime>0.95f){
+                ctrller.animators[idx].speed=0;
+            }
+            yield return wait;
+        }
+        ctrller.animators[idx].speed=1;
+    }
+    IEnumerator Jump(int idx, float xDist){
         ++idx;
-        ++nextIdx;
-        float time=0;
+        IEnumerator endRollIenum=EndRoll(idx-1);
         if(idx>2){ //only roll
-            Sequence _s=DOTween.Sequence();
-            _s.Join(ctrller.transform.DOMoveX(ctrller.transform.position.x+xDist, ctrller.ac2_jumpInterval));
-            return ctrller.ac2_jumpInterval;
+            yield return StartRoll();
+            ctrller.transform.DOMoveX(ctrller.transform.position.x+xDist, ctrller.ac2_jumpInterval);
+            yield return new WaitForSeconds(ctrller.ac2_jumpInterval);
+            while(endRollIenum.MoveNext())
+                yield return endRollIenum.Current;
+            yield break;
         }
+        float jumpIntervalHalf=ctrller.ac2_jumpInterval/2;
 
-        Sequence s=DOTween.Sequence();
-        if(startAnim){
-            time+=ctrller.animInterval;
-            //Squeeze
-            s.Append(ctrller.pig[idx].transform.DOScaleY(animParams[idx].squeezey, ctrller.animInterval));
-            s.Join(ctrller.pig[idx].transform.DOScaleX(animParams[idx].squeezeX, ctrller.animInterval));
-            s.Join(ctrller.pig[idx].transform.DOLocalMoveY(animParams[idx].squeezePosY, ctrller.animInterval));
-        }
+        //Squeeze
+        ctrller.pig[idx].transform.DOScaleY(animParams[idx].squeezeY, ctrller.animInterval);
+        ctrller.pig[idx].transform.DOScaleX(animParams[idx].squeezeX, ctrller.animInterval);
+        ctrller.pig[idx].transform.DOMoveY(animParams[idx].squeezePosY, ctrller.animInterval);
+        yield return StartRoll();
 
-        time+=ctrller.ac2_jumpInterval;
-        //restore
-        s.Append(ctrller.pig[idx].transform.DOScaleY(animParams[idx].restorey, ctrller.animInterval));
-        s.Join(ctrller.pig[idx].transform.DOScaleX(animParams[idx].restoreX, ctrller.animInterval));
-        s.Join(ctrller.pig[idx].transform.DOLocalMoveY(animParams[idx].restorePosY, ctrller.animInterval));
-        //jump
-        s.Join(ctrller.transform.DOMoveX(ctrller.pig[idx].transform.position.x+xDist, ctrller.ac2_jumpInterval));
-        s.Join(ctrller.pig[idx].transform.DOMoveY(ctrller.pig[idx].transform.position.y+ctrller.jumpHeight, ctrller.jumpInterval/2).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad));
+        //jump horizontal movement
+        ctrller.transform.DOMoveX(ctrller.pig[idx].transform.position.x+xDist, ctrller.jumpInterval);
+        //first half of the jumping (move y to the top)
+        ctrller.pig[idx].transform.DOMoveY(animParams[idx].restorePosY+ctrller.jumpHeight, jumpIntervalHalf).SetEase(Ease.OutQuad);
+        //stretch Y, until reach the top during the jump
+        ctrller.pig[idx].transform.DOScaleY(animParams[idx].stretchY, jumpIntervalHalf);
+        ctrller.pig[idx].transform.DOScaleX(animParams[idx].stretchX, jumpIntervalHalf);
+        yield return new WaitForSeconds(jumpIntervalHalf);
+        //remaining half of the jumping
+        ctrller.pig[idx].transform.DOMoveY(animParams[idx].restorePosY, jumpIntervalHalf).SetEase(Ease.InQuad);
+        //restore scale to original scale
+        ctrller.pig[idx].transform.DOScale(new Vector3(animParams[idx].restoreX, animParams[idx].restoreY, 1), jumpIntervalHalf);
+        yield return new WaitForSeconds(jumpIntervalHalf);
 
-        time+=ctrller.animInterval;
         //squeeze
-        if(nextIdx>=0&&nextIdx<3&&nextIdx!=idx){
-            s.AppendCallback(()=>{ctrller.pig[idx].transform.localPosition=oriPosPig[idx];}); //if don't add this, the pig will not return to its original position
-            s.Append(ctrller.pig[nextIdx].transform.DOScaleY(animParams[nextIdx].squeezey, ctrller.animInterval));
-            s.Join(ctrller.pig[nextIdx].transform.DOScaleX(animParams[nextIdx].squeezeX, ctrller.animInterval));
-            s.Join(ctrller.pig[nextIdx].transform.DOLocalMoveY(animParams[nextIdx].squeezePosY, ctrller.animInterval));
-        } else if(nextIdx<3||endAnim){
-            s.Append(ctrller.pig[idx].transform.DOScaleY(animParams[idx].squeezey, ctrller.animInterval));
-            s.Join(ctrller.pig[idx].transform.DOScaleX(animParams[idx].squeezeX, ctrller.animInterval));
-            s.Join(ctrller.pig[idx].transform.DOLocalMoveY(animParams[idx].squeezePosY, ctrller.animInterval));
-        }
+        ctrller.pig[idx].transform.DOScaleY(animParams[idx].squeezeY, ctrller.animInterval);
+        ctrller.pig[idx].transform.DOScaleX(animParams[idx].squeezeX, ctrller.animInterval);
+        ctrller.pig[idx].transform.DOMoveY(animParams[idx].squeezePosY, ctrller.animInterval);
+        yield return new WaitForSeconds(ctrller.animInterval);
 
-        if(endAnim){
-            time+=ctrller.animInterval;
-            //restore
-            s.Append(ctrller.pig[idx].transform.DOScaleY(animParams[idx].restorey, ctrller.animInterval));
-            s.Join(ctrller.pig[idx].transform.DOScaleX(animParams[idx].restoreX, ctrller.animInterval));
-            s.Join(ctrller.pig[idx].transform.DOLocalMoveY(animParams[idx].restorePosY, ctrller.animInterval));
-        }
-        return time;
+        //restore
+        ctrller.pig[idx].transform.DOScaleY(animParams[idx].restoreY, ctrller.animInterval);
+        ctrller.pig[idx].transform.DOScaleX(animParams[idx].restoreX, ctrller.animInterval);
+        ctrller.pig[idx].transform.DOMoveY(animParams[idx].restorePosY, ctrller.animInterval);
+        while(endRollIenum.MoveNext())
+            yield return endRollIenum.Current;
     }
 }
