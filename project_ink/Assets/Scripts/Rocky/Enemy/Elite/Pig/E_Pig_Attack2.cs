@@ -116,10 +116,9 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
             animParams[i].stretchY=oriScalePig[i].y*ctrller.animStretchY;
         }
     }
-    object StartRoll(){
+    void StartRoll(){
         float spd=0;
-        DOTween.To(()=>spd,(t)=>SetPigAnimatorsSpd(t),1,ctrller.animInterval);
-        return new WaitForSeconds(ctrller.animInterval);
+        DOTween.To(()=>spd,(t)=>SetPigAnimatorsSpd(t),1,ctrller.ac2_anticipation);
     }
     //duration=ctrller.animInterval
     IEnumerator EndRoll(int idx){
@@ -137,24 +136,32 @@ public class E_Pig_Attack2 : StateBase<E_Pig>
     IEnumerator Jump(int idx, float xDist){
         ++idx;
         IEnumerator endRollIenum=EndRoll(idx-1);
+        float horizontalMoveInterval=Mathf.Abs(xDist)/ctrller.ac2_moveSpeed;
         if(idx>2){ //only roll
-            yield return StartRoll();
-            ctrller.transform.DOMoveX(ctrller.transform.position.x+xDist, ctrller.ac2_jumpInterval);
-            yield return new WaitForSeconds(ctrller.ac2_jumpInterval);
+            StartRoll();
+            yield return new WaitForSeconds(ctrller.ac2_anticipation);
+            ctrller.transform.DOMoveX(ctrller.transform.position.x+xDist, horizontalMoveInterval);
+            yield return new WaitForSeconds(horizontalMoveInterval);
             while(endRollIenum.MoveNext())
                 yield return endRollIenum.Current;
             yield break;
         }
-        float jumpIntervalHalf=ctrller.ac2_jumpInterval/2;
+        float jumpIntervalHalf=horizontalMoveInterval/2;
 
         //Squeeze
+        //has anticipation, so
+        //|-----anticipation-----|
+        //|---wait---|--squeeze--|
+        StartRoll();
+        float waitTime=ctrller.ac2_anticipation-ctrller.animInterval;
+        yield return new WaitForSeconds(waitTime);
         ctrller.pig[idx].transform.DOScaleY(animParams[idx].squeezeY, ctrller.animInterval);
         ctrller.pig[idx].transform.DOScaleX(animParams[idx].squeezeX, ctrller.animInterval);
         ctrller.pig[idx].transform.DOMoveY(animParams[idx].squeezePosY, ctrller.animInterval);
-        yield return StartRoll();
+        yield return new WaitForSeconds(ctrller.animInterval);
 
         //jump horizontal movement
-        ctrller.transform.DOMoveX(ctrller.pig[idx].transform.position.x+xDist, ctrller.jumpInterval);
+        ctrller.transform.DOMoveX(ctrller.pig[idx].transform.position.x+xDist, horizontalMoveInterval).SetEase(Ease.InOutSine);
         //first half of the jumping (move y to the top)
         ctrller.pig[idx].transform.DOMoveY(animParams[idx].restorePosY+ctrller.jumpHeight, jumpIntervalHalf).SetEase(Ease.OutQuad);
         //stretch Y, until reach the top during the jump

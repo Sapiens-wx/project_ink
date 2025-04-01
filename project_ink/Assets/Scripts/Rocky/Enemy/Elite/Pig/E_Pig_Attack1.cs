@@ -37,8 +37,8 @@ public class E_Pig_Attack1 : StateBase<E_Pig>
         dist=Mathf.Clamp(dist, ctrller.jumpXMin, ctrller.jumpXMax);
         jumpX=ctrller.Dir==1?dist:-dist;
         Vector2 v=Vector2.zero;
-        v.x=jumpX/ctrller.jumpInterval;
-        v.y=0.5f*ctrller.jumpInterval*ctrller.rgb.gravityScale*9.8f;
+        v.x=jumpX/ctrller.ac1_jumpInterval;
+        v.y=0.5f*ctrller.ac1_jumpInterval*ctrller.rgb.gravityScale*9.8f;
         return v;
     }
     float JumpDist(){
@@ -57,7 +57,7 @@ public class E_Pig_Attack1 : StateBase<E_Pig>
         float restorex=oriScalePig[idx].x;
         float stretchX=oriScalePig[idx].x*ctrller.animStretchX;
         float stretchY=oriScalePig[idx].y*ctrller.animStretchY;
-        float jumpIntervalHalf=ctrller.jumpInterval/2;
+        float jumpIntervalHalf=ctrller.ac1_jumpInterval/2;
 
         if(startAnim){
             //Squeeze
@@ -68,7 +68,7 @@ public class E_Pig_Attack1 : StateBase<E_Pig>
         }
 
         //jump horizontal movement
-        ctrller.transform.DOMoveX(ctrller.pig[idx].transform.position.x+xDist, ctrller.jumpInterval);
+        ctrller.transform.DOMoveX(ctrller.pig[idx].transform.position.x+xDist, ctrller.ac1_jumpInterval).SetEase(Ease.InOutSine);
         //first half of the jumping (move y to the top)
         ctrller.pig[idx].transform.DOMoveY(restorePosY+ctrller.jumpHeight, jumpIntervalHalf).SetEase(Ease.OutQuad);
         //stretch Y, until reach the top during the jump

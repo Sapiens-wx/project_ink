@@ -672,9 +672,10 @@ MonoBehaviour:
   jumpXMin: 1.4
   jumpXMax: 7
   jumpHeight: 3.5
-  jumpInterval: 0.8
-  ac2_jumpInterval: 0.8
+  ac1_jumpInterval: 0.8
+  ac2_moveSpeed: 8
   animInterval: 0.25
+  ac2_anticipation: 0.9
   animScaleYMin: 0.6
   animScaleXMax: 1.5
   animStretchY: 1.3
