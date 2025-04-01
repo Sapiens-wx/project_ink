@@ -210,6 +210,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     }
     public void AssignCardToSlot(int slot, Card card)
     {
+        if(card==null) return; //not enough cards. will not deal card to slot
         if(cardSlots[slot].card!=null){
             Debug.LogError("In assignCardToSlot(), there is already a card in the slot");
             CardLog.Log($"assign {card.type} to [{slot}], but already has a card");
@@ -287,9 +288,16 @@ public class CardDealer
         }
         discardCardPile = new List<Card>(allCards);
     }
+    /// <returns>true if can deal a card. false if no cards left that can be dealt</returns>
+    public bool CanGetCard(){
+        return discardCardPile.Count==0;
+    }
     public Card GetCard()
     {
-        if (discardCardPile.Count == 0) throw new System.Exception("error in CardDealer.GetCards: does not have enough cards to be dealt");
+        if (discardCardPile.Count == 0){
+            Debug.LogWarning("not enough card to be dealt. return null");
+            return null;
+        }
         int rd = UnityEngine.Random.Range(0, discardCardPile.Count);
         Card ret = discardCardPile[rd];
         discardCardPile[rd] = discardCardPile[discardCardPile.Count - 1];
