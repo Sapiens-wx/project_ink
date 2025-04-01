@@ -8,10 +8,11 @@ public class E_Pig : EliteBase_Ground
     public float jumpXMin;
     public float jumpXMax;
     public float jumpHeight;
-    public float jumpInterval;
-    public float ac2_jumpInterval;
+    public float ac1_jumpInterval;
+    public float ac2_moveSpeed;
     [Header("Anim")]
     public float animInterval;
+    public float ac2_anticipation;
     public float animScaleYMin, animScaleXMax, animStretchY, animStretchX;
     public Collider2D[] pig; //0 is lower
     [NonSerialized][HideInInspector] public Animator[] animators;
