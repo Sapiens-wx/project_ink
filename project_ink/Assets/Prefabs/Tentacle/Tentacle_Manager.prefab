@@ -50,3 +50,6 @@ MonoBehaviour:
   attackDistNear: 4
   attackDistFar: 6
   attackDistVeryFar: 10
+  followRadius: 1
+  acceleration: 0.01
+  damping: 0.9

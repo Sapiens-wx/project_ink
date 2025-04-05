@@ -258,6 +258,7 @@ MonoBehaviour:
   - {fileID: 8095064151494950850}
   - {fileID: 6201052453029419245}
   maxLength: 6
+  minLength: 1
   len_idle: 0
   numPoints: 5
   besierCurveParams: 3.87
