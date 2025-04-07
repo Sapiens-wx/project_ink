@@ -121,6 +121,7 @@ public class CardSlotManager : Singleton<CardSlotManager>
     public void SkipCard(){
         if(anticipating) return;
         IncCurSlot();
+        PlayerCtrl.inst.EnableBlackDash(); //can black dash after skipping card
     }
     IEnumerator Fire(List<IEnumerator> actions){
         anticipating=true;
