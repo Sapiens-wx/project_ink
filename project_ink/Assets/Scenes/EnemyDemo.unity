@@ -2014,7 +2014,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412004107694820001, guid: c680bace4cf15da448758cfc9f4d852d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8691373077085593523, guid: c680bace4cf15da448758cfc9f4d852d, type: 3}
       propertyPath: maxHealth

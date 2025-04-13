@@ -92,10 +92,20 @@ public class Tentacle : MonoBehaviour
     public int GetPeekAttackAnimIdx(){
         return attacks.Peek().Item2;
     }
+    /// <summary>
+    /// calculates the length of the line segments a-b, b-c, given by arr [a,b,c]
+    /// </summary>
+    float LinesLength(Vector2[] arr){
+        float length=0;
+        for(int i=arr.Length-1;i>0;--i){
+            length+=Vector2.Distance(arr[i],arr[i-1]);
+        }
+        return length;
+    }
     Vector2[] Scaled(Vector2[] arr, float length){
         Vector2[] res=new Vector2[arr.Length];
         Vector2 origin=arr[0];
-        float originalLength=(arr[arr.Length-1]-origin).magnitude;
+        float originalLength=LinesLength(arr);
         float scale=length/originalLength;
         for(int i=res.Length-1;i>-1;--i)
             res[i]=origin+(arr[i]-origin)*scale;
