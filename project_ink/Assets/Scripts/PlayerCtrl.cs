@@ -22,6 +22,7 @@ public class PlayerCtrl : MonoBehaviour
     public float dashDist;
     public float[] dashPercents;
     public float dashInterval;
+    public float blackDashDuration, blackDashCoolDown;
     [Header("Ground Check")]
     public Vector2 leftBot;
     public Vector2 rightBot;
@@ -59,6 +60,10 @@ public class PlayerCtrl : MonoBehaviour
     [NonSerialized][HideInInspector] public Collider2D hitBy;
     [NonSerialized][HideInInspector] public Vector2 mouseWorldPos;
     [NonSerialized][HideInInspector] public Camera mainCam;
+    //black dash
+    [NonSerialized][HideInInspector] public float canSetBlackDash;
+    [NonSerialized][HideInInspector] public bool blackDashTriggered; // if black dash is used.
+    Coroutine disableBlackDashCoro;
     //ignore collision
     [NonSerialized] public List<Collider2D> ignoredColliders;
     //read input
@@ -131,6 +136,7 @@ public class PlayerCtrl : MonoBehaviour
         dashKeyDown=-100;
 
         allowDashTime=0;
+        canSetBlackDash=-1;
 
         rgb=GetComponent<Rigidbody2D>();
         animator=GetComponent<Animator>();
@@ -186,6 +192,7 @@ public class PlayerCtrl : MonoBehaviour
         if(readInput){
             if(Input.GetKeyDown(KeyCode.LeftShift)){//dash
                 dashKeyDown=Time.time;
+                blackDashTriggered=true;
             }
             else if(Input.GetKeyDown(KeyCode.Space)){ //jump
                 secondToLastJumpKeyDown=lastJumpKeyDown;
@@ -265,4 +272,24 @@ public class PlayerCtrl : MonoBehaviour
             Physics2D.IgnoreCollision(bc, cd);
         ignoredColliders.Clear();
     }
+    #region black dash
+    public void EnableBlackDash(){
+        if(Time.time>=canSetBlackDash){
+            if(disableBlackDashCoro!=null)
+                StopCoroutine(disableBlackDashCoro);
+            canSetBlackDash=float.MaxValue;
+            blackDashTriggered=false;
+            animator.SetBool("blackdash", true);
+            //cannot trigger blackdash after [blackDashDuration] amount of time
+            disableBlackDashCoro=StartCoroutine(DelayAction(blackDashDuration, ()=>{
+                animator.SetBool("blackdash", false);
+                canSetBlackDash=Time.time+blackDashCoolDown;
+            }));
+        }
+    }
+    public static IEnumerator DelayAction(float delayAmount, System.Action action){
+        yield return new WaitForSeconds(delayAmount);
+        action();
+    }
+    #endregion
 }
