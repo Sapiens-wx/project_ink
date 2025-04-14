@@ -13,6 +13,12 @@ public class TentacleManager : Singleton<TentacleManager>
     /// used by OnCardDealDamage
     /// </summary>
     [SerializeField] float attackDistNear, attackDistFar, attackDistVeryFar;
+    [Header("Follow Player")]
+    /// <summary>
+    /// the tentacles should keep the distance to the player within [followRadius]
+    /// </summary>
+    public float followRadius;
+    public float acceleration, damping;
 
     /// <summary>
     /// the one that cards use to attack enemy. not inside a book
@@ -46,6 +52,8 @@ public class TentacleManager : Singleton<TentacleManager>
     }
     ObjectPool<Book> pool_book;
     [NonSerialized][HideInInspector] public List<Book> books;
+    //temp variables
+    Vector3 prevPos;
     void OnEnable(){
         CardEventManager.onCardDealDamage+=OnCardDealDamage;
         CardEventManager.onDistributeCard+=OnDistributeCard;
@@ -62,6 +70,21 @@ public class TentacleManager : Singleton<TentacleManager>
         attackDuration=clip_attack.length+clip_recover.length;
         rank=1;
         tentacle=PlayerCtrl.inst.tentacle;
+    }
+    void FixedUpdate(){
+        FollowPlayer();
+    }
+    void FollowPlayer(){
+        Vector3 tmp=transform.position;
+        Vector3 dir=PlayerCtrl.inst.transform.position-tmp;
+        Vector3 a=Vector3.zero;
+        float dist=dir.magnitude;
+        if(dist>followRadius){
+            dir/=dist;
+            a=(dist-followRadius)*acceleration*dir;
+        }
+        transform.position+=(tmp-prevPos)*damping+a;
+        prevPos=tmp;
     }
     void OnDistributeCard(){
         if(rank==3){
@@ -107,8 +130,9 @@ public class TentacleManager : Singleton<TentacleManager>
         EnemyBase closestEnemy=RoomManager.CurrentRoom.ClosestEnemy(PlayerCtrl.inst.transform);
         if(closestEnemy!=null){
             Vector2 closestEnemyPos=closestEnemy.transform.position;
+            int animIdx=UnityEngine.Random.Range(0,3); //get a random tentacle attack animation to play
             foreach(Book b in books){
-                b.tentacle.Attack(closestEnemyPos, b.accumulatedDamage+baseDamage);
+                b.tentacle.Attack(closestEnemyPos, b.accumulatedDamage+baseDamage, animIdx);
             }
         }
     }

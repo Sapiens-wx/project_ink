@@ -11,7 +11,7 @@ public class Tentacle : MonoBehaviour
     public Transform anchorParent;
     //first point is the origin
     public Transform[] anchors;
-    public float maxLength,len_idle;
+    public float maxLength,minLength,len_idle;
     public int numPoints;
     public float besierCurveParams;
     [Header("Physics")]
@@ -21,7 +21,7 @@ public class Tentacle : MonoBehaviour
     int damage;
     public int Damage{ get=>damage;}
     public event System.Action<EnemyBase> onHitEnemy;
-    Animator animator;
+    [NonSerialized][HideInInspector] public Animator animator;
     /// <summary>
     /// the length of the tentacle
     /// </summary>
@@ -33,9 +33,9 @@ public class Tentacle : MonoBehaviour
     Vector2[] positions, scaledPositions;
     Stack<Collider2D> hitStack;
     /// <summary>
-    /// stores a vector3 p. p.xy is the attack position, p.z is the damage
+    /// stores a vector3 p. p.xy is the attack position, p.z is the damage. tuple.Item2 is the index of attack animation chosen
     /// </summary>
-    Queue<Vector3> attacks;
+    Queue<Tuple<Vector3,int>> attacks;
     int dir;
     public int Dir{
         get{
@@ -55,7 +55,7 @@ public class Tentacle : MonoBehaviour
         animator=GetComponent<Animator>();
         InitAnchorPos();
         hitStack=new Stack<Collider2D>();
-        attacks=new Queue<Vector3>();
+        attacks=new Queue<Tuple<Vector3,int>>();
         damage=0;
     }
     /// <summary>
@@ -71,24 +71,41 @@ public class Tentacle : MonoBehaviour
         UpdateLine();
         DetectCollision();
     }
+    public int GetAttackCount(){
+        return attacks.Count;
+    }
+    public void Attack(Vector2 point, int _damage, int animIdx){
+        attacks.Enqueue(new Tuple<Vector3, int>(new Vector3(point.x, point.y, _damage), animIdx));
+    }
     public void Attack(Vector2 point, int _damage){
-        attacks.Enqueue(new Vector3(point.x, point.y, _damage));
-        animator.SetInteger("numAttacks", attacks.Count);
+        attacks.Enqueue(new Tuple<Vector3, int>(new Vector3(point.x, point.y, _damage), UnityEngine.Random.Range(0,3)));
     }
     /// <summary>
     /// called by tentacle_attack_state only. gets the next target of attack. automatically sets damage to desired damage
     /// </summary>
     /// <returns></returns>
     public Vector2 GetNextAttack(){
-        animator.SetInteger("numAttacks", attacks.Count-1);
-		Vector3 top=attacks.Dequeue();
+		Vector3 top=attacks.Dequeue().Item1;
 		damage=(int)top.z; //get damage
         return top;
+    }
+    public int GetPeekAttackAnimIdx(){
+        return attacks.Peek().Item2;
+    }
+    /// <summary>
+    /// calculates the length of the line segments a-b, b-c, given by arr [a,b,c]
+    /// </summary>
+    float LinesLength(Vector2[] arr){
+        float length=0;
+        for(int i=arr.Length-1;i>0;--i){
+            length+=Vector2.Distance(arr[i],arr[i-1]);
+        }
+        return length;
     }
     Vector2[] Scaled(Vector2[] arr, float length){
         Vector2[] res=new Vector2[arr.Length];
         Vector2 origin=arr[0];
-        float originalLength=(arr[arr.Length-1]-origin).magnitude;
+        float originalLength=LinesLength(arr);
         float scale=length/originalLength;
         for(int i=res.Length-1;i>-1;--i)
             res[i]=origin+(arr[i]-origin)*scale;
