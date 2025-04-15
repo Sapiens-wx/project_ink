@@ -310,6 +310,8 @@ MonoBehaviour:
   - 0.12
   - 0.16
   dashInterval: 0.5
+  blackDashDuration: 1.5
+  blackDashCoolDown: 4
   leftBot: {x: -0.29, y: -0.72}
   rightBot: {x: 0.29, y: -0.72}
   leftTop: {x: -0.29, y: 0.38}

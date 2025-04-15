@@ -10,11 +10,9 @@ public class Book : MonoBehaviour
 {
     public Tentacle tentacle;
     [Header("physics")]
-    [SerializeField] float acceleration,damping;
     public float frq;
 
     [NonSerialized][HideInInspector] public int accumulatedDamage;
-    float radius=1;
     float phase;
     Vector3 prevPos;
     void Start()
@@ -28,18 +26,18 @@ public class Book : MonoBehaviour
         FollowPlayer();
     }
     void FollowPlayer(){
-        Vector3 tmp=transform.position;
-        Vector3 dir=PlayerCtrl.inst.transform.position-tmp;
+        Vector3 tmp=transform.localPosition;
+        Vector3 dir=-tmp;
         Vector3 a=Vector3.zero;
         float dist=dir.magnitude;
-        if(dist>radius){
+        if(dist>TentacleManager.inst.followRadius){
             dir/=dist;
-            a=(dist-radius)*acceleration*dir;
+            a=(dist-TentacleManager.inst.followRadius)*TentacleManager.inst.acceleration*dir;
         } else{
             Vector2 rd=MathUtil.InsideUnitCirclePerlinNoise(Time.time+phase);
-            a=rd*acceleration*frq;
+            a=rd*TentacleManager.inst.acceleration*frq;
         }
-        transform.position+=(tmp-prevPos)*damping+a;
+        transform.localPosition+=(tmp-prevPos)*TentacleManager.inst.damping+a;
         prevPos=tmp;
     }
 }

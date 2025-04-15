@@ -37,7 +37,7 @@ public class Tentacle_Attack : StateBase<Tentacle>
         WaitForSeconds wait=new WaitForSeconds(.2f);
         while(true){
             Vector2 dir=target-(Vector2)ctrller.transform.position;
-            float length=Mathf.Min(dir.magnitude,ctrller.maxLength);
+            float length=Mathf.Clamp(dir.magnitude, ctrller.minLength, ctrller.maxLength);
             dir/=length;
             if(target.x<ctrller.transform.position.x){
                 dir=MathUtil.Rotate(dir, -Mathf.PI/2);
