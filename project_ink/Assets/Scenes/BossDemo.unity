@@ -2759,43 +2759,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3673713514858143845, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
-      propertyPath: spr
-      value: 
-      objectReference: {fileID: 8085273006872171446}
-    - target: {fileID: 3673713514858143845, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 1386257596031928555}
-    - target: {fileID: 3673713514858143845, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
-      propertyPath: maxHealth
-      value: 10000
-      objectReference: {fileID: 0}
-    - target: {fileID: 3673713514858143845, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
-      propertyPath: st_platform1.x
-      value: -4.58
-      objectReference: {fileID: 0}
-    - target: {fileID: 3673713514858143845, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
-      propertyPath: st_platform1.y
-      value: 1.39
-      objectReference: {fileID: 0}
     - target: {fileID: 8962752690934341781, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
       propertyPath: m_Name
       value: Boss1_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8962752690934341781, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
---- !u!212 &8085273006872171446 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 8388658629846234299, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
-  m_PrefabInstance: {fileID: 8085273006872171445}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
