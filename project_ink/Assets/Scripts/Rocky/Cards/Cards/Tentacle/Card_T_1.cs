@@ -14,6 +14,7 @@ public class Card_T_1 : Card_T_Base
     {
         TentacleManager.inst.tentacle.onHitEnemy+=HitEnemyEffect;
         base.Prep_Fire(actions);
+        actions.Add(Delay(CalcRecoverTime(1))); //recover time
     }
     //if hit, add a tentacle
     void HitEnemyEffect(EnemyBase enemy){

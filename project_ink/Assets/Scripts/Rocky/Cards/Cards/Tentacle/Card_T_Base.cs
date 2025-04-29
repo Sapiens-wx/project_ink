@@ -22,22 +22,6 @@ public abstract class Card_T_Base : Card
             ReturnToCardPool();
         return null;
     }
-    internal override IEnumerator Activate(bool fireInGroup)
-    {
-        IEnumerator ienum=base.Activate(fireInGroup);
-        while(ienum.MoveNext()){
-            yield return ienum.Current;
-        }
-        yield return new WaitForSeconds(TentacleManager.inst.attackDuration);
-    }
-    internal override IEnumerator AutoFire(bool fireInGroup)
-    {
-        IEnumerator ienum=base.AutoFire(fireInGroup);
-        while(ienum.MoveNext()){
-            yield return ienum.Current;
-        }
-        yield return new WaitForSeconds(TentacleManager.inst.attackDuration);
-    }
     internal override IEnumerator Fire()
     {
         IEnumerator ienum=base.Fire();
@@ -45,5 +29,11 @@ public abstract class Card_T_Base : Card
             yield return ienum.Current;
         }
         yield return new WaitForSeconds(TentacleManager.inst.attackDuration);
+    }
+    /// <summary>
+    /// calculates the animation time of n times of attacks. Used to append to [actions] when preparing tentacle card attack
+    /// </summary>
+    protected float CalcRecoverTime(int n){
+        return TentacleManager.inst.attackDuration+(n-1)*TentacleManager.inst.tentacle.attackInterval;
     }
 }

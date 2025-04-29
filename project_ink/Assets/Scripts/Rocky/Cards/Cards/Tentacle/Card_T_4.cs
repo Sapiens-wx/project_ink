@@ -18,6 +18,7 @@ public class Card_T_4 : Card_T_Base
         for(;i>1;--i){
             actions.Add(Activate(false));
         }
+        actions.Add(Delay(CalcRecoverTime(TentacleManager.inst.BookCount))); //recover time
         //if hit an enemy, remove a tentacle and increase the damage of every tentacle by 1
         TentacleManager.inst.tentacle.onHitEnemy+=OnHitEnemy;
     }

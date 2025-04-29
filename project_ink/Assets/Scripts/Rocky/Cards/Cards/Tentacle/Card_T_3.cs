@@ -13,6 +13,7 @@ public class Card_T_3 : Card_T_Base
     public override void Prep_Fire(List<IEnumerator> actions)
     {
         base.Prep_Fire(actions);
+        if(damage>0) actions.Add(Delay(CalcRecoverTime(1)));
         //auto fire as many top card in card pile as the number of tentacles the player has
         if(TentacleManager.inst.Rank>1){
             for(int i=TentacleManager.inst.BookCount;i>0;--i){
@@ -22,7 +23,6 @@ public class Card_T_3 : Card_T_Base
                     actions.Add(top.AutoFire(false));
                 }
             }
-            actions.Add(IEnumAction(()=>TentacleManager.inst.Reconcile(3)));
         }
     }
 }

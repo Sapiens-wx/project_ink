@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tentacle : MonoBehaviour
@@ -17,6 +15,7 @@ public class Tentacle : MonoBehaviour
     [Header("Physics")]
     public float acceleration;
     public float colliderRadius;
+    public bool isPlayerTentacle;
 
     int damage;
     public int Damage{ get=>damage;}
@@ -27,6 +26,7 @@ public class Tentacle : MonoBehaviour
     /// </summary>
     [NonSerialized][HideInInspector] public float len;
     [NonSerialized][HideInInspector] public Vector2 target;
+    public Action<Tentacle> onAttackEnd;
     /// <summary>
     /// actual anchor positions. with physical simulation, but also affected by anchors.
     /// </summary>
@@ -36,21 +36,14 @@ public class Tentacle : MonoBehaviour
     /// stores a vector3 p. p.xy is the attack position, p.z is the damage. tuple.Item2 is the index of attack animation chosen
     /// </summary>
     Queue<Tuple<Vector3,int>> attacks;
-    int dir;
-    public int Dir{
-        get{
-            return transform.lossyScale.x>=0?1:-1;
-        }
-        set{
-            transform.localScale=MathUtil.DivideSeparately(MathUtil.MultiplySeparately(new Vector3(value,1,1),transform.localScale),transform.lossyScale);
-        }
-    }
+    bool initialized;
     void OnDrawGizmosSelected(){
         Gizmos.DrawWireSphere(transform.position, colliderRadius);
     }
     void Start()
     {
-        Dir=1;
+        if(initialized) return;
+        initialized=true;
         len=len_idle;
         animator=GetComponent<Animator>();
         InitAnchorPos();
@@ -74,10 +67,15 @@ public class Tentacle : MonoBehaviour
     public int GetAttackCount(){
         return attacks.Count;
     }
+    /// <param name="animIdx">there are three attack animation variations. animIdx indicates which animation to use</param>
     public void Attack(Vector2 point, int _damage, int animIdx){
+        if(!initialized)
+            Start();
         attacks.Enqueue(new Tuple<Vector3, int>(new Vector3(point.x, point.y, _damage), animIdx));
     }
     public void Attack(Vector2 point, int _damage){
+        if(!initialized)
+            Start();
         attacks.Enqueue(new Tuple<Vector3, int>(new Vector3(point.x, point.y, _damage), UnityEngine.Random.Range(0,3)));
     }
     /// <summary>
