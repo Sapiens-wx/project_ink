@@ -258,6 +258,7 @@ public class PlayerCtrl : MonoBehaviour
     /// ignore the collision between 'collider' and the player collider
     /// </summary>
     public void IgnoreCollision(Collider2D collider){
+        if(ignoredColliders.Contains(collider)) return;
         ignoredColliders.Add(collider);
         Physics2D.IgnoreCollision(bc, collider);
     }
@@ -265,8 +266,9 @@ public class PlayerCtrl : MonoBehaviour
     /// cancel all ignores of collision between the player and the colliders in 'ignoredColliders'.
     /// </summary>
     public void ClearIgnoredCollision(){
-        foreach(Collider2D cd in ignoredColliders)
+        foreach(Collider2D cd in ignoredColliders){
             Physics2D.IgnoreCollision(bc, cd);
+        }
         ignoredColliders.Clear();
     }
     #region black dash

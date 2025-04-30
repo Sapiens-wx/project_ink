@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class B1_1_Scroll : StateBase<B1_1_Ctrller>
@@ -10,18 +11,22 @@ public class B1_1_Scroll : StateBase<B1_1_Ctrller>
     [SerializeField] float a1_loopDuration;
     [Header("Action2")]
     [SerializeField] float a2_duration;
+
+    float prevX;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+        prevX=ctrller.transform.position.x;
         BeginRandomAction(animator);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        ctrller.Dir=ctrller.transform.position.x>prevX?1:-1;
+        prevX=ctrller.transform.position.x;
+    }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

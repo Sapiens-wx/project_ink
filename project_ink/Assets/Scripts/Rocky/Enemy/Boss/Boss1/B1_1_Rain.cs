@@ -34,6 +34,8 @@ public class B1_1_Rain : StateBase<B1_1_Ctrller>
         s.Append(ctrller.redHat.transform.DOMoveY(ctrller.redHat.transform.position.y+redHatShootDist, redHatShootDuration));
         //shoot 3 bullets toward the player
         s.AppendCallback(()=>{
+            //animate the redhat
+            ctrller.redHatAnimator.SetTrigger("to_throwUp");
             for(int i=0;i<3;++i){
                 //intantiate bullet
                 EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet(EnemyBulletManager.inst.boss1_a5);
