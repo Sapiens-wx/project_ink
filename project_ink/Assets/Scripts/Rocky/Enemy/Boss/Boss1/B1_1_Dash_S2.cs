@@ -48,7 +48,7 @@ public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
         //set the marker(target)
         s.AppendCallback(()=>{
             //choose a random platform to place the marker(target)
-            ctrller.a3_target.transform.position=Random.Range(0,2)==0?ctrller.st_platform1:ctrller.st_platform2;
+            ctrller.a3_target.transform.position=ctrller.OffsetPlatformPos(Random.Range(0,2)==0?ctrller.platform1:ctrller.platform2,1);
             ctrller.a3_target.SetActive(true);
         });
         s.AppendInterval(redHatToPlatformWaitTime);

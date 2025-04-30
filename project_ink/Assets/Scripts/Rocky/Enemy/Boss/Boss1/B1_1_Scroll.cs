@@ -34,7 +34,7 @@ public class B1_1_Scroll : StateBase<B1_1_Ctrller>
     //    
     //}
     void BeginRandomAction(Animator animator){
-        float rightMost=RoomManager.CurrentRoom.RoomBounds.max.x;
+        float rightMost=RoomManager.CurrentRoom.RoomBounds.max.x-ctrller.bc.bounds.extents.x;
         float dist=rightMost-ctrller.transform.position.x;
         //move to the right-most position of the room
         Sequence s = DOTween.Sequence();
@@ -46,7 +46,7 @@ public class B1_1_Scroll : StateBase<B1_1_Ctrller>
         }
     }
     void Action1(Animator animator){
-        float leftMost=RoomManager.CurrentRoom.RoomBounds.min.x;
+        float leftMost=RoomManager.CurrentRoom.RoomBounds.min.x+ctrller.bc.bounds.extents.x;
         var scrollAnim = ctrller.transform.DOMoveX(leftMost, a1_loopDuration).SetEase(Ease.InOutQuad).SetLoops(-1,LoopType.Yoyo);
         Sequence s=DOTween.Sequence();
         s.AppendInterval(5);
@@ -56,7 +56,7 @@ public class B1_1_Scroll : StateBase<B1_1_Ctrller>
     //action 2
     void Action2(Animator animator){
         Vector3 originalPos=ctrller.transform.position;
-        float leftMost=RoomManager.CurrentRoom.RoomBounds.min.x;
+        float leftMost=RoomManager.CurrentRoom.RoomBounds.min.x+ctrller.bc.bounds.extents.x;
 
         Sequence s=DOTween.Sequence();
         s.Append(ctrller.transform.DOMoveX(leftMost, a2_duration).SetEase(Ease.Linear));
@@ -64,6 +64,8 @@ public class B1_1_Scroll : StateBase<B1_1_Ctrller>
         s.AppendCallback(()=>{
             animator.SetTrigger("toIdle");
         });
+        //y position
+        //s.Append(ctrller.transform.DOMoveY())
         s.Play();
     }
 }

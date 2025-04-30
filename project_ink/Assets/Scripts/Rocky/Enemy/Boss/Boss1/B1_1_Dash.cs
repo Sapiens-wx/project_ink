@@ -26,15 +26,13 @@ public class B1_1_Dash: StateBase<B1_1_Ctrller>
     //}
 
     void Teleport(Animator animator){
-        Vector2 dir=PlayerShootingController.inst.transform.position-ctrller.redHat.transform.position;
-        dir.Normalize();
-        Vector2 targetPos=(Vector2)PlayerShootingController.inst.transform.position+dir*.3f;
+        Vector2 targetPos=ctrller.redHat.transform.position;
         //create sequence
         Sequence s=DOTween.Sequence();
         //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
         s.AppendCallback(()=>{
-            ctrller.redHat.SetActive(false);
+            ctrller.redHat.gameObject.SetActive(false);
             animator.SetTrigger("toIdle");
             });
     }

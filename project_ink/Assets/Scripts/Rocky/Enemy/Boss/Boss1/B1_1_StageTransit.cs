@@ -28,7 +28,8 @@ public class B1_1_StageTransit : StateBase<B1_1_Ctrller>
 
         Sequence s=DOTween.Sequence();
         s.Append(ctrller.redHat.transform.DOMoveY(ctrller.transform.position.y+redHatShootDist, redHatShootDuration));
-        s.Append(ctrller.redHat.transform.DOMove(Random.Range(0,2)==0?ctrller.st_platform1:ctrller.st_platform2, moveToPlatformDuration));
+        //randomly move to a platform
+        s.Append(ctrller.redHat.transform.DOMove(ctrller.OffsetPlatformPos(Random.Range(0,2)==0?ctrller.platform1:ctrller.platform2,ctrller.redHat.bc.bounds.extents.y), moveToPlatformDuration));
         s.AppendCallback(()=>{
             animator.SetTrigger("toIdle2");
         });

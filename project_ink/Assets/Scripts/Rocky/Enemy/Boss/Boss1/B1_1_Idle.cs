@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class B1_1_Idle : StateBase<B1_1_Ctrller>
 {
+    int lastActionIdx=-1;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -15,7 +16,12 @@ public class B1_1_Idle : StateBase<B1_1_Ctrller>
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if(UnityEngine.Random.Range(0,1.0f)<.03f){
-            int actionIdx=Random.Range(0,5);
+            int actionIdx;
+            //avoid action 4 and action 5 being consecutive.
+            if(lastActionIdx==3||lastActionIdx==4)
+                actionIdx=Random.Range(0,3);
+            else actionIdx=Random.Range(0,5);
+            lastActionIdx=actionIdx;
             switch(actionIdx){
                 case 0:
                     animator.SetTrigger("toA1");
