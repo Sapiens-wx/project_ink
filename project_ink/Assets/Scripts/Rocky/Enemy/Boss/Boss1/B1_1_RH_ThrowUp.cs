@@ -24,6 +24,7 @@ public class B1_1_RH_ThrowUp : StateBase<B1_1_RedHat>
             for(int i=0;i<3;++i){
                 //intantiate bullet
                 EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet(EnemyBulletManager.inst.boss1_a5);
+                bullet.rgb.angularVelocity=ctrller.bulletAngularSpd;
                 bullet.transform.position=ctrller.transform.position;
                 //x position of the bullet when hit the ground
                 float vy=bullet_y_spd, g=bullet.rgb.gravityScale*9.8f, y1=RoomManager.inst.RoomBounds.min.y;

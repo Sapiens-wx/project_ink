@@ -22,6 +22,7 @@ public class B1_1_RH_Throw : StateBase<B1_1_RedHat>
             shoot=true;
             Vector2 dir=((Vector2)PlayerShootingController.inst.transform.position-(Vector2)ctrller.transform.position).normalized;
             EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet_dir(EnemyBulletManager.inst.boss1_a4, ctrller.transform.position, dir);
+            bullet.rgb.angularVelocity=ctrller.bulletAngularSpd;
         }
     }
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

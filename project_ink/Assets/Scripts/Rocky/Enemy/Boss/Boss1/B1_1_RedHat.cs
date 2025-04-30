@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class B1_1_RedHat : BossBase
 {
+    public float bulletAngularSpd;
     [NonSerialized][HideInInspector] public Animator redHatAnimator;
     [NonSerialized][HideInInspector] public Collider2D redHatbc;
     [NonSerialized][HideInInspector] public B1_1_Ctrller boss;

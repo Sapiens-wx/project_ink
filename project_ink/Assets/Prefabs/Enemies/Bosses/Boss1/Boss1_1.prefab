@@ -121,6 +121,7 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   detectDist: 0
+  bulletAngularSpd: 20
 --- !u!1 &5870811712894669009
 GameObject:
   m_ObjectHideFlags: 0

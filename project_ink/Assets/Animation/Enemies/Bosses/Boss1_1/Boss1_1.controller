@@ -1136,7 +1136,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: -180, y: 90, z: 0}
   m_ExitPosition: {x: 970, y: 310, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 2625067608336066679}
+  m_DefaultState: {fileID: -3084887979179417722}
 --- !u!1102 &2131629143710538121
 AnimatorState:
   serializedVersion: 6
@@ -1431,9 +1431,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aae7aa5669e069469cdd80f0ab31de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redHatShootDist: 3.4
-  redHatShootDuration: 0.5
-  bullet_y_spd: 10
 --- !u!114 &5035375797654465768
 MonoBehaviour:
   m_ObjectHideFlags: 1

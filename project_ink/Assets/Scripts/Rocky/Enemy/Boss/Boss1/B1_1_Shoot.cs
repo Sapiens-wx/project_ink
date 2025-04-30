@@ -31,10 +31,13 @@ public class B1_1_Shoot : StateBase<B1_1_Ctrller>
         //shoot redhat upward
         s.Append(ctrller.redHat.transform.DOMoveY(ctrller.redHat.transform.position.y+ctrller.a4_redHatShootDist, ctrller.a4_redHatShootDuration));
         //scale the redHat from 0 to 1
+        Vector3 toScale=Vector3.one;
+        if(PlayerCtrl.inst.transform.position.x>ctrller.transform.position.x)
+            toScale.x=-1;
         ctrller.redHat.transform.localScale=Vector3.zero;
         s.Join(DOTween.To(()=>{return Vector3.zero;},
             val=>{ctrller.redHat.transform.localScale=val;},
-            Vector3.one, ctrller.a4_redHatShootDuration));
+            toScale, ctrller.a4_redHatShootDuration));
         //s.Join(ctrller.redHat.transform.DOScale(Vector3.one, redHatShootDuration));
         //shoot 3 bullets toward the player
         ctrller.redHat.animator.SetInteger("to_throw",3);
