@@ -73,6 +73,7 @@ public class Pjump_up : PStateBase
         }
     }
     bool IsTouching(Collider2D c1,Collider2D c2){
-        return c1.bounds.Intersects(c2.bounds);
+        Bounds cb1=c1.bounds,cb2=c2.bounds;
+        return !(cb1.min.x>cb2.max.x||cb1.max.x<cb2.min.x||cb1.min.y>cb2.max.y||cb1.max.y<cb2.min.y);
     }
 }

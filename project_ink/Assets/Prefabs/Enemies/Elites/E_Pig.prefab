@@ -671,7 +671,7 @@ MonoBehaviour:
   prevOnGround: 0
   jumpXMin: 1.4
   jumpXMax: 7
-  jumpHeight: 3.5
+  jumpHeight: 3
   ac1_jumpInterval: 0.8
   ac2_moveSpeed: 12
   animInterval: 0.25

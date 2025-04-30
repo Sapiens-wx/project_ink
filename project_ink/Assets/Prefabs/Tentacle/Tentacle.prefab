@@ -264,6 +264,7 @@ MonoBehaviour:
   besierCurveParams: 3.87
   acceleration: 0.01
   colliderRadius: 0.37
+  isPlayerTentacle: 1
 --- !u!120 &8270398635079422717
 LineRenderer:
   serializedVersion: 2

@@ -13,6 +13,7 @@ public class Card_T_6 : Card_T_Base
     public override void Prep_Fire(List<IEnumerator> actions)
     {
         base.Prep_Fire(actions);
+        if(damage>0) actions.Add(Delay(CalcRecoverTime(1)));
         //consume card in every cardslot
         for(int i=CardSlotManager.inst.cardSlots.Length-1;i>-1;--i){
             Card card=CardSlotManager.inst.cardSlots[i].card;

@@ -23,7 +23,7 @@ public class TentacleManager : Singleton<TentacleManager>
     /// <summary>
     /// the one that cards use to attack enemy. not inside a book
     /// </summary>
-    [NonSerialized][HideInInspector] public Tentacle tentacle;
+    [NonSerialized][HideInInspector] public PlayerTentacle tentacle;
     /// <summary>
     /// calculated by
     /// </summary>

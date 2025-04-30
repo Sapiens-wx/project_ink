@@ -8,7 +8,7 @@ public class PlayerCtrl : MonoBehaviour
 {
     public BoxCollider2D bc;
     public SpriteRenderer spr;
-    public Tentacle tentacle;
+    public PlayerTentacle tentacle;
     public float gravity, maxFallSpd;
     public float keyDownBuffTime;
     [Header("Movement")]
@@ -91,9 +91,6 @@ public class PlayerCtrl : MonoBehaviour
         get=>dir;
         set{
             if(dir==value) return;
-            //not flip the tentacle
-            tentacle.Dir=-tentacle.Dir;
-            //
             dir=value;
             leftTop.x*=-1;
             rightTop.x*=-1;
@@ -261,6 +258,7 @@ public class PlayerCtrl : MonoBehaviour
     /// ignore the collision between 'collider' and the player collider
     /// </summary>
     public void IgnoreCollision(Collider2D collider){
+        if(ignoredColliders.Contains(collider)) return;
         ignoredColliders.Add(collider);
         Physics2D.IgnoreCollision(bc, collider);
     }
@@ -268,8 +266,9 @@ public class PlayerCtrl : MonoBehaviour
     /// cancel all ignores of collision between the player and the colliders in 'ignoredColliders'.
     /// </summary>
     public void ClearIgnoredCollision(){
-        foreach(Collider2D cd in ignoredColliders)
+        foreach(Collider2D cd in ignoredColliders){
             Physics2D.IgnoreCollision(bc, cd);
+        }
         ignoredColliders.Clear();
     }
     #region black dash

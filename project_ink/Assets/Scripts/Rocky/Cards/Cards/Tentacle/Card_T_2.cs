@@ -21,5 +21,6 @@ public class Card_T_2 : Card_T_Base
                 TentacleManager.inst.Pray(1);
             }));
         }
+        actions.Add(Delay(CalcRecoverTime(1))); //recover time
     }
 }

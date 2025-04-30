@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9588d6f85cb4cf145bff77acf9877c29, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -46,7 +46,7 @@ Material:
     - _alpha: 0.7
     - _tex_blend: 1.03
     - coef: 3.76
-    - col_power: 1.87
+    - col_power: 5.35
     - contrast: 1.21
     - loop_c1: 0.78
     - loop_c2: 0.93
@@ -54,7 +54,7 @@ Material:
     - scale: 2.74
     - spin_amount: 1.66
     - spin_time: 24.52
-    - tex_blend: 0.42
+    - tex_blend: 0
     - tex_contrast: 18.74
     - time: 80.43
     m_Colors:
