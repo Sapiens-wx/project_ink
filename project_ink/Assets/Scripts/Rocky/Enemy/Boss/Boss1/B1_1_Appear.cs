@@ -9,7 +9,7 @@ public class B1_1_Appear : StateBase<B1_1_Ctrller>
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        ctrller.transform.position=ctrller.a3_target.transform.position;
+        ctrller.transform.position=PlayerCtrl.inst.transform.position;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

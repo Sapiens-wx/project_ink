@@ -13,14 +13,14 @@ public class EnemyBulletBase : MonoBehaviour
             rgb=GetComponent<Rigidbody2D>();
         Destroy(gameObject, 10);
     }
-    internal virtual void OnTriggerEnter2D(Collider2D collider){
+    protected virtual void OnTriggerEnter2D(Collider2D collider){
         onTriggerEnter?.Invoke(this, collider);
         StartCoroutine(DelayDestroy());
     }
     protected void InvokeOnTriggerEnterEvent(Collider2D collider){
         onTriggerEnter?.Invoke(this, collider);
     }
-    IEnumerator DelayDestroy(){
+    protected IEnumerator DelayDestroy(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
         yield return wait;
         yield return wait;

@@ -8,7 +8,7 @@ public class EnemyDamageBox : EnemyBulletBase
         if(rgb==null)
             rgb=GetComponent<Rigidbody2D>();
     }
-    internal override void OnTriggerEnter2D(Collider2D collider){
+    protected override void OnTriggerEnter2D(Collider2D collider){
         InvokeOnTriggerEnterEvent(collider);
     }
 }

@@ -90,6 +90,6 @@ public abstract class EnemyBase : MonoBehaviour
     /// make the enemy face the player
     /// </summary>
     public void UpdateDir(){
-        Dir=(int)Mathf.Sign(PlayerShootingController.inst.transform.position.x-transform.position.x);
+        Dir=(int)Mathf.Sign(PlayerCtrl.inst.transform.position.x-transform.position.x);
     }
 }

@@ -6,32 +6,42 @@ using System;
 
 public class B1_1_Ctrller : BossBase
 {
-    public GameObject redHat;
+    public B1_1_RedHat redHat;
     [Header("Action1")]
     public float a1_2_jumpHeight;
     [Header("Action3")]
     public GameObject a3_target;
-    [Header("Stage Transit")]
-    public Vector2 st_platform1;
-    public Vector2 st_platform2;
+    [Header("Action4")]
+    public float a4_redHatShootDist;
+    public float a4_redHatShootDuration;
+    [Header("Platform")]
+    public Bounds platform1;
+    public Bounds platform2;
 
-    [NonSerialized][HideInInspector] public Animator redHatAnimator;
     protected override void OnDrawGizmosSelected(){
         base.OnDrawGizmosSelected();
-        Gizmos.DrawWireSphere(st_platform1, .5f);
-        Gizmos.DrawWireSphere(st_platform2, .5f);
+        Gizmos.DrawWireCube(platform1.center,platform1.size);
+        Gizmos.DrawWireCube(platform2.center,platform2.size);
         Gizmos.DrawLine(new Vector2(-30,a1_2_jumpHeight), new Vector2(30,a1_2_jumpHeight));
     }
     internal override void Start(){
         base.Start();
-        redHatAnimator=redHat.GetComponent<Animator>();
-        redHat.SetActive(false);
+        redHat.boss=this;
+        redHat.gameObject.SetActive(false);
         a3_target.SetActive(false);
     }
-    public override void OnHit(HitEnemyInfo proj)
+    public override void OnDamaged(int damage)
     {
-        base.OnHit(proj);
-        if(CurHealth<<1<maxHealth)
+        base.OnDamaged(damage);
+        if(CurHealth<<1<maxHealth) //enter stage 2
             animator.SetTrigger("toIdle2");
+    }
+    /// <summary>
+    /// returns the position [yoffset] above the middle of the platform
+    /// </summary>
+    public Vector2 OffsetPlatformPos(Bounds platform, float yoffset){
+        Vector2 ret=platform.center;
+        ret.y+=platform.extents.y+yoffset;
+        return ret;
     }
 }
