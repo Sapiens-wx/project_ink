@@ -28,8 +28,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4328655420757827414}
   m_Father: {fileID: 0}
@@ -47,8 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tentacle: {fileID: 1897143300380828527}
-  acceleration: 0.01
-  damping: 0.9
   frq: 0.2
 --- !u!212 &2127147436174959948
 SpriteRenderer:
@@ -91,7 +89,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c4f3e49e0b90dd244bf9be4e2048a149, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
