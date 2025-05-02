@@ -43,3 +43,27 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 3429532659
+    locked: 0
+  - name: Tileset
+    uniqueID: 1917531279
+    locked: 0
+  - name: Player
+    uniqueID: 2021814275
+    locked: 0
+  - name: Enemy
+    uniqueID: 2044801701
+    locked: 0
+  - name: Cards
+    uniqueID: 2683025473
+    locked: 0
+  - name: CardEffects
+    uniqueID: 1183157011
+    locked: 0
+  - name: EnemyProjectiles
+    uniqueID: 2666510627
+    locked: 0
+  - name: UI
+    uniqueID: 3883440963
+    locked: 0
