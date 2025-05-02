@@ -11,19 +11,6 @@ public class B1_1_Rain : StateBase<B1_1_Ctrller>
         base.OnStateEnter(animator, stateInfo, layerIndex);
         Action();
     }
-
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
-
     void Action(){
         ctrller.redHat.transform.position=ctrller.transform.position;
         ctrller.redHat.gameObject.SetActive(true);
@@ -39,6 +26,6 @@ public class B1_1_Rain : StateBase<B1_1_Ctrller>
             val=>{ctrller.redHat.transform.localScale=val;},
             toScale, ctrller.a4_redHatShootDuration));
         //shoot 3 bullets toward the player
-        ctrller.redHat.animator.SetTrigger("to_throwUp");
+        s.AppendCallback(()=>ctrller.redHat.animator.SetTrigger("to_throwUp"));
     }
 }

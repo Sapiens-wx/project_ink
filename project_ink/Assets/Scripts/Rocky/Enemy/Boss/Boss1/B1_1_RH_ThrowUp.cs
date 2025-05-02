@@ -3,7 +3,6 @@ using DG.Tweening;
 
 public class B1_1_RH_ThrowUp : StateBase<B1_1_RedHat>
 {
-    [SerializeField] float bullet_y_spd;
     /// <summary>
     /// when in normalized time of this clip should the redhat shoot
     /// </summary>
@@ -27,7 +26,8 @@ public class B1_1_RH_ThrowUp : StateBase<B1_1_RedHat>
                 bullet.rgb.angularVelocity=ctrller.bulletAngularSpd;
                 bullet.transform.position=ctrller.transform.position;
                 //x position of the bullet when hit the ground
-                float vy=bullet_y_spd, g=bullet.rgb.gravityScale*9.8f, y1=RoomManager.inst.RoomBounds.min.y;
+                float g=bullet.rgb.gravityScale*9.8f, y1=RoomManager.inst.RoomBounds.min.y;
+                float vy=Mathf.Sqrt(2*g*(RoomManager.CurrentRoom.RoomBounds.max.y-ctrller.transform.position.y)); //vy=2g*height
                 float randBulletX=Random.Range(RoomManager.inst.RoomBounds.min.x, RoomManager.inst.RoomBounds.max.x);
                 float distx=randBulletX-bullet.transform.position.x;
                 float t1=vy/g;
