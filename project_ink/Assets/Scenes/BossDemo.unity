@@ -793,7 +793,7 @@ Transform:
   m_GameObject: {fileID: 1661919636}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.39, z: 0}
   m_LocalScale: {x: 5.244719, y: 0.5634734, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1020,7 +1020,7 @@ Transform:
   m_GameObject: {fileID: 1669250494}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.1, y: 0, z: 0}
+  m_LocalPosition: {x: -9.1, y: -0.39, z: 0}
   m_LocalScale: {x: 5.244719, y: 0.5634734, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1643,6 +1643,10 @@ PrefabInstance:
     - target: {fileID: 2699650008916106305, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271614279522358717, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
+      propertyPath: bulletAngularSpd
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3673713514858143845, guid: d358ffb35bf1ec84b8d45124f338bc57, type: 3}
       propertyPath: healthBar

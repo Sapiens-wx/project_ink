@@ -43,7 +43,7 @@ Material:
     m_Floats:
     - PI: 0
     - _EnableExternalAlpha: 0
-    - _alpha: 0.31
+    - _alpha: 0.7
     - _tex_blend: 1.03
     - coef: 3.76
     - col_power: 5.35
@@ -61,7 +61,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - colour_1: {r: 1, g: 0.91039586, b: 0.45597476, a: 1}
-    - colour_2: {r: 1, g: 0.3679244, b: 0.40016094, a: 1}
+    - colour_1: {r: 0.5680688, g: 0.24688502, b: 0.7169812, a: 1}
+    - colour_2: {r: 0.6603774, g: 0.29592383, b: 0.4804004, a: 1}
     - colour_3: {r: 0.7342994, g: 0.48113197, b: 1, a: 1}
   m_BuildTextureStacks: []
