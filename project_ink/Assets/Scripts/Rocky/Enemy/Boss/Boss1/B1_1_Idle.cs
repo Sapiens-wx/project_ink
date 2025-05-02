@@ -22,7 +22,6 @@ public class B1_1_Idle : StateBase<B1_1_Ctrller>
                 actionIdx=Random.Range(0,3);
             else actionIdx=Random.Range(0,5);
             lastActionIdx=actionIdx;
-            actionIdx=4;
             switch(actionIdx){
                 case 0:
                     animator.SetTrigger("toA1");
