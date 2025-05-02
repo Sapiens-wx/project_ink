@@ -101,6 +101,7 @@ public class PlayerCtrl : MonoBehaviour
             Vector3 localScale=healthBar.transform.localScale;
             localScale.x=dir==1?Mathf.Abs(localScale.x):-Mathf.Abs(localScale.x);
             healthBar.transform.localScale=localScale;
+            tentacle.Dir=-tentacle.Dir;
         }
     }
     void OnDrawGizmosSelected(){

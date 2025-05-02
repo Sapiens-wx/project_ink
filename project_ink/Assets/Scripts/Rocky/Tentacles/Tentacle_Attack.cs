@@ -43,8 +43,10 @@ public class Tentacle_Attack : StateBase<Tentacle>
             dir/=length;
             if(target.x<ctrller.transform.position.x){
                 dir=MathUtil.Rotate(dir, -Mathf.PI/2);
+                ctrller.Dir=1;
             } else{
                 dir=MathUtil.Rotate(dir, Mathf.PI/2);
+                ctrller.Dir=-1;
             }
             endLen=length;
             ctrller.anchorParent.eulerAngles=new Vector3(0,0,Vector2.SignedAngle(Vector2.up, dir));

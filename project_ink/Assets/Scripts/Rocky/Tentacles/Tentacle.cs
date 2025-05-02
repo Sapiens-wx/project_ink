@@ -37,6 +37,15 @@ public class Tentacle : MonoBehaviour
     /// </summary>
     Queue<Tuple<Vector3,int>> attacks;
     bool initialized;
+    public int Dir{
+        get{
+            return transform.lossyScale.x>=0?1:-1;
+        }
+        set{
+            if(Dir==value) return;
+            transform.localScale=MathUtil.DivideSeparately(MathUtil.MultiplySeparately(new Vector3(value,1,1),transform.localScale),transform.lossyScale);
+        }
+    }
     void OnDrawGizmosSelected(){
         Gizmos.DrawWireSphere(transform.position, colliderRadius);
     }
@@ -44,6 +53,7 @@ public class Tentacle : MonoBehaviour
     {
         if(initialized) return;
         initialized=true;
+        Dir=1;
         len=len_idle;
         animator=GetComponent<Animator>();
         InitAnchorPos();

@@ -95,7 +95,7 @@ public class TentacleManager : Singleton<TentacleManager>
     }
     void OnCardDealDamage(HitEnemyInfo info){
         //enemy hit by "books" does not count
-        if(info.hitType==HitEnemyInfo.HitType.Tentacle && info.transform!=tentacle.transform) return;
+        if(info.hitType==HitEnemyInfo.HitType.Tentacle && !inst.tentacle.IsPlayerTentacle(info.transform)) return;
         ++rank_damageCount;
         switch(rank){
             case 1:

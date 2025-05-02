@@ -16,6 +16,10 @@ public class PlayerTentacle : MonoBehaviour
     public event System.Action<EnemyBase> onHitEnemy;
     ObjectPool<Tentacle> tentaclePool;
     /// <summary>
+    /// all tentacles in the [tentaclePool]
+    /// </summary>
+    List<Tentacle> generatedTentacles;
+    /// <summary>
     /// queue that stores attacks <pos,damage,index>
     /// </summary>
     Queue<Tuple<Vector2,int,int>> attackQ;
@@ -24,10 +28,21 @@ public class PlayerTentacle : MonoBehaviour
     /// </summary>
     int attackAnimIndex;
     float lastAttackTime;
+    public int Dir{
+        get{
+            if(generatedTentacles.Count==0) return 0;
+            return generatedTentacles[0].Dir;
+        }
+        set{
+            foreach(Tentacle t in generatedTentacles)
+                t.Dir=value;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
         tentaclePool=new ObjectPool<Tentacle>(Tentacle_Create, Tentacle_Get, Tentacle_Release, Tentacle_Destroy);
+        generatedTentacles=new List<Tentacle>();
         attackQ=new Queue<Tuple<Vector2, int, int>>();
         attackAnimIndex=0;
     }
@@ -44,11 +59,15 @@ public class PlayerTentacle : MonoBehaviour
         attackQ.Enqueue(new Tuple<Vector2, int, int>(point,_damage,attackAnimIndex++));
         if(attackAnimIndex>2) attackAnimIndex=0;
     }
+    public bool IsPlayerTentacle(Transform t){
+        return t.parent==transform;
+    }
     #region Pool Utilities
     Tentacle Tentacle_Create(){
         Tentacle res=Instantiate(prefab.gameObject, PlayerCtrl.inst.transform).GetComponent<Tentacle>();
         res.transform.localPosition=Vector3.zero;
         res.onHitEnemy+=onHitEnemy;
+        generatedTentacles.Add(res);
         return res;
     }
     void Tentacle_Get(Tentacle te){
