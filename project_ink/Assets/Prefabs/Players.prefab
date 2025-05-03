@@ -220,8 +220,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2021814275
+  m_SortingLayer: 3
   m_SortingOrder: 10
   m_Sprite: {fileID: 1792667485, guid: 04e6ea76b7d66db4bb8c98739d328d46, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -566,6 +566,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6026446297027539006}
     m_Modifications:
+    - target: {fileID: 36589211838023319, guid: b8a5b25c968ff044686a0c5498ff2d4f, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -411526333
+      objectReference: {fileID: 0}
     - target: {fileID: 7885484781395401541, guid: b8a5b25c968ff044686a0c5498ff2d4f, type: 3}
       propertyPath: m_Name
       value: HealthBar
