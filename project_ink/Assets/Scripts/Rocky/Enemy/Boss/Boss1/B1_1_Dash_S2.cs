@@ -5,10 +5,9 @@ using DG.Tweening;
 
 public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
 {
-    [SerializeField] float redHatShootDist, redHatShootDuration;
-    [SerializeField] float redHatToPlatformWaitTime, redHatToBossDuration;
-    [SerializeField] float redHatDashDuration, dashDuration;
-    [SerializeField] float waitTime;
+    [SerializeField] float redHatToPlatformWaitTime;
+    [SerializeField] float dashDuration;
+    [SerializeField] float redHatShootWaitTime, waitTime;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -30,17 +29,15 @@ public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
 
     void Action2(Animator animator){
         //calculate direction
-        Vector2 dir=PlayerShootingController.inst.transform.position-ctrller.redHat.transform.position;
+        Vector2 dir=PlayerCtrl.inst.transform.position-ctrller.transform.position;
         dir.Normalize();
         Vector2 targetPos=(Vector2)PlayerShootingController.inst.transform.position+dir*.3f;
         //create sequence
         Sequence s=DOTween.Sequence();
-        //move the redhat to the boss
-        s.Append(ctrller.redHat.transform.DOMove(ctrller.transform.position, redHatToBossDuration));
+        //wait
+        s.AppendInterval(redHatShootWaitTime);
         //shoot the redhat
-        s.Append(ctrller.redHat.transform.DOMoveY(ctrller.transform.position.y+redHatShootDist, redHatShootDuration));
-        //move the redhat toward the player
-        s.Append(ctrller.redHat.transform.DOMove(targetPos, redHatDashDuration));
+        s.AppendCallback(()=>ctrller.redHat.transform.position=targetPos);
         //wait for 1 sec
         s.AppendInterval(waitTime);
         //dash toward redhat
@@ -51,9 +48,11 @@ public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
             ctrller.a3_target.transform.position=ctrller.OffsetPlatformPos(Random.Range(0,2)==0?ctrller.platform1:ctrller.platform2,1);
             ctrller.a3_target.SetActive(true);
         });
+        s.Append(ctrller.redHat.transform.DOScale(Vector3.zero,.5f));
         s.AppendInterval(redHatToPlatformWaitTime);
         //redhat goes to the target
         s.AppendCallback(()=>{
+            ctrller.redHat.transform.localScale=Vector3.one;
             ctrller.redHat.transform.position=ctrller.a3_target.transform.position;
             ctrller.a3_target.SetActive(false);
             animator.SetTrigger("toIdle");
