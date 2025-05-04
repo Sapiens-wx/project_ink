@@ -20,6 +20,8 @@ public class B1_1_RH_ThrowUp : StateBase<B1_1_RedHat>
         //shoot on this frame
         if(shoot==false && stateInfo.normalizedTime>=shootTimeNormalized){
             shoot=true;
+            float rangexmin=RoomManager.CurrentRoom.RoomBounds.min.x, rangexmax=RoomManager.inst.RoomBounds.max.x;
+            float rangexInterval=(rangexmax-rangexmin)/3;
             for(int i=0;i<3;++i){
                 //intantiate bullet
                 EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet(EnemyBulletManager.inst.boss1_a5);
@@ -28,7 +30,7 @@ public class B1_1_RH_ThrowUp : StateBase<B1_1_RedHat>
                 //x position of the bullet when hit the ground
                 float g=bullet.rgb.gravityScale*9.8f, y1=RoomManager.inst.RoomBounds.min.y;
                 float vy=Mathf.Sqrt(2*g*(RoomManager.CurrentRoom.RoomBounds.max.y-ctrller.transform.position.y)); //vy=2g*height
-                float randBulletX=Random.Range(RoomManager.inst.RoomBounds.min.x, RoomManager.inst.RoomBounds.max.x);
+                float randBulletX=Random.Range(rangexmin, rangexmin+rangexInterval);
                 float distx=randBulletX-bullet.transform.position.x;
                 float t1=vy/g;
                 float h0=vy*t1-0.5f*g*t1*t1;
@@ -37,6 +39,7 @@ public class B1_1_RH_ThrowUp : StateBase<B1_1_RedHat>
                 float t=t1+t2;
                 float vx=distx/t;
                 bullet.rgb.velocity=new Vector2(vx,vy);
+                rangexmin+=rangexInterval;
             }
         }
     }

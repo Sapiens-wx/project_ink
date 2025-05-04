@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,14 +7,20 @@ public class EnemyBulletBase : MonoBehaviour
 {
     public float spd;
     public int damage=1;
-    [HideInInspector] public Rigidbody2D rgb;
+    /// <summary>
+    /// auto destroy this bullet after [destroyTime] seconds
+    /// </summary>
+    [SerializeField] float destroyTime=10;
+    [NonSerialized][HideInInspector] public Rigidbody2D rgb;
+    [NonSerialized][HideInInspector] public Collider2D bc;
     public event System.Action<EnemyBulletBase,Collider2D> onTriggerEnter;
     bool initialized;
     internal virtual void Start(){
         if(initialized) return;
         initialized=true;
         rgb=GetComponent<Rigidbody2D>();
-        Destroy(gameObject, 10);
+        bc=GetComponent<Collider2D>();
+        Destroy(gameObject, destroyTime);
     }
     protected virtual void OnTriggerEnter2D(Collider2D collider){
         onTriggerEnter?.Invoke(this, collider);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBulletManager : Singleton<EnemyBulletManager>{
-    public EnemyBulletBase boss1_a4,boss1_a5;
+    public EnemyBulletBase boss1_a4,boss1_a5,boss1_a5_2;
     public EnemyBulletBase monkey, monkey_split;
     public EnemyBulletBase diamond, frog;
     public EnemyBulletBase elf, elf_split;

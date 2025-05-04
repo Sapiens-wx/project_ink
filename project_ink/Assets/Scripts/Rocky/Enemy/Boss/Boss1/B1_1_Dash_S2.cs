@@ -12,6 +12,7 @@ public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+        ctrller.UpdateDir();
         Action2(animator);
     }
 
@@ -32,6 +33,9 @@ public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
         Vector2 dir=PlayerCtrl.inst.transform.position-ctrller.transform.position;
         dir.Normalize();
         Vector2 targetPos=(Vector2)PlayerShootingController.inst.transform.position+dir*.3f;
+        float zrotation=Vector2.SignedAngle(Vector2.right,dir);
+        if(zrotation>90||zrotation<-90)
+            zrotation-=180;
         //create sequence
         Sequence s=DOTween.Sequence();
         //wait
@@ -40,8 +44,12 @@ public class B1_1_Dash_S2 : StateBase<B1_1_Ctrller>
         s.AppendCallback(()=>ctrller.redHat.transform.position=targetPos);
         //wait for 1 sec
         s.AppendInterval(waitTime);
+        //adjust rotation while dash
+        s.Append(ctrller.transform.DORotate(new Vector3(0,0,zrotation),.3f));
         //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
+        //readjust rotation after dash
+        s.Append(ctrller.transform.DORotate(Vector3.zero,.3f));
         //set the marker(target)
         s.AppendCallback(()=>{
             //choose a random platform to place the marker(target)

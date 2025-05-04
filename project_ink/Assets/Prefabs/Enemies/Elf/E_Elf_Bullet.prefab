@@ -172,5 +172,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spd: 1
-  rgb: {fileID: 0}
-  splitDist: 0
+  damage: 1
+  destroyTime: 10

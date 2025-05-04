@@ -173,4 +173,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spd: 11
   damage: 1
-  rgb: {fileID: 0}
+  destroyTime: 10

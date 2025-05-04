@@ -27,10 +27,17 @@ public class B1_1_Dash: StateBase<B1_1_Ctrller>
 
     void Teleport(Animator animator){
         Vector2 targetPos=ctrller.redHat.transform.position;
+        Vector2 dir=targetPos-(Vector2)ctrller.transform.position;
+        float zrotation=Vector2.SignedAngle(Vector2.right,dir);
+        if(zrotation>90||zrotation<-90)
+            zrotation-=180;
         //create sequence
         Sequence s=DOTween.Sequence();
+        //adjust rotation while dash
+        s.Append(ctrller.transform.DORotate(new Vector3(0,0,zrotation),.3f));
         //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
+        s.Append(ctrller.transform.DORotate(Vector3.zero,.3f));
         s.AppendCallback(()=>{
             ctrller.redHat.gameObject.SetActive(false);
             animator.SetTrigger("toIdle");

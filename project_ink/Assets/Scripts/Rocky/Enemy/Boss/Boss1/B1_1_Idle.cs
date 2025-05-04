@@ -5,6 +5,7 @@ using UnityEngine;
 public class B1_1_Idle : StateBase<B1_1_Ctrller>
 {
     int lastActionIdx=-1;
+    public bool a1,a2,a3,a4,a5;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -24,19 +25,24 @@ public class B1_1_Idle : StateBase<B1_1_Ctrller>
             lastActionIdx=actionIdx;
             switch(actionIdx){
                 case 0:
-                    animator.SetTrigger("toA1");
+                    if(a1)
+                        animator.SetTrigger("toA1");
                     break;
                 case 1:
-                    animator.SetTrigger("toA2");
+                    if(a2)
+                        animator.SetTrigger("toA2");
                     break;
                 case 2:
-                    animator.SetTrigger("toA3");
+                    if(a3)
+                        animator.SetTrigger("toA3");
                     break;
                 case 3:
-                    animator.SetTrigger("toA4");
+                    if(a4)
+                        animator.SetTrigger("toA4");
                     break;
                 case 4:
-                    animator.SetTrigger("toA5");
+                    if(a5)
+                        animator.SetTrigger("toA5");
                     break;
             }
         }

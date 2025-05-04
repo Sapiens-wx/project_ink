@@ -24,6 +24,8 @@ public class B1_1_Dash_spit : StateBase<B1_1_Ctrller>
         //spit the redhat
         if(spitted==false && stateInfo.normalizedTime>=spitTimeNormalized){
             spitted=true;
+            //update boss's direction
+            ctrller.UpdateDir();
             //reset redHat's position
             ctrller.redHat.transform.position=ctrller.transform.position;
             ctrller.redHat.gameObject.SetActive(true);

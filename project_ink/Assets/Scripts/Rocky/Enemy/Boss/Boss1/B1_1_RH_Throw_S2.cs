@@ -32,7 +32,7 @@ public class B1_1_RH_Throw_S2 : StateBase<B1_1_RedHat>
         ctrller.animator.SetInteger("to_throw_S2", counter);
         //tell the boss to finish this action
         if(counter<=0){
-            ctrller.boss.animator.SetTrigger("toIdle");
+            ctrller.boss.a4_s2_redhatFinishThrow=true;
         }
     }
 }

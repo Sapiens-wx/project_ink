@@ -18,6 +18,7 @@ public class B1_1_Ctrller : BossBase
     public Bounds platform1;
     public Bounds platform2;
 
+    [NonSerialized][HideInInspector] public bool a4_s2_redhatFinishThrow;
     protected override void OnDrawGizmosSelected(){
         base.OnDrawGizmosSelected();
         Gizmos.DrawWireCube(platform1.center,platform1.size);

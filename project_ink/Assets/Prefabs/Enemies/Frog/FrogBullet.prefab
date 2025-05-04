@@ -100,7 +100,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spd: 10
-  rgb: {fileID: 0}
+  damage: 1
+  destroyTime: 10
 --- !u!50 &9143266737228222981
 Rigidbody2D:
   serializedVersion: 4

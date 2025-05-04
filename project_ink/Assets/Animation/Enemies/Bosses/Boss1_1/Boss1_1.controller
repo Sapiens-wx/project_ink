@@ -160,7 +160,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 784c573e17c84864092b1dc08a9d66b8, type: 2}
+  m_Motion: {fileID: 0}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1307,6 +1307,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e38d3df5e2fdc64a9e043dbae542a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  a1: 1
+  a2: 1
+  a3: 1
+  a4: 1
+  a5: 1
 --- !u!1101 &2460915559406901054
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -2008,3 +2013,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56138f450ac1bbf44877e902983faba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  restTime: 0
+  condition2: 0
