@@ -2013,5 +2013,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56138f450ac1bbf44877e902983faba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  restTime: 0
+  restTime: 0.7
   condition2: 0
