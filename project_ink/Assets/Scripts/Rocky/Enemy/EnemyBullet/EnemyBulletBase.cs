@@ -35,4 +35,8 @@ public class EnemyBulletBase : MonoBehaviour
         yield return wait;
         Destroy(gameObject);
     }
+    public void UpdateRotation(Vector2 dir){
+        float angle=Vector2.SignedAngle(Vector2.up, dir);
+        transform.eulerAngles=new Vector3(0,0,angle);
+    }
 }
