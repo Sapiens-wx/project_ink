@@ -13,6 +13,7 @@ public class EnemyBulletManager : Singleton<EnemyBulletManager>{
     /// </summary>
     public static EnemyBulletBase InstantiateBullet_dir(EnemyBulletBase prefab, Vector2 pos, Vector2 dir){
         EnemyBulletBase bullet=InstantiateBullet(prefab);
+        bullet.UpdateRotation(dir);
         bullet.transform.position=pos;
         bullet.rgb.velocity=dir*prefab.spd;
         return bullet;
@@ -22,6 +23,7 @@ public class EnemyBulletManager : Singleton<EnemyBulletManager>{
     /// </summary>
     public static EnemyBulletBase InstantiateBullet_v(EnemyBulletBase prefab, Vector2 pos, Vector2 v){
         EnemyBulletBase bullet=InstantiateBullet(prefab);
+        bullet.UpdateRotation(v);
         bullet.transform.position=pos;
         bullet.rgb.velocity=v;
         return bullet;
