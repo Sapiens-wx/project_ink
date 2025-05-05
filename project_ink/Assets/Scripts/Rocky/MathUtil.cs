@@ -132,4 +132,126 @@ public class MathUtil{
         // Return the initial velocity as a Vector2
         return new Vector2(jumpXSpd, jumpYSpd);
     }
+    /// <summary>
+    /// given a 2D ray and bounds, calculate the normal of the point where they intersect. ray and bounds must intersect
+    /// </summary>
+    public static Vector3 CalculateIntersectionNormal(Ray ray, Bounds bounds)
+    {
+        // 确保是 2D 情况（z=0）
+        Vector3 origin = ray.origin;
+        Vector3 direction = ray.direction;
+        origin.z = 0;
+        direction.z = 0;
+
+        // 提前计算方向分量的倒数，避免重复除法
+        Vector3 invDirection = new Vector3(
+            1.0f / direction.x,
+            1.0f / direction.y,
+            0
+        );
+
+        // 初始化最小 t 值和法线
+        float tMin = float.NegativeInfinity;
+        float tMax = float.PositiveInfinity;
+        Vector3 normal = Vector3.zero;
+
+        // 检查 X 轴
+        if (float.IsInfinity(invDirection.x))
+        {
+            // 射线平行于 X 轴
+            if (origin.x < bounds.min.x || origin.x > bounds.max.x)
+            {
+                // 不相交（但题目保证相交，所以这里不会执行）
+                return Vector3.zero;
+            }
+        }
+        else
+        {
+            float t1 = (bounds.min.x - origin.x) * invDirection.x;
+            float t2 = (bounds.max.x - origin.x) * invDirection.x;
+
+            if (t1 > t2)
+            {
+                (t1, t2) = (t2, t1); // 交换使 t1 <= t2
+                normal.x = -1; // 可能命中 max.x 面
+            }
+            else
+            {
+                normal.x = 1; // 可能命中 min.x 面
+            }
+
+            tMin = Mathf.Max(tMin, t1);
+            tMax = Mathf.Min(tMax, t2);
+
+            if (tMin > tMax)
+            {
+                // 不相交（但题目保证相交，所以这里不会执行）
+                return Vector3.zero;
+            }
+        }
+
+        // 检查 Y 轴
+        if (float.IsInfinity(invDirection.y))
+        {
+            // 射线平行于 Y 轴
+            if (origin.y < bounds.min.y || origin.y > bounds.max.y)
+            {
+                // 不相交（但题目保证相交，所以这里不会执行）
+                return Vector3.zero;
+            }
+        }
+        else
+        {
+            float t1 = (bounds.min.y - origin.y) * invDirection.y;
+            float t2 = (bounds.max.y - origin.y) * invDirection.y;
+
+            if (t1 > t2)
+            {
+                (t1, t2) = (t2, t1); // 交换使 t1 <= t2
+                normal.y = -1; // 可能命中 max.y 面
+            }
+            else
+            {
+                normal.y = 1; // 可能命中 min.y 面
+            }
+
+            tMin = Mathf.Max(tMin, t1);
+            tMax = Mathf.Min(tMax, t2);
+
+            if (tMin > tMax)
+            {
+                // 不相交（但题目保证相交，所以这里不会执行）
+                return Vector3.zero;
+            }
+        }
+
+        // 确定最终的法线方向
+        // 我们需要找出是哪个轴的面导致了相交（tMin对应的面）
+        float tx1 = (bounds.min.x - origin.x) * invDirection.x;
+        float tx2 = (bounds.max.x - origin.x) * invDirection.x;
+        float ty1 = (bounds.min.y - origin.y) * invDirection.y;
+        float ty2 = (bounds.max.y - origin.y) * invDirection.y;
+
+        // 找出哪个t值等于tMin
+        if (Mathf.Approximately(tMin, tx1))
+        {
+            return Vector3.right; // 命中 min.x 面，法线向右
+        }
+        else if (Mathf.Approximately(tMin, tx2))
+        {
+            return Vector3.left; // 命中 max.x 面，法线向左
+        }
+        else if (Mathf.Approximately(tMin, ty1))
+        {
+            return Vector3.up; // 命中 min.y 面，法线向上
+        }
+        else if (Mathf.Approximately(tMin, ty2))
+        {
+            return Vector3.down; // 命中 max.y 面，法线向下
+        }
+
+        // 如果由于浮点精度未能精确匹配，则根据tMin的来源判断
+        // 这种情况在理论上不应该发生，因为题目保证相交
+        return normal;
+    }
 }

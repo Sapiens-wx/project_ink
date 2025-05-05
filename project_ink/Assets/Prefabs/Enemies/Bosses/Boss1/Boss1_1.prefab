@@ -289,10 +289,10 @@ MonoBehaviour:
   a4_redHatShootDist: 3.4
   a4_redHatShootDuration: 0.5
   platform1:
-    m_Center: {x: -4.58, y: -1.21, z: 0}
+    m_Center: {x: -4.58, y: -1.6, z: 0}
     m_Extent: {x: 2.6, y: 0.26, z: 0}
   platform2:
-    m_Center: {x: 4.49, y: -1.21, z: 0}
+    m_Center: {x: 4.49, y: -1.6, z: 0}
     m_Extent: {x: 2.6, y: 0.26, z: 0}
 --- !u!50 &4817808752598594430
 Rigidbody2D:

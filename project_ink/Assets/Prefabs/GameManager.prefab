@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae71b42ac6e6284d9616736d72dd356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss1_a4: {fileID: 3403746014265127253, guid: 740448b237333e142b81f0d04135ab95, type: 3}
+  boss1_a4: {fileID: 6928358654326348024, guid: 740448b237333e142b81f0d04135ab95, type: 3}
   boss1_a5: {fileID: 4668301260340711124, guid: dfe8225a9eb1ddc45839794e5905d021, type: 3}
   boss1_a5_2: {fileID: 3403746014265127253, guid: dcc3a39e812fdc94bafb49091999a6ce, type: 3}
   monkey: {fileID: 3091671583632437906, guid: de7f2d0ec96fd574d80a3dc2e57dfc03, type: 3}

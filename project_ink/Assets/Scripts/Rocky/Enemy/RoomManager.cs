@@ -78,7 +78,7 @@ public class RoomManager : Singleton<RoomManager>
         foreach(EnemyBase enemy in enemies){
             Vector2 distv=target.transform.position-enemy.transform.position;
             float dist=distv.x*distv.x+distv.y*distv.y;
-            if(dist<min){
+            if(dist<min && enemy.gameObject.activeSelf){
                 min=dist;
                 minEnemy=enemy;
             }
