@@ -32,8 +32,8 @@ public class Card_T_7 : Card_T_Base
     {
         base.Prep_Consume(actions);
         actions.Add(IEnumAction(()=>{
-            TentacleManager.inst.Pray(2);
-            TentacleManager.inst.AddNTentacles(2);
+            TentacleManager.inst.Pray(1);
+            TentacleManager.inst.AddNTentacles(1);
         }));
     }
 }

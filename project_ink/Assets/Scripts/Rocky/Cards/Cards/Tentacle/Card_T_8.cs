@@ -17,7 +17,6 @@ public class Card_T_8 : Card_T_Base
         actions.Add(Activate(false));
         actions.Add(Activate(false));
         actions.Add(Activate(false));
-        actions.Add(Activate(false));
         actions.Add(Delay(CalcRecoverTime(4))); //recover time
         //return to card pool
         actions.Add(IEnumAction(ReturnToCardPool));
