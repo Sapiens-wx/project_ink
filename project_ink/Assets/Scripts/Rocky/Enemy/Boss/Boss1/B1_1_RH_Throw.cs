@@ -32,6 +32,7 @@ public class B1_1_RH_Throw : StateBase<B1_1_RedHat>
         ctrller.animator.SetInteger("to_throw", counter);
         //tell the boss to finish this action
         if(counter<=0){
+            ctrller.boss.animator.SetTrigger("toIdle");
             Sequence s=DOTween.Sequence();
             //redhat returns (move downward)
             s.Append(ctrller.transform.DOMove(ctrller.boss.transform.position, ctrller.boss.a4_redHatShootDuration));
@@ -41,7 +42,6 @@ public class B1_1_RH_Throw : StateBase<B1_1_RedHat>
             s.AppendCallback(()=>{
                 ctrller.gameObject.SetActive(false);
                 ctrller.transform.localScale=Vector3.one;
-                ctrller.boss.animator.SetTrigger("toIdle");
                 });
         }
     }

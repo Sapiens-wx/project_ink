@@ -10,7 +10,8 @@ public class Phit : PStateBase
         player.v.x=0;
         player.v.y=0;
         player.hitAnim.Restart();
-        animator.SetTrigger(player.onGround?"hit_ground":"hit_air");
+        animator.SetTrigger("idle");
+        //animator.SetTrigger(player.onGround?"hit_ground":"hit_air"); //play hit_ground or hit_air animation
         //hit effect
         PlayerEffects.inst.PlayEffect(PlayerEffects.EffectType.Hit);
     }

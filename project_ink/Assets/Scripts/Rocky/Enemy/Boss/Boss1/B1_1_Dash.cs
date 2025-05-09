@@ -37,10 +37,10 @@ public class B1_1_Dash: StateBase<B1_1_Ctrller>
         s.Append(ctrller.transform.DORotate(new Vector3(0,0,zrotation),.3f));
         //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
-        s.Append(ctrller.transform.DORotate(Vector3.zero,.3f));
         s.AppendCallback(()=>{
             ctrller.redHat.gameObject.SetActive(false);
             animator.SetTrigger("toIdle");
             });
+        s.Append(ctrller.transform.DORotate(Vector3.zero,.3f));
     }
 }
