@@ -282,12 +282,13 @@ MonoBehaviour:
   id: 0
   rgb: {fileID: 0}
   animator: {fileID: 2378690714452625028}
-  detectDist: 10
+  detectDist: 4
   redHat: {fileID: 3271614279522358717}
   a1_2_jumpHeight: -0.23
   a3_target: {fileID: 7589945782782701206}
-  a4_redHatShootDist: 3.4
+  a4_redHatShootPos: {x: -0.28, y: 4.25}
   a4_redHatShootDuration: 0.5
+  stomachPos: {x: 0.3, y: 1.31}
   platform1:
     m_Center: {x: -4.58, y: -1.6, z: 0}
     m_Extent: {x: 2.6, y: 0.26, z: 0}

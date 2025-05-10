@@ -46,17 +46,17 @@ public class B1_1_RH_ThrowUp : StateBase<B1_1_RedHat>
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
+        ctrller.boss.animator.SetTrigger("toIdle");
         //tell the boss to finish this action
         Sequence s=DOTween.Sequence();
         //redhat returns (move downward)
-        s.Append(ctrller.transform.DOMove(ctrller.boss.transform.position, ctrller.boss.a4_redHatShootDuration));
+        s.Append(ctrller.transform.DOMove(ctrller.boss.StomachGlobalPos, ctrller.boss.a4_redHatShootDuration));
         //scale the redHat from 0 to 1
         ctrller.transform.localScale=Vector3.one;
         s.Join(ctrller.transform.DOScale(Vector3.zero, ctrller.boss.a4_redHatShootDuration));
         s.AppendCallback(()=>{
             ctrller.gameObject.SetActive(false);
             ctrller.transform.localScale=Vector3.one;
-            ctrller.boss.animator.SetTrigger("toIdle");
             });
     }
 }

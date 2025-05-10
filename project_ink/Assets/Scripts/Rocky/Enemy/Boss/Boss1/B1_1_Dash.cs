@@ -6,6 +6,7 @@ using DG.Tweening;
 public class B1_1_Dash: StateBase<B1_1_Ctrller>
 {
     public float dashDuration;
+    public float startDisappearingTime; //from 0 to 1
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -37,8 +38,11 @@ public class B1_1_Dash: StateBase<B1_1_Ctrller>
         s.Append(ctrller.transform.DORotate(new Vector3(0,0,zrotation),.3f));
         //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
+        ctrller.redHat.transform.localScale=Vector3.one;
+        s.Insert(.3f+dashDuration*startDisappearingTime,ctrller.redHat.transform.DOScale(Vector3.zero, dashDuration*(1-startDisappearingTime)));
         s.AppendCallback(()=>{
             ctrller.redHat.gameObject.SetActive(false);
+            ctrller.redHat.transform.localScale=Vector3.one;
             animator.SetTrigger("toIdle");
             });
         s.Append(ctrller.transform.DORotate(Vector3.zero,.3f));

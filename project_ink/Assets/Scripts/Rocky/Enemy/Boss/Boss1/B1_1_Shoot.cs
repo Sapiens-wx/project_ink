@@ -25,11 +25,11 @@ public class B1_1_Shoot : StateBase<B1_1_Ctrller>
     //}
 
     void Action1(Animator animator){
-        ctrller.redHat.transform.position=ctrller.transform.position;
+        ctrller.redHat.transform.position=ctrller.StomachGlobalPos;
         ctrller.redHat.gameObject.SetActive(true);
         Sequence s = DOTween.Sequence();
         //shoot redhat upward
-        s.Append(ctrller.redHat.transform.DOMoveY(ctrller.redHat.transform.position.y+ctrller.a4_redHatShootDist, ctrller.a4_redHatShootDuration));
+        s.Append(ctrller.redHat.transform.DOMove(ctrller.A4_redHatShootGlobalPos, ctrller.a4_redHatShootDuration));
         //scale the redHat from 0 to 1
         Vector3 toScale=Vector3.one;
         if(PlayerCtrl.inst.transform.position.x>ctrller.transform.position.x)

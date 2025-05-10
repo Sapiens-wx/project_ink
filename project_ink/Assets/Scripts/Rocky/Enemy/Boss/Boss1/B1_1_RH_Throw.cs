@@ -35,10 +35,10 @@ public class B1_1_RH_Throw : StateBase<B1_1_RedHat>
             ctrller.boss.animator.SetTrigger("toIdle");
             Sequence s=DOTween.Sequence();
             //redhat returns (move downward)
-            s.Append(ctrller.transform.DOMove(ctrller.boss.transform.position, ctrller.boss.a4_redHatShootDuration));
+            s.Append(ctrller.transform.DOMove(ctrller.boss.StomachGlobalPos, ctrller.boss.a4_redHatShootDuration));
             //scale the redHat from 0 to 1
             ctrller.transform.localScale=Vector3.one;
-            s.Join(ctrller.transform.DOScale(Vector3.zero, ctrller.boss.a4_redHatShootDuration));
+            s.Join(ctrller.transform.DOScale(Vector3.zero, ctrller.boss.a4_redHatShootDuration).SetEase(Ease.OutQuart));
             s.AppendCallback(()=>{
                 ctrller.gameObject.SetActive(false);
                 ctrller.transform.localScale=Vector3.one;

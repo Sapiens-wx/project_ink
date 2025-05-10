@@ -12,18 +12,25 @@ public class B1_1_Ctrller : BossBase
     [Header("Action3")]
     public GameObject a3_target;
     [Header("Action4")]
-    public float a4_redHatShootDist;
+    [SerializeField] Vector2 a4_redHatShootPos;
     public float a4_redHatShootDuration;
+    [SerializeField] Vector2 stomachPos;
     [Header("Platform")]
     public Bounds platform1;
     public Bounds platform2;
 
     [NonSerialized][HideInInspector] public bool a4_s2_redhatFinishThrow;
+    public Vector2 StomachGlobalPos=>stomachPos+(Vector2)transform.position;
+    public Vector2 A4_redHatShootGlobalPos=>a4_redHatShootPos+(Vector2)transform.position;
     protected override void OnDrawGizmosSelected(){
         base.OnDrawGizmosSelected();
         Gizmos.DrawWireCube(platform1.center,platform1.size);
         Gizmos.DrawWireCube(platform2.center,platform2.size);
         Gizmos.DrawLine(new Vector2(-30,a1_2_jumpHeight), new Vector2(30,a1_2_jumpHeight));
+        Gizmos.color=Color.blue;
+        Gizmos.DrawWireSphere(StomachGlobalPos, .3f);
+        Gizmos.color=Color.red;
+        Gizmos.DrawWireSphere(A4_redHatShootGlobalPos, .3f);
     }
     internal override void Start(){
         base.Start();
