@@ -11,6 +11,7 @@ public class B1_1_StageTransit : StateBase<B1_1_Ctrller>
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         Action(animator);
+        ctrller.redHat.animator.SetBool("b_stage2",true);
     }
 
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
