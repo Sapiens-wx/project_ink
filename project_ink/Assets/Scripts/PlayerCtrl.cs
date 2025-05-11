@@ -268,7 +268,7 @@ public class PlayerCtrl : MonoBehaviour
     /// </summary>
     public void ClearIgnoredCollision(){
         foreach(Collider2D cd in ignoredColliders){
-            Physics2D.IgnoreCollision(bc, cd);
+            Physics2D.IgnoreCollision(bc, cd, false);
         }
         ignoredColliders.Clear();
     }
