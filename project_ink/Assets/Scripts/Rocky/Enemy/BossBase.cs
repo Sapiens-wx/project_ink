@@ -4,7 +4,7 @@ public abstract class BossBase : EnemyBase
 {
     [SerializeField] float detectDist;
 
-    bool activated;
+    bool prevInDetect;
     float detectDistSqrd;
     public override int Dir{
         get=>dir;
@@ -23,12 +23,12 @@ public abstract class BossBase : EnemyBase
         detectDistSqrd=detectDist*detectDist;
     }
     void FixedUpdate(){
-        if(!activated){
-            Vector2 dir=PlayerCtrl.inst.transform.position-transform.position;
-            if(dir.x*dir.x+dir.y*dir.y<=detectDistSqrd){
-                activated=true;
-                animator.SetBool("b_detect",true);
-            }
-        }
+        Vector2 dir=PlayerCtrl.inst.transform.position-transform.position;
+        bool inDetect=dir.x*dir.x+dir.y*dir.y<=detectDistSqrd;
+        if(prevInDetect&&!inDetect) //on detect exit
+            animator.SetBool("b_detect",false);
+        else if(!prevInDetect&&inDetect) //on detect enter
+            animator.SetBool("b_detect",true);
+        prevInDetect=inDetect;
     }
 }

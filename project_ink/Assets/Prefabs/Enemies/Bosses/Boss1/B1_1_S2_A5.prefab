@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 183327779805665249}
   - component: {fileID: 3403746014265127253}
   m_Layer: 9
-  m_Name: B1_1_A5_Bullet2
+  m_Name: B1_1_S2_A5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -1628456669
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c22c213130fba8b46b52b185472ed652, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 10c6480a269690d42bc5b9dc13b063ab, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -171,6 +171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb135617ebf59e14d9fb091b411de836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spd: 9
+  spd: 3
   damage: 1
-  destroyTime: 0.2
+  destroyTime: 0.5
