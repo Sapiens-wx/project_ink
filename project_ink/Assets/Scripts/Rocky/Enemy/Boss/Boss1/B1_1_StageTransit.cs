@@ -26,6 +26,8 @@ public class B1_1_StageTransit : StateBase<B1_1_Ctrller>
     void Action(Animator animator){
         ctrller.redHat.gameObject.SetActive(true);
         ctrller.redHat.transform.position=ctrller.transform.position;
+        //start alternating platform
+        B1_1_Platform.inst.BeginAlternatePlatform();
 
         Sequence s=DOTween.Sequence();
         s.Append(ctrller.redHat.transform.DOMoveY(ctrller.transform.position.y+redHatShootDist, redHatShootDuration));
