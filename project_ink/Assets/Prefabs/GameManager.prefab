@@ -78,7 +78,7 @@ MonoBehaviour:
   boss1_a4: {fileID: 6928358654326348024, guid: 740448b237333e142b81f0d04135ab95, type: 3}
   boss1_a5: {fileID: 4668301260340711124, guid: dfe8225a9eb1ddc45839794e5905d021, type: 3}
   boss1_a5_2: {fileID: 3403746014265127253, guid: dcc3a39e812fdc94bafb49091999a6ce, type: 3}
-  boss1_s2_a5: {fileID: 3403746014265127253, guid: 8d25fd2a96974a04aa14a7f2e21ecad7, type: 3}
+  boss1_s2_a5: {fileID: 3028156237536437741, guid: 8d25fd2a96974a04aa14a7f2e21ecad7, type: 3}
   monkey: {fileID: 3091671583632437906, guid: de7f2d0ec96fd574d80a3dc2e57dfc03, type: 3}
   monkey_split: {fileID: 7894666452604304954, guid: 8052f1e7a8de9ad42999d6100a604123, type: 3}
   diamond: {fileID: 1912567075307409250, guid: 23318d123364da244b08729cbb2109e5, type: 3}

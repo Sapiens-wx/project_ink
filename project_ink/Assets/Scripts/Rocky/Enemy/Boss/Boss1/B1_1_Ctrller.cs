@@ -20,8 +20,15 @@ public class B1_1_Ctrller : BossBase
     public Bounds platform2;
 
     [NonSerialized][HideInInspector] public bool a4_s2_redhatFinishThrow;
-    public Vector2 StomachGlobalPos=>stomachPos+(Vector2)transform.position;
-    public Vector2 A4_redHatShootGlobalPos=>a4_redHatShootPos+(Vector2)transform.position;
+    public Vector2 StomachGlobalPos{
+        get{
+            Vector2 pos=stomachPos + (Vector2)transform.position;
+            if(Dir==1) pos=new Vector2(transform.position.x-stomachPos.x,stomachPos.y+transform.position.y);
+            else pos=stomachPos + (Vector2)transform.position;
+            return pos;
+        }
+    }
+    public Vector2 A4_redHatShootGlobalPos => a4_redHatShootPos + (Vector2)transform.position;
     protected override void OnDrawGizmosSelected(){
         base.OnDrawGizmosSelected();
         Gizmos.DrawWireCube(platform1.center,platform1.size);

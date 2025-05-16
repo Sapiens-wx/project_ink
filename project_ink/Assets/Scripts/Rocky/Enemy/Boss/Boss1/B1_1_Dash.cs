@@ -6,19 +6,28 @@ using DG.Tweening;
 public class B1_1_Dash: StateBase<B1_1_Ctrller>
 {
     public float dashDuration;
-    public float startDisappearingTime; //from 0 to 1
+    public float startDisappearDist;
+    public float disappearDuration;
+    float disappearDistSqr;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         Teleport(animator);
+        disappearDistSqr=startDisappearDist*startDisappearDist;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        Vector2 dir=(Vector2)ctrller.transform.position-(Vector2)ctrller.redHat.transform.position;
+        float distSqr = Vector2.Dot(dir,dir);
+        //redhat disappear animation
+        if(distSqr<disappearDistSqr){
+            disappearDistSqr=-1;
+            ctrller.redHat.transform.DOScale(Vector3.zero, disappearDuration);
+        }
+    }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -39,7 +48,6 @@ public class B1_1_Dash: StateBase<B1_1_Ctrller>
         //dash toward redhat
         s.Append(ctrller.transform.DOMove(targetPos, dashDuration));
         ctrller.redHat.transform.localScale=Vector3.one;
-        s.Insert(.3f+dashDuration*startDisappearingTime,ctrller.redHat.transform.DOScale(Vector3.zero, dashDuration*(1-startDisappearingTime)));
         s.AppendCallback(()=>{
             ctrller.redHat.gameObject.SetActive(false);
             ctrller.redHat.transform.localScale=Vector3.one;
