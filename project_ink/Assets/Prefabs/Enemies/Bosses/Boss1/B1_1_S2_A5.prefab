@@ -173,5 +173,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spd: 3
   damage: 1
-  destroyTime: 0.4
+  destroyTime: 10
   bullet_angle: 30
