@@ -12,7 +12,6 @@ public class Pjump_up : PStateBase
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         player.jumpKeyUp=false;
-        player.v.y=player.yspd;
         coro = player.StartCoroutine(m_FixedUpdate());
     }
 
@@ -64,9 +63,14 @@ public class Pjump_up : PStateBase
     }
     override internal void ApplyGravity(){
         player.v.y+=player.gravity*Time.fixedDeltaTime;
+        if(player.v.y<0) player.v.y=0;
     }
     override internal void Jump(){
-        if(player.v.y<=0 || player.jumpKeyUp){
+        if(player.jumpKeyUp){
+            player.jumpKeyUp=false;
+            player.v.y=0;
+        }
+        if(player.v_trap.y<=0&&player.v.y<=0){
             player.jumpKeyUp=false;
             player.v.y=0;
             player.animator.SetTrigger("jump_down");

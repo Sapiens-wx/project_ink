@@ -139,8 +139,10 @@ public class Projectile : MonoBehaviour
             enemy.OnHit(new HitEnemyInfo(this));
             if(card!=null) card.OnHitEnemy(enemy);
         }
-        ProjectileManager.inst.HitAnim(this);
-        M_Destroy();
+        if(GameManager.IsLayer(GameManager.inst.projectileDestroyLayer, collider.gameObject.layer)){
+            ProjectileManager.inst.HitAnim(this);
+            M_Destroy();
+        }
     }
     public enum ProjectileType{
         Normal,

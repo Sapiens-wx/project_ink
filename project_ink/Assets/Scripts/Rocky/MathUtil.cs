@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MathUtil{
+public static class MathUtil{
     public static float besierControlPointEffect=6;
     public static Vector2 Rotate(Vector2 dir, float theta){
         float sin=Mathf.Sin(theta), cos=Mathf.Cos(theta);
@@ -253,5 +253,65 @@ public class MathUtil{
         // 如果由于浮点精度未能精确匹配，则根据tMin的来源判断
         // 这种情况在理论上不应该发生，因为题目保证相交
         return normal;
+    }
+    public static bool IntersectPoint(this Bounds lhs, Vector2 point){
+        Vector2 min=lhs.min,max=lhs.max;
+        return point.x>=min.x&&point.x<=max.x&&point.y>=min.y&&point.y<=max.y;
+    }
+}
+
+public class Matrix3x3{
+    public float m00,m01,m02;
+    public float m10,m11,m12;
+    public float m20,m21,m22;
+    public Matrix3x3(){}
+    public Matrix3x3(Vector3 col1, Vector3 col2, Vector3 col3){
+        m00=col1.x;
+        m10=col1.y;
+        m20=col1.z;
+        m01=col2.x;
+        m11=col2.y;
+        m21=col2.z;
+        m02=col3.x;
+        m12=col3.y;
+        m22=col3.z;
+    }
+    public void SetColumn(int col, Vector3 val){
+        switch(col){
+            case 0:
+                m00=val.x;
+                m10=val.y;
+                m20=val.z;
+                break;
+            case 1:
+                m01=val.x;
+                m11=val.y;
+                m21=val.z;
+                break;
+            case 2:
+                m02=val.x;
+                m12=val.y;
+                m22=val.z;
+                break;
+        }
+    }
+    public static Matrix3x3 operator*(Matrix3x3 lhs, Matrix3x3 rhs){
+        Matrix3x3 res=new Matrix3x3();
+        res.m00=lhs.m00*rhs.m00+lhs.m01*rhs.m10+lhs.m02*rhs.m20;
+        res.m01=lhs.m00*rhs.m01+lhs.m01*rhs.m11+lhs.m02*rhs.m21;
+        res.m02=lhs.m00*rhs.m02+lhs.m01*rhs.m12+lhs.m02*rhs.m22;
+        res.m10=lhs.m10*rhs.m00+lhs.m11*rhs.m10+lhs.m12*rhs.m20;
+        res.m11=lhs.m10*rhs.m01+lhs.m11*rhs.m11+lhs.m12*rhs.m21;
+        res.m12=lhs.m10*rhs.m02+lhs.m11*rhs.m12+lhs.m12*rhs.m22;
+        res.m20=lhs.m20*rhs.m00+lhs.m21*rhs.m10+lhs.m22*rhs.m20;
+        res.m21=lhs.m20*rhs.m01+lhs.m21*rhs.m11+lhs.m22*rhs.m21;
+        res.m22=lhs.m20*rhs.m02+lhs.m21*rhs.m12+lhs.m22*rhs.m22;
+        return res;
+    }
+    public static Vector2 operator*(Matrix3x3 lhs, Vector3 rhs){
+        return new Vector2(lhs.m00*rhs.x+lhs.m01*rhs.y+lhs.m02*rhs.z,lhs.m10*rhs.x+lhs.m11*rhs.y+lhs.m12*rhs.z);
+    }
+    public Vector2 Mul(Vector2 rhs, float rhsz){
+        return new Vector2(m00*rhs.x+m01*rhs.y+m02*rhsz,m10*rhs.x+m11*rhs.y+m12*rhsz);
     }
 }

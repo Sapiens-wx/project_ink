@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBulletBase : MonoBehaviour
+public class EnemyBulletBase : EnemyDamageBox
 {
     public float spd;
-    public int damage=1;
     /// <summary>
     /// auto destroy this bullet after [destroyTime] seconds
     /// </summary>
@@ -24,7 +23,9 @@ public class EnemyBulletBase : MonoBehaviour
     }
     protected virtual void OnTriggerEnter2D(Collider2D collider){
         onTriggerEnter?.Invoke(this, collider);
-        StartCoroutine(DelayDestroy());
+        if(GameManager.IsLayer(GameManager.inst.enemyBulletDestroyLayer, collider.gameObject.layer)){
+            StartCoroutine(DelayDestroy());
+        }
     }
     protected void InvokeOnTriggerEnterEvent(Collider2D collider){
         onTriggerEnter?.Invoke(this, collider);

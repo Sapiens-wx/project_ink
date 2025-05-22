@@ -8,6 +8,7 @@ public class EnemyBulletManager : Singleton<EnemyBulletManager>{
     public EnemyBulletBase diamond, frog;
     public EnemyBulletBase elf, elf_split;
     public EnemyBulletBase witch;
+    public EnemyBulletBase[] trap_shooter;
     /// <summary>
     /// set the bullet direction. velocity=dir*bullet.spd
     /// </summary>
