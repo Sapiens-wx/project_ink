@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LRRFly
+  m_Name: LRRPreTeleport
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,9 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 8749f76f78e73e141a1da6a54683ae03, type: 3}
-    - time: 0.125
-      value: {fileID: 21300000, guid: 586f5dac60c2e9e4a9c07237c739b62f, type: 3}
-    - time: 0.25
-      value: {fileID: 21300000, guid: ab5a42684b5c95648b4ca1af04c10a42, type: 3}
-    - time: 0.375
-      value: {fileID: 21300000, guid: cb0057b3b932af2499a4d96910f01079, type: 3}
+      value: {fileID: 0}
+    - time: 0.875
+      value: {fileID: 0}
     attribute: m_Sprite
     path: Sprite
     classID: 212
@@ -50,16 +46,14 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 8749f76f78e73e141a1da6a54683ae03, type: 3}
-    - {fileID: 21300000, guid: 586f5dac60c2e9e4a9c07237c739b62f, type: 3}
-    - {fileID: 21300000, guid: ab5a42684b5c95648b4ca1af04c10a42, type: 3}
-    - {fileID: 21300000, guid: cb0057b3b932af2499a4d96910f01079, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
