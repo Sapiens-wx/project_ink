@@ -29,7 +29,8 @@ public class Pdash_recover : PStateBase
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
         while(true){
             Movement();
-            ApplyGravity();
+            if(player.v_trap.y<=0)
+                ApplyGravity();
             yield return wait;
         }
     }

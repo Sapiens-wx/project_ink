@@ -56,6 +56,7 @@ public class PStateBase : StateMachineBehaviour
     virtual internal void Jump(){
         if(Time.time-player.onGroundTime<player.coyoteTime && Time.time-player.jumpKeyDown<=player.jumpBufferTime){
             player.jumpKeyDown=-100;
+            player.v.y=player.yspd;
             player.animator.SetTrigger("jump_up");
         }
     }

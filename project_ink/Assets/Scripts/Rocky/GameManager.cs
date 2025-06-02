@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
     public CardInventory cardInventory;
     public LayerMask groundMixLayer, groundLayer, platformLayer; //groundLayer: platform|ground, platformLayer: platform
     [NonSerialized] public int platformLayerIdx; //not layermask, this is the layer.
-    public LayerMask enemyLayer;
-    public LayerMask enemyBulletLayer;
+    public LayerMask enemyLayer, playerLayer;
+    public LayerMask enemyBulletLayer, projectileDestroyLayer, enemyBulletDestroyLayer;
     public float distEpsilon;
     public static GameManager inst;
     void Awake()

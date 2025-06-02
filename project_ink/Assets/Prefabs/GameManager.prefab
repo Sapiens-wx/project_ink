@@ -59,9 +59,18 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   enemyBulletLayer:
     serializedVersion: 2
     m_Bits: 512
+  projectileDestroyLayer:
+    serializedVersion: 2
+    m_Bits: 448
+  enemyBulletDestroyLayer:
+    serializedVersion: 2
+    m_Bits: 1216
   distEpsilon: 0
 --- !u!114 &419862369736518472
 MonoBehaviour:
@@ -86,6 +95,10 @@ MonoBehaviour:
   elf: {fileID: -4321483156019873006, guid: 44890755ce7dc5a4cad774a7645566a8, type: 3}
   elf_split: {fileID: 6032699446052605018, guid: 002519374a8eb024a8578d185d1ab7c2, type: 3}
   witch: {fileID: -1957974861279847571, guid: 642cd56d6ac4e7943a88f4f860f3af79, type: 3}
+  trap_shooter:
+  - {fileID: 4103890227115150031, guid: dd6557620fbd8b943abecbee5a3b75b9, type: 3}
+  trap_cannon:
+  - {fileID: 5974321428066377851, guid: 8d26c7f194d86c0498a0284df37a5727, type: 3}
 --- !u!114 &115192632539146472
 MonoBehaviour:
   m_ObjectHideFlags: 0
