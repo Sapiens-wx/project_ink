@@ -50,6 +50,8 @@ public class Pidle : PStateBase
         }
         else if(player.v_trap.y<=0){ //if the player jumps up by trap_spring, avoid settrigger(jump_down)
             player.animator.SetTrigger("jump_down");
+        } else{
+            player.animator.SetTrigger("jump_up");
         }
     }
 }

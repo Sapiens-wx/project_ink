@@ -55,7 +55,8 @@ public class PlayerShootingController : Singleton<PlayerShootingController>
             Vector2 lookingDir;
             LOOKING_DIRECTION direction = GetCurrentLookingDirection(out lookingDir);
             //shoot a card
-            CardSlotManager.inst.PrepareFire(lookingDir);
+            if(!MagicFireChecker.inst.isPlayerInsideFire) //shoot only if the player is not inside trap_magicFire
+                CardSlotManager.inst.PrepareFire(lookingDir);
             /*
             if (playerController.isGround)
             {

@@ -9,7 +9,7 @@ public class Trap_Portal : TrapBase{
     [SerializeField] float angle;
     [SerializeField] int upDir; //1: portalUpDir is portalDir rotated by 90deg. -1: rotated by -90 deg
 
-    Queue<Collider2D> teleportedObjs;
+    Queue<Rigidbody2D> teleportedObjs;
     Collider2D bc;
     /// <summary>
     /// opposite to the open direction (normal). e.g., objs entering from the left will be teleported, then portalDir=right (1,0)
@@ -38,15 +38,15 @@ public class Trap_Portal : TrapBase{
     {
         base.Start();
         OnValidate();
-        teleportedObjs=new Queue<Collider2D>();
+        teleportedObjs=new Queue<Rigidbody2D>();
         UpdatePortalTransformMatrix();
     }
     void OnTriggerStay2D(Collider2D collider){
-        foreach(var obj in teleportedObjs){
-            if(collider==obj) return;
-        }
         Rigidbody2D rgb=collider.attachedRigidbody;
         if(rgb==null) return;
+        foreach(Rigidbody2D obj in teleportedObjs){
+            if(rgb==obj) return;
+        }
         //teleport
         if(Vector2.Dot(portalDir,rgb.velocity)>.02f){
             TeleportObj(collider);
@@ -75,18 +75,21 @@ public class Trap_Portal : TrapBase{
         teleportMatrix=portal2world*world2portal;
     }
     void TeleportObj(Collider2D collider){
-        collider.transform.position=teleportMatrix.Mul(collider.transform.position,1);
-        linkedPortal.teleportedObjs.Enqueue(collider);
-        StartCoroutine(PopAfterSecs(.3f));
+        Rigidbody2D rgb=collider.attachedRigidbody;
+        rgb.transform.position=teleportMatrix.Mul(rgb.transform.position,1);
+        StartCoroutine(Push_PopAfterSecs(rgb,.3f));
         //update rigidbody velocity
-        if(collider.gameObject==PlayerCtrl.inst.gameObject){
-            PlayerCtrl.inst.v_trap=teleportMatrix.Mul(collider.attachedRigidbody.velocity,0);
+        if(collider.gameObject==PlayerCtrl.inst.gameObject){ //if is player
+            PlayerCtrl.inst.v_trap=teleportMatrix.Mul(rgb.velocity,0);
         } else{
-            collider.attachedRigidbody.velocity=teleportMatrix.Mul(collider.attachedRigidbody.velocity,0);
+            rgb.velocity=teleportMatrix.Mul(rgb.velocity,0);
         }
     }
-    IEnumerator PopAfterSecs(float sec){
+    IEnumerator Push_PopAfterSecs(Rigidbody2D rgb, float sec){
+        linkedPortal.teleportedObjs.Enqueue(rgb);
+        teleportedObjs.Enqueue(rgb);
         yield return new WaitForSeconds(sec);
         linkedPortal.teleportedObjs.Dequeue();
+        teleportedObjs.Dequeue();
     }
 }

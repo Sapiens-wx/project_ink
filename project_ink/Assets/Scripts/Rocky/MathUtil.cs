@@ -1,7 +1,26 @@
+using System;
+using Unity.Collections;
 using UnityEngine;
 
 public static class MathUtil{
     public static float besierControlPointEffect=6;
+    /// <summary>
+    /// In order to detect if a collider [a] is standing on collider [b], we use Ray2D(a.topLeft+new Vector2(0, [y_offset]), Vector2.right) with distance a.bounds.size.x; y_offset=colliderMinGap
+    /// </summary>
+    public static readonly float colliderMinGap=0.04f;
+    /// <summary>
+    /// get an array of length n. the array contains elements from 0 to n-1
+    /// </summary>
+    public static int[] GetRandIndices(int length){
+        int[] res=new int[length];
+        int[] cmp=new int[length];
+        for(int i=0;i<length;++i){
+            res[i]=i;
+            cmp[i]=UnityEngine.Random.Range(int.MinValue,int.MaxValue);
+        }
+        Array.Sort(cmp,res);
+        return res;
+    }
     public static Vector2 Rotate(Vector2 dir, float theta){
         float sin=Mathf.Sin(theta), cos=Mathf.Cos(theta);
         return new Vector2(dir.x*cos-dir.y*sin, dir.x*sin+dir.y*cos);
@@ -276,6 +295,9 @@ public class Matrix3x3{
         m12=col3.y;
         m22=col3.z;
     }
+    public Matrix3x3(float m00,float m01,float m02,float m10,float m11,float m12,float m20,float m21,float m22){
+        this.m00=m00; this.m01=m01; this.m02=m02; this.m10=m10; this.m11=m11; this.m12=m12; this.m20=m20; this.m21=m21; this.m22=m22;
+    }
     public void SetColumn(int col, Vector3 val){
         switch(col){
             case 0:
@@ -313,5 +335,12 @@ public class Matrix3x3{
     }
     public Vector2 Mul(Vector2 rhs, float rhsz){
         return new Vector2(m00*rhs.x+m01*rhs.y+m02*rhsz,m10*rhs.x+m11*rhs.y+m12*rhsz);
+    }
+    public static Matrix3x3 GetRotationMatrix(float theta){
+        float cos=Mathf.Cos(theta), sin=Mathf.Sin(theta);
+        return new Matrix3x3(cos,-sin,0,sin,cos,0,0,0,1);
+    }
+    public static Matrix3x3 GetTranlationMatrix(Vector2 offset){
+        return new Matrix3x3(1,0,offset.x,0,1,offset.y,0,0,1);
     }
 }

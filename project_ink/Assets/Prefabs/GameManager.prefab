@@ -97,6 +97,8 @@ MonoBehaviour:
   witch: {fileID: -1957974861279847571, guid: 642cd56d6ac4e7943a88f4f860f3af79, type: 3}
   trap_shooter:
   - {fileID: 4103890227115150031, guid: dd6557620fbd8b943abecbee5a3b75b9, type: 3}
+  trap_cannon:
+  - {fileID: 5974321428066377851, guid: 8d26c7f194d86c0498a0284df37a5727, type: 3}
 --- !u!114 &115192632539146472
 MonoBehaviour:
   m_ObjectHideFlags: 0

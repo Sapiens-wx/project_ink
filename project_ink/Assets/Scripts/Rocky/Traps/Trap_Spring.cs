@@ -11,9 +11,10 @@ public class Trap_Spring : TrapBase
             PlayerCtrl.inst.v_trap+=new Vector2(0, Mathf.Sqrt(19.6f*height));
             PlayerCtrl.inst.animator.SetTrigger("jump_up");
         }
-        if(GameManager.IsLayer(GameManager.inst.enemyLayer, collider.gameObject.layer)&&
-            collider.GetComponent<EnemyBase_Air>()){
-            collider.attachedRigidbody.AddForce(new Vector2(0, Mathf.Sqrt(19.6f*height)));
+        else if(GameManager.IsLayer(GameManager.inst.enemyLayer, collider.gameObject.layer)&&
+            collider.GetComponent<EnemyBase_Air>()==null){
+            Rigidbody2D rgb=collider.attachedRigidbody;
+            rgb.velocity=new Vector2(rgb.velocity.x, Mathf.Sqrt(19.6f*height));
         }
     }
 }

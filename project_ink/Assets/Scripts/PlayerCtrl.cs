@@ -44,7 +44,7 @@ public class PlayerCtrl : MonoBehaviour
 
     [HideInInspector] public static PlayerCtrl inst;
     private int hp;
-    [NonSerialized][HideInInspector] public Vector2 v, v_trap; //velocity
+    [NonSerialized][HideInInspector] public Vector2 v, v_trap, v_trap_platform; //velocity
     [NonSerialized][HideInInspector] public bool hittable;
     [NonSerialized][HideInInspector] public bool onGround, prevOnGround;
     [NonSerialized][HideInInspector] public float jumpKeyDown, lastJumpKeyDown, secondToLastJumpKeyDown; //jumpKeyDown will be set to -100 when detected. lastJumpKeyDown stores the last JumpKeyDown time. (before setting jumpKeyDown to -100, jumpKeyDown=lastJumpKeyDown)
@@ -213,7 +213,7 @@ public class PlayerCtrl : MonoBehaviour
             inputx=(int)Input.GetAxisRaw("Horizontal");
     }
     void UpdateVelocity(){
-        rgb.velocity=v+v_trap;
+        rgb.velocity=v+v_trap+v_trap_platform;
         if(Mathf.Abs(v_trap.x)<.1f) v_trap.x=0;
         if(v_trap.x!=0)
             v_trap.x=Mathf.Lerp(v_trap.x,0,.07f);
