@@ -14,11 +14,13 @@ public class MagicFireChecker : Singleton<MagicFireChecker>
         filter.layerMask=GameManager.inst.playerLayer;
     }
     void FixedUpdate(){
-        isPlayerInsideFire=false;
-        foreach(Trap_MagicFire bc in Trap_MagicFire.instances){
-            if(bc.bc.IsTouching(PlayerCtrl.inst.bc,filter)){
-                isPlayerInsideFire=true;
-                break;
+        if(Trap_MagicFire.instances!=null){
+            isPlayerInsideFire=false;
+            foreach(Trap_MagicFire bc in Trap_MagicFire.instances){
+                if(bc.bc.IsTouching(PlayerCtrl.inst.bc,filter)){
+                    isPlayerInsideFire=true;
+                    break;
+                }
             }
         }
     }

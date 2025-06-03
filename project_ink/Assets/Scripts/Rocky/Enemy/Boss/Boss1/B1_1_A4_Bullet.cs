@@ -9,7 +9,7 @@ public class B1_1_A4_Bullet : EnemyBulletBase
         InvokeOnTriggerEnterEvent(collider);
         //if is going upward and touches the ground, do not destroy
         StartCoroutine(DelayDestroy());
-        Vector2 flyingDir=rgb.velocity.normalized;
+        Vector2 flyingDir=velocity.normalized;
         Ray ray=new Ray(transform.position, flyingDir);
         collider.bounds.IntersectRay(ray, out float dist);//{
             flyingDir=-MathUtil.CalculateIntersectionNormal(ray, collider.bounds);

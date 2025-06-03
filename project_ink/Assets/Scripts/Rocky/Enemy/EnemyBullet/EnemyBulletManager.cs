@@ -16,7 +16,7 @@ public class EnemyBulletManager : Singleton<EnemyBulletManager>{
         EnemyBulletBase bullet=InstantiateBullet(prefab);
         bullet.UpdateRotation(dir);
         bullet.transform.position=pos;
-        bullet.rgb.velocity=dir*prefab.spd;
+        bullet.velocity=dir*prefab.spd;
         return bullet;
     }
     /// <summary>
@@ -26,12 +26,11 @@ public class EnemyBulletManager : Singleton<EnemyBulletManager>{
         EnemyBulletBase bullet=InstantiateBullet(prefab);
         bullet.UpdateRotation(v);
         bullet.transform.position=pos;
-        bullet.rgb.velocity=v;
+        bullet.velocity=v;
         return bullet;
     }
     public static EnemyBulletBase InstantiateBullet(EnemyBulletBase prefab){
         EnemyBulletBase bullet = Instantiate(prefab.gameObject).GetComponent<EnemyBulletBase>();
-        if(bullet.rgb==null) bullet.rgb=bullet.GetComponent<Rigidbody2D>();
         return bullet;
     }
 }

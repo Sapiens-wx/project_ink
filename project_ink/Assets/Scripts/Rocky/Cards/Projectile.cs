@@ -8,10 +8,11 @@ public class Projectile : MonoBehaviour
     [SerializeField] GameObject fireEffect;
     [SerializeField] TrailRenderer trail;
     [SerializeField] float fireEffectDuration;
-    [HideInInspector] public Rigidbody2D rgb;
     [HideInInspector] public int damage;
     [HideInInspector] public Card card;
+    [HideInInspector] public Vector2 velocity, trap_v_fan;
 
+    Rigidbody2D rgb;
     Coroutine coro;
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,9 @@ public class Projectile : MonoBehaviour
         if(fireEffect!=null)
             fireEffect.SetActive(false);
     }
+    void FixedUpdate(){
+        rgb.velocity=velocity+trap_v_fan;
+    }
     public void AdjustRotation(Vector2 dir){
         transform.rotation=Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.right, dir), Vector3.forward);
     }
@@ -36,13 +40,13 @@ public class Projectile : MonoBehaviour
     /// </summary>
     /// <param name="dir">must be normalized</param>
     public void AdjustFlyDir(Vector2 dir){
-        rgb.velocity=rgb.velocity.magnitude*dir;
+        velocity=velocity.magnitude*dir;
     }
     public void InitProjectile(Card card, Vector2 pos, Vector2 velocity, ProjectileType type){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         this.card=card;
         damage=card.damage;
-        rgb.velocity=velocity;
+        this.velocity=velocity;
         transform.position=pos;
         if(coro!=null) StopCoroutine(coro);
         if(type==ProjectileType.AutoChase) coro=StartCoroutine(AutoChase());
@@ -60,7 +64,7 @@ public class Projectile : MonoBehaviour
     public void InitProjectile(int damage, Vector2 pos, Vector2 velocity, ProjectileType type){
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         this.damage=damage;
-        rgb.velocity=velocity;
+        this.velocity=velocity;
         transform.position=pos;
         if(coro!=null) StopCoroutine(coro);
         if(type==ProjectileType.AutoChase) coro=StartCoroutine(AutoChase());
@@ -83,8 +87,8 @@ public class Projectile : MonoBehaviour
     /// called by auto chase algorithm
     /// </summary>
     void ChaseEnemy_step(float angleConstraint){
-        float spd=rgb.velocity.magnitude;
-        Vector2 dir=rgb.velocity/spd, newDir;
+        float spd=this.velocity.magnitude;
+        Vector2 dir=this.velocity/spd, newDir;
         EnemyBase closestEnemy=RoomManager.inst.ClosestEnemy(transform);
         if(closestEnemy!=null){
             newDir=((Vector2)(closestEnemy.transform.position-transform.position)).normalized;
@@ -93,7 +97,7 @@ public class Projectile : MonoBehaviour
                 theta=Mathf.Clamp(theta,-angleConstraint,angleConstraint);
                 newDir=MathUtil.Rotate(dir, theta*Mathf.Deg2Rad);
             }
-            rgb.velocity=spd*newDir;
+            this.velocity=spd*newDir;
             AdjustRotation(newDir);
         }
     }
@@ -108,10 +112,10 @@ public class Projectile : MonoBehaviour
             ChaseEnemy_step(ProjectileManager.inst.af_angleConstraint);
             yield return wait;
         }
-        Vector2 oldVelocity=rgb.velocity;
-        rgb.velocity=Vector2.zero;
+        Vector2 oldVelocity=this.velocity;
+        this.velocity=Vector2.zero;
         yield return new WaitForSeconds(ProjectileManager.inst.af_stoptime);
-        rgb.velocity=oldVelocity;
+        this.velocity=oldVelocity;
         for(;;){
             ChaseEnemy_step(ProjectileManager.inst.autoChaseAngleConstraint);
             yield return wait;

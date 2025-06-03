@@ -25,10 +25,10 @@ public class B1_1_RH_ThrowUp_S2 : StateBase<B1_1_RedHat>
             for(int i=0;i<3;++i){
                 //intantiate bullet
                 EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet(EnemyBulletManager.inst.boss1_a5);
-                bullet.rgb.angularVelocity=ctrller.bulletAngularSpd;
+                bullet.AngularVelocity=ctrller.bulletAngularSpd;
                 bullet.transform.position=ctrller.transform.position;
                 //x position of the bullet when hit the ground
-                float g=bullet.rgb.gravityScale*9.8f, y1=RoomManager.inst.RoomBounds.min.y;
+                float g=9.8f, y1=RoomManager.inst.RoomBounds.min.y;
                 float vy=Mathf.Sqrt(2*g*(RoomManager.CurrentRoom.RoomBounds.max.y-ctrller.transform.position.y)); //vy=2g*height
                 float randBulletX=Random.Range(rangexmin, rangexmin+rangexInterval);
                 float distx=randBulletX-bullet.transform.position.x;
@@ -38,7 +38,7 @@ public class B1_1_RH_ThrowUp_S2 : StateBase<B1_1_RedHat>
                 float t2=Mathf.Sqrt(2*h/g);
                 float t=t1+t2;
                 float vx=distx/t;
-                bullet.rgb.velocity=new Vector2(vx,vy);
+                bullet.velocity=new Vector2(vx,vy);
                 rangexmin+=rangexInterval;
             }
         }

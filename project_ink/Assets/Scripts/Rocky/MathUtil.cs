@@ -21,6 +21,9 @@ public static class MathUtil{
         Array.Sort(cmp,res);
         return res;
     }
+    public static Vector2 Rad2Dir(float theta){
+        return new Vector2(Mathf.Cos(theta),Mathf.Sin(theta));
+    }
     public static Vector2 Rotate(Vector2 dir, float theta){
         float sin=Mathf.Sin(theta), cos=Mathf.Cos(theta);
         return new Vector2(dir.x*cos-dir.y*sin, dir.x*sin+dir.y*cos);

@@ -73,7 +73,7 @@ public class E_Witch_Attack : StateBase<E_Witch>
             ctrller.rgb.velocity=new Vector2(roomBounds.size.x/ac2_flyDuration,0);
             for(int i=0;i<3;++i){
                 yield return new WaitForSeconds(0.5f);
-                EnemyBulletManager.InstantiateBullet_v(EnemyBulletManager.inst.witch, ctrller.transform.position, Vector2.zero).rgb.gravityScale=1;
+                EnemyBulletManager.InstantiateBullet_v(EnemyBulletManager.inst.witch, ctrller.transform.position, Vector2.zero).gravity=9.8f;
             }
             yield return new WaitForSeconds(ac2_flyDuration-1.5f);
         }
@@ -87,7 +87,7 @@ public class E_Witch_Attack : StateBase<E_Witch>
             ctrller.rgb.velocity=new Vector2(-roomBounds.size.x/ac2_flyDuration,0);
             for(int i=0;i<3;++i){
                 yield return new WaitForSeconds(0.5f);
-                EnemyBulletManager.InstantiateBullet_v(EnemyBulletManager.inst.witch, ctrller.transform.position, Vector2.zero).rgb.gravityScale=1;
+                EnemyBulletManager.InstantiateBullet_v(EnemyBulletManager.inst.witch, ctrller.transform.position, Vector2.zero).gravity=9.8f;
             }
             yield return new WaitForSeconds(ac2_flyDuration-1.5f);
         }

@@ -8,7 +8,7 @@ public class B1_1_A5_Bullet : EnemyBulletBase
     protected override void OnTriggerEnter2D(Collider2D collider){
         InvokeOnTriggerEnterEvent(collider);
         //if is going upward and touches the ground, do not destroy
-        if(!(GameManager.IsLayer(GameManager.inst.groundLayer, collider.gameObject.layer) && rgb.velocity.y>0)){
+        if(!(GameManager.IsLayer(GameManager.inst.groundLayer, collider.gameObject.layer) && velocity.y>0)){
             StartCoroutine(DelayDestroy());
             Vector3 bulletPos=transform.position;
             bulletPos.y=collider.bounds.max.y+bc.bounds.extents.y*1.2f;

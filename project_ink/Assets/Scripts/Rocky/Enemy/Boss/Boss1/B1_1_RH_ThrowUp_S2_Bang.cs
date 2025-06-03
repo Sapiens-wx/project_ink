@@ -30,7 +30,7 @@ public class B1_1_RH_ThrowUp_S2_Bang : StateBase<B1_1_RedHat>
                     ctrller.transform.position,
                     MathUtil.Rotate(Vector2.up, theta)
                     );
-                bullet.rgb.angularVelocity=ctrller.bulletAngularSpd;
+                bullet.AngularVelocity=ctrller.bulletAngularSpd;
                 theta+=dtheta;
             }
         }

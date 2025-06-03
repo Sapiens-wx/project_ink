@@ -18,9 +18,7 @@ public class Trap_Portal : TrapBase{
     Vector2 portalUpDir;
     Matrix3x3 teleportMatrix;
     void OnValidate(){
-        float angle_rad=angle*Mathf.Deg2Rad;
-        portalDir.x=Mathf.Cos(angle_rad);
-        portalDir.y=Mathf.Sin(angle_rad);
+        portalDir=MathUtil.Rad2Dir(angle*Mathf.Deg2Rad);
         portalUpDir.x=upDir==1?-portalDir.y:portalDir.y;
         portalUpDir.y=upDir==1?portalDir.x:-portalDir.x;
         //update sprite rotation

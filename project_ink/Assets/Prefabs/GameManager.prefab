@@ -65,6 +65,9 @@ MonoBehaviour:
   enemyBulletLayer:
     serializedVersion: 2
     m_Bits: 512
+  projectileLayer:
+    serializedVersion: 2
+    m_Bits: 8
   projectileDestroyLayer:
     serializedVersion: 2
     m_Bits: 448
