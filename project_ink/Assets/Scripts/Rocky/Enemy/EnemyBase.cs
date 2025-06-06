@@ -51,7 +51,7 @@ public abstract class EnemyBase : MonoBehaviour
     public virtual void OnHealed(int amount){
         CurHealth+=amount;
     }
-    public void Die(){
+    public virtual void Die(){
         if(PlanetVisualizer.inst.uranusesDict.ContainsKey(this))
             PlanetVisualizer.inst.RemoveUranus(this);
         Destroy(gameObject);

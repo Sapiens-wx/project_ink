@@ -545,6 +545,7 @@ MonoBehaviour:
   detectDist: 4
   redHat: {fileID: 3271614279522358717}
   a1_2_jumpHeight: -0.23
+  a2_spitPos: {x: 0.65, y: 2.05}
   a3_target: {fileID: 7589945782782701206}
   a4_redHatShootPos: {x: -0.28, y: 4.25}
   a4_redHatShootDuration: 0.5

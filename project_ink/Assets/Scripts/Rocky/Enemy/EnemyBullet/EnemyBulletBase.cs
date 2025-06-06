@@ -20,15 +20,14 @@ public class EnemyBulletBase : EnemyDamageBox
     }
     Rigidbody2D rgb;
     [NonSerialized][HideInInspector] public float gravity;
-    bool initialized;
-    internal virtual void Start(){
-        if(initialized) return;
-        initialized=true;
+    void Awake(){
         rgb=GetComponent<Rigidbody2D>();
         bc=GetComponent<Collider2D>();
-        Destroy(gameObject, destroyTime);
         gravity=9.8f*Time.fixedDeltaTime*rgb.gravityScale;
         rgb.bodyType=RigidbodyType2D.Kinematic;
+    }
+    internal virtual void Start(){
+        Destroy(gameObject, destroyTime);
     }
     void FixedUpdate(){
         velocity.y-=rgb.gravityScale*9.8f*Time.fixedDeltaTime; //apply gravity

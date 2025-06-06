@@ -27,10 +27,12 @@ public class B1_1_Dash_wait_S2 : StateBase<B1_1_Ctrller>
             zrotation-=180;
         //create sequence
         Sequence s=DOTween.Sequence();
+        //redhat disappear animation
+        ctrller.redHat.animator.SetTrigger("to_disappear");
         //wait
         s.AppendInterval(redHatShootWaitTime);
-        //shoot the redhat
-        s.AppendCallback(()=>ctrller.redHat.transform.position=targetPos);
+        //redHat reappears
+        s.AppendCallback(()=>{ctrller.redHat.transform.position=targetPos; ctrller.redHat.animator.SetTrigger("to_appear");});
         //wait for 1 sec
         s.AppendInterval(waitTime);
         s.AppendCallback(()=>animator.SetTrigger("toIdle"));
