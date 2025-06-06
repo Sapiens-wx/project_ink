@@ -7,11 +7,10 @@ using System;
 public class B1_1_Ctrller : BossBase
 {
     public B1_1_RedHat redHat;
-    [Header("Action1")]
+    [Header("Actions")]
     public float a1_2_jumpHeight;
-    [Header("Action3")]
+    [SerializeField] Vector2 a2_spitPos;
     public GameObject a3_target;
-    [Header("Action4")]
     [SerializeField] Vector2 a4_redHatShootPos;
     public float a4_redHatShootDuration;
     [SerializeField] Vector2 stomachPos;
@@ -29,6 +28,12 @@ public class B1_1_Ctrller : BossBase
         }
     }
     public Vector2 A4_redHatShootGlobalPos => a4_redHatShootPos + (Vector2)transform.position;
+    public Vector2 A2_spitPos{
+        get{
+            if(Dir==1) return a2_spitPos+(Vector2)transform.position;
+            else return new Vector2(-a2_spitPos.x,a2_spitPos.y)+(Vector2)transform.position;
+        }
+    }
     protected override void OnDrawGizmosSelected(){
         base.OnDrawGizmosSelected();
         Gizmos.DrawWireCube(platform1.center,platform1.size);
@@ -38,6 +43,8 @@ public class B1_1_Ctrller : BossBase
         Gizmos.DrawWireSphere(StomachGlobalPos, .3f);
         Gizmos.color=Color.red;
         Gizmos.DrawWireSphere(A4_redHatShootGlobalPos, .3f);
+        Gizmos.color=Color.yellow;
+        Gizmos.DrawWireSphere(A2_spitPos, .3f);
     }
     internal override void Start(){
         base.Start();
@@ -50,6 +57,11 @@ public class B1_1_Ctrller : BossBase
         base.OnDamaged(damage);
         if(CurHealth<<1<maxHealth) //enter stage 2
             animator.SetTrigger("toIdle2");
+    }
+    public override void Die(){
+        if(PlanetVisualizer.inst.uranusesDict.ContainsKey(this))
+            PlanetVisualizer.inst.RemoveUranus(this);
+        animator.SetTrigger("toDie");
     }
     /// <summary>
     /// returns the position [yoffset] above the middle of the platform
