@@ -46,7 +46,8 @@ public abstract class EnemyBase : MonoBehaviour
         OnDamaged(info.damage);
     }
     public virtual void OnDamaged(int damage){
-        CurHealth-=damage;
+        if(CurHealth>0)
+            CurHealth-=damage;
     }
     public virtual void OnHealed(int amount){
         CurHealth+=amount;

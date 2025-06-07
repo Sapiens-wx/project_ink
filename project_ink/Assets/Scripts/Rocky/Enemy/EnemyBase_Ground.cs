@@ -4,6 +4,7 @@ public abstract class EnemyBase_Ground : MobBase
 {
     [Header("Attack Detection")]
     public Bounds attackTriggerBounds;
+    public float attackRecoverTime;
     [Header("patrol")]
     public float walkSpd;
     /// <summary>
@@ -13,12 +14,28 @@ public abstract class EnemyBase_Ground : MobBase
 
     //ground detection
     [HideInInspector] public bool onGround, prevOnGround;
+    float nextAttackTime;
+    bool animatorAttackBool, canAttack;
+    bool AnimatorAttackBool{
+        get=>animatorAttackBool;
+        set{
+            animatorAttackBool=value;
+            animator.SetBool("b_attack", value);
+        }
+    }
     internal override void OnDrawGizmosSelected()
     {
         base.OnDrawGizmosSelected();
         Gizmos.color=Color.red;
         Gizmos.DrawWireCube(attackTriggerBounds.center+transform.position, attackTriggerBounds.size);
         Gizmos.color=Color.blue;
+    }
+    internal override void Start()
+    {
+        base.Start();
+        canAttack=false;
+        animatorAttackBool=false;
+        nextAttackTime=-1;
     }
     /// <summary>
     /// used to determine the bounds of the platform when the enemy is in patrol state
@@ -64,10 +81,11 @@ public abstract class EnemyBase_Ground : MobBase
         //attack trigger detection
         prevPlayerInAttack=playerInAttack;
         playerInAttack=PlayerInRange(attackTriggerBounds);
-        if(playerInAttack&&!prevPlayerInAttack){ //on detect enter
-            animator.SetBool("b_attack", true);
-        } else if(!playerInAttack&&prevPlayerInAttack) //on detect exit
-            animator.SetBool("b_attack",false);
+        canAttack=playerInAttack&&Time.time>=nextAttackTime;
+        if(canAttack!=AnimatorAttackBool){
+            AnimatorAttackBool=canAttack;
+            if(canAttack) nextAttackTime=Time.time+attackRecoverTime; //has attack recover time
+        }
 
         CheckOnGround();
         if(!prevOnGround && onGround){ //landing

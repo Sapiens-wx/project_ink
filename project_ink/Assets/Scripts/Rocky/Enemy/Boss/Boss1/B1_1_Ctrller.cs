@@ -61,6 +61,7 @@ public class B1_1_Ctrller : BossBase
     public override void Die(){
         if(PlanetVisualizer.inst.uranusesDict.ContainsKey(this))
             PlanetVisualizer.inst.RemoveUranus(this);
+        OnDestroy();
         animator.SetTrigger("toDie");
     }
     /// <summary>

@@ -67,9 +67,11 @@ public class RoomManager : Singleton<RoomManager>
         return enemy.id;
     }
     public void UnRegisterEnemy(EnemyBase enemy){
+        if(enemy.id<0) return;
         enemies[enemy.id]=enemies[^1];
         enemies[^1].id=enemy.id;
         enemies.RemoveAt(enemies.Count-1);
+        enemy.id=-1;
     }
     public EnemyBase ClosestEnemy(Transform target){
         if(enemies.Count==0) return null;
