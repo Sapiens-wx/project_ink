@@ -2025,10 +2025,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: E_Heart
       objectReference: {fileID: 0}
-    - target: {fileID: 8008234536985678929, guid: 8ebfa1a22a45a024ba8ee93e01674fde, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

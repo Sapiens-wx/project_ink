@@ -59,14 +59,14 @@ MonoBehaviour:
   loseHatredInterval: 1.2
   detectDist: 5.75
   groupDetectDist: 3.03
-  chaseSpd: 3
+  chaseSpd: 1.5
   inHatred: 0
   prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 2.12, y: 0.83, z: 0}
+    m_Extent: {x: 5.71, y: 0.83, z: 0}
   walkSpd: 1.5
   patrol_xmin: 0
   patrol_xmax: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
   prevOnGround: 0
   recoverAmount: 1
   recoverRange: 10.68
-  recoverDuration: 3
+  recoverDuration: 0.1
 --- !u!50 &1216774434592045520
 Rigidbody2D:
   serializedVersion: 4
