@@ -631,9 +631,7 @@ public class PathNavigator {
                 ctrller.Dir=PlayerShootingController.inst.transform.position.x>ctrller.transform.position.x?1:-1;
                 v=new Vector2(ctrller.Dir==1?chaseSpd:-chaseSpd, ctrller.rgb.velocity.y);
                 //moves directly toward the player.
-                //this loop is infinite because once the player is in the attack range,
-                //the "b_attack" bool will be set true by MobBase.
-                for(;;){
+                for(;Mathf.Abs(target.transform.position.x-ctrller.transform.position.x)>epsilon;){
                     v.y=ctrller.rgb.velocity.y;
                     ctrller.rgb.velocity=v;
                     lastPos=ctrller.rgb.position;
@@ -641,6 +639,7 @@ public class PathNavigator {
                     if(CheckStucked(lastPos))
                         break;
                 }
+                ctrller.rgb.velocity=Vector2.zero;
             } else{ //i<paths.Count. Move through even nodes in [paths]
                 cur=paths[i];
                 prev=paths[i-1];
@@ -737,7 +736,8 @@ public class PathNavigator {
             if(targetNode!=paths[^1] || fromNode !=paths[i-1]){
                 paths=PathFinder.inst.FindPath_g(fromNode, targetNode);
                 i=1;
-            } else ++i;
+            } else if(i<paths.Count) ++i; //this causes a loop because the enemy will chase the player until animator bool "b_attack" is set to true
+            yield return 0;
         }
         ctrller.animator.SetTrigger("idle");
         ctrller.rgb.velocity=Vector2.zero;
