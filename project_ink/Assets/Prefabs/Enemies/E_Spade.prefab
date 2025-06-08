@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.49, y: -1.37, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8266036109546589965}
@@ -67,13 +67,14 @@ MonoBehaviour:
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 2.49, y: 1.19, z: 0}
+  attackRecoverTime: 0
   walkSpd: 4
   patrol_xmin: 0
   patrol_xmax: 0
   onGround: 0
   prevOnGround: 0
   dashInterval: 0.38
-  dashDist: 3
+  dashDist: 2
 --- !u!50 &2190669026088105460
 Rigidbody2D:
   serializedVersion: 4
