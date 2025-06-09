@@ -29,7 +29,7 @@ public class EnemyBulletBase : EnemyDamageBox
     internal virtual void Start(){
         Destroy(gameObject, destroyTime);
     }
-    void FixedUpdate(){
+    protected virtual void FixedUpdate(){
         velocity.y-=rgb.gravityScale*9.8f*Time.fixedDeltaTime; //apply gravity
         rgb.velocity=velocity+trap_v_fan;
     }
