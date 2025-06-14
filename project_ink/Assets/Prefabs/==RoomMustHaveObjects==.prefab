@@ -80,6 +80,7 @@ MonoBehaviour:
   roomBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 8.87, y: 5.01, z: 0}
+  pathFinder: {fileID: 1720863347360544719}
   enemyPrefabList: {fileID: 11400000, guid: 2a850062823c0cf409c3b7f8370f266a, type: 2}
   enemies: []
 --- !u!1 &8030601151693540192

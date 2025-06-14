@@ -557,7 +557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e5188aea15ea34a88bad2da2a3decb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spr: {fileID: 5885624462089662571}
   damageBox: {fileID: 0}
   healthBar: {fileID: 0}
   maxHealth: 1

@@ -134,7 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c72edc3a03a716c438e6530043f3a904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spr: {fileID: 4469267841811116918}
   damageBox: {fileID: 5391728213471718154}
   healthBar: {fileID: 9196114273298494856}
   maxHealth: 10
@@ -153,6 +152,7 @@ MonoBehaviour:
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 2.74, y: 0.6, z: 0}
+  attackRecoverTime: 0
   walkSpd: 0
   patrol_xmin: 0
   patrol_xmax: 0

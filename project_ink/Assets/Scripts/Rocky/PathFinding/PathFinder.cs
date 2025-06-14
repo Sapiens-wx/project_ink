@@ -61,8 +61,18 @@ public class PathFinder : MonoBehaviour
     void DebugFunc_a(){
         path=FindPath_a(_start, _to);
     }
+    void DrawGrid(){
+        Vector2 min=bounds.min, max=bounds.max;
+        for(float x=min.x+gridSize.x;x<max.x;x+=gridSize.x){
+            Gizmos.DrawLine(new Vector2(x,min.y),new Vector2(x,max.y));
+        }
+        for(float y=max.y;y>min.y;y-=gridSize.y){
+            Gizmos.DrawLine(new Vector2(min.x,y),new Vector2(max.x,y));
+        }
+    }
     void OnDrawGizmosSelected(){
         Gizmos.DrawWireCube(bounds.center, bounds.size);
+        DrawGrid();
         int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
         int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
         if(showGroundNodes){

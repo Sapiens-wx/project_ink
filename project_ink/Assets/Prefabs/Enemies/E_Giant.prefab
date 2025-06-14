@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fea261cd582d0e4b90b654e27efa824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spr: {fileID: 6697556225842994589}
   damageBox: {fileID: 0}
   healthBar: {fileID: 4813871886850677169}
   maxHealth: 20
@@ -69,6 +68,7 @@ MonoBehaviour:
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 6.89, y: 1.03, z: 0}
+  attackRecoverTime: 0
   walkSpd: 1
   patrol_xmin: 0
   patrol_xmax: 0

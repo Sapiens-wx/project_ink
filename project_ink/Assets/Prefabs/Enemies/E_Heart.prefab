@@ -67,6 +67,7 @@ MonoBehaviour:
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 5.71, y: 0.83, z: 0}
+  attackRecoverTime: 0
   walkSpd: 1.5
   patrol_xmin: 0
   patrol_xmax: 0

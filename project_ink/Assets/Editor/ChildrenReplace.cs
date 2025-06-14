@@ -24,7 +24,7 @@ public class ChildrenReplace : EditorWindow
         TextField pathField=new TextField();
         pathField.RegisterValueChangedCallback(PathValueChanged);
         pathField.label="path";
-        pathField.value="/Prefabs";
+        pathField.value="/Prefabs/MapGeneration";
         root.Add(pathField);
         //object field
         ObjectField targetObjField=new ObjectField();
@@ -49,30 +49,12 @@ public class ChildrenReplace : EditorWindow
             Debug.LogWarning($"Tilemap not found in prefab: {prefabPath}");
             return false;
         }
-        if(tilemap.childCount<=2){
-            Debug.LogWarning($"have too few children");
+        CompositeCollider2D tc=tilemap.GetComponent<CompositeCollider2D>();
+        if(tc==null){
             return false;
         }
+        tc.geometryType=CompositeCollider2D.GeometryType.Polygons;
 
-        // Create "ground" and "platform" parents
-        GameObject ground = new GameObject("Ground");
-        GameObject platform = new GameObject("Platform");
-
-        // Process each child of Tilemap
-        Transform[] children=new Transform[tilemap.childCount];
-        for(int i=0;i<children.Length;++i)
-        {
-            children[i]=tilemap.GetChild(i);
-        }
-        ground.transform.SetParent(tilemap, false);
-        platform.transform.SetParent(tilemap, false);
-        foreach(Transform child in children){
-            // Check the layer and set the parent accordingly
-            if (child.gameObject.layer == 6)
-                child.SetParent(ground.transform);
-            else
-                child.SetParent(platform.transform);
-        }
         return true;
     }
     void ProcessPrefabsInFile(){
@@ -102,12 +84,15 @@ public class ChildrenReplace : EditorWindow
             // Load the prefab
             GameObject prefab = PrefabUtility.LoadPrefabContents(prefabPath);
 
-            ProcessPrefab(prefab, prefabPath);
+            bool success=ProcessPrefab(prefab, prefabPath);
 
             // Save the modified prefab
             PrefabUtility.SaveAsPrefabAsset(prefab, prefabPath);
             PrefabUtility.UnloadPrefabContents(prefab);
-            Debug.Log($"Processed prefab: {prefabPath}");
+            if(success)
+                Debug.Log($"Processed prefab: {prefabPath}");
+            else
+                Debug.LogWarning($"Failed to process prefab: {prefabPath}");
         }
 
         Debug.Log("Prefab processing complete!");
@@ -119,6 +104,6 @@ public class ChildrenReplace : EditorWindow
         path=evt.newValue;
     }
     void OnClick(){
-        ProcessPrefabsInFile();
+        ProcessPrefabsInDirectory();
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class RoomManager : Singleton<RoomManager>
 {
     [SerializeField] private Bounds roomBounds;
+    [SerializeField] private PathFinder pathFinder;
     [Header("Enemy")]
     [SerializeField] EnemyList enemyPrefabList;
 
@@ -41,6 +42,8 @@ public class RoomManager : Singleton<RoomManager>
     #region CurrentRoom
     void OnEnterRoom(){
         TentacleManager.inst.canReconcile=false;
+        PathFinder.inst=pathFinder;
+        Debug.Log($"set path finder. parent={PathFinder.inst.transform.parent.name}");
     }
     IEnumerator CheckCurrentRoom(){
         WaitForSeconds wait=new WaitForSeconds(.3f);
@@ -55,7 +58,7 @@ public class RoomManager : Singleton<RoomManager>
         }
     }
     bool PlayerInsideRoom(){
-        Vector2 min=roomBounds.min, max=roomBounds.max;
+        Vector2 min=roomBounds.min+transform.position, max=roomBounds.max+transform.position;
         Vector2 pos=PlayerCtrl.inst.transform.position;
         return pos.x>=min.x && pos.x<=max.x && pos.y>=min.y && pos.y<=max.y;
     }

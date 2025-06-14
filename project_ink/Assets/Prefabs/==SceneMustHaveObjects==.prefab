@@ -539,6 +539,7 @@ MonoBehaviour:
   roomBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 8.87, y: 5.01, z: 0}
+  pathFinder: {fileID: 1720863347360544719}
   enemyPrefabList: {fileID: 11400000, guid: 2a850062823c0cf409c3b7f8370f266a, type: 2}
   enemies: []
 --- !u!1 &6894681483635771183
@@ -971,7 +972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3330291971622318279, guid: 7793a2a517992384ba08f2280d8e5458, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000079333404
+      value: -0.0004547178
       objectReference: {fileID: 0}
     - target: {fileID: 3488016650726241245, guid: 7793a2a517992384ba08f2280d8e5458, type: 3}
       propertyPath: m_Value
@@ -983,7 +984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3642091380628658369, guid: 7793a2a517992384ba08f2280d8e5458, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00006200746
+      value: -0.00009918213
       objectReference: {fileID: 0}
     - target: {fileID: 3998890433255321276, guid: 7793a2a517992384ba08f2280d8e5458, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1131,7 +1132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5900935651793549542, guid: 7793a2a517992384ba08f2280d8e5458, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6571520370157059050, guid: 7793a2a517992384ba08f2280d8e5458, type: 3}
       propertyPath: m_AnchorMax.x

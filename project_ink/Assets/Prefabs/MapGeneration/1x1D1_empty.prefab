@@ -374,7 +374,7 @@ CompositeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -1699,7 +1699,7 @@ GameObject:
   - component: {fileID: 8377189890700445712}
   - component: {fileID: 6569780180425890308}
   m_Layer: 0
-  m_Name: Room 1_1 Down_empty
+  m_Name: 1x1D1_empty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
