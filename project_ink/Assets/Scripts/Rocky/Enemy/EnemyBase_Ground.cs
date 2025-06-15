@@ -43,7 +43,7 @@ public abstract class EnemyBase_Ground : MobBase
     public void UpdateGroundXMinMax(){
         Bounds bounds=bc.bounds;
         Collider2D ground=Physics2D.OverlapArea(bounds.min,bounds.max,GameManager.inst.groundMixLayer);
-        bounds.center=new Vector3(bounds.center.x, ground.bounds.max.y+bounds.extents.y, 0);
+        //bounds.center=new Vector3(bounds.center.x, ground.bounds.max.y+bounds.extents.y, 0);
         Vector2 leftBot=bounds.min;
         Vector2 rightBot=leftBot;
         rightBot.x+=bounds.size.x;

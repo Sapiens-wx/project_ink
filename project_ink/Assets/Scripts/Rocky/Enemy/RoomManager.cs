@@ -43,7 +43,6 @@ public class RoomManager : Singleton<RoomManager>
     void OnEnterRoom(){
         TentacleManager.inst.canReconcile=false;
         PathFinder.inst=pathFinder;
-        Debug.Log($"set path finder. parent={PathFinder.inst.transform.parent.name}");
     }
     IEnumerator CheckCurrentRoom(){
         WaitForSeconds wait=new WaitForSeconds(.3f);
