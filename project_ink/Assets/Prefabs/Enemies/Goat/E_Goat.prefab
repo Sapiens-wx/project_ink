@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.91, y: 2.04, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6991682073723933359}
@@ -51,7 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5e06ab8aaeb1846bb594af6fcb02fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spr: {fileID: 1011739413842955365}
   damageBox: {fileID: 4048338450383053377}
   healthBar: {fileID: 8285838217273660520}
   maxHealth: 10
@@ -70,15 +69,16 @@ MonoBehaviour:
   attackTriggerBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 10.82, y: 0.8, z: 0}
+  attackRecoverTime: 0
   walkSpd: 3
   patrol_xmin: 0
   patrol_xmax: 0
   onGround: 0
   prevOnGround: 0
   balloon: {fileID: 5230826917689501155}
-  flyHeight: 3.6
-  flySpd: 2
-  airDashSpd: 10
+  flyHeight: 5
+  flySpd: 6
+  airDashSpd: 12.5
   groundDashSpd: 12
   isDashing: 0
 --- !u!212 &1011739413842955365
