@@ -1555,13 +1555,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackDashSpd
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackDashDist
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackRecoverTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371755324363555127, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: attackTriggerBounds.m_Extent.x
+      value: 3.02
+      objectReference: {fileID: 0}
     - target: {fileID: 4167495223712668527, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
       propertyPath: m_Name
       value: E_Club
       objectReference: {fileID: 0}
     - target: {fileID: 4167495223712668527, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2086,7 +2102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6917103526950763409, guid: a21a2c99569d3a242b5dff11c7b739b6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

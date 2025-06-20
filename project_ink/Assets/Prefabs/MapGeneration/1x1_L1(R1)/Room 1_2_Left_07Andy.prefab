@@ -3255,6 +3255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E_Club
       objectReference: {fileID: 0}
+    - target: {fileID: 4167495223712668527, guid: 88a4139959d37cb468e1d2a3f880a17e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
