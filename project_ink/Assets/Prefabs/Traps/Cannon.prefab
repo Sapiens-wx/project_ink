@@ -132,4 +132,4 @@ MonoBehaviour:
   theme: 0
   sprites:
   - {fileID: 3862404521451382100}
-  shootInterval: 2
+  shootInterval: 1
