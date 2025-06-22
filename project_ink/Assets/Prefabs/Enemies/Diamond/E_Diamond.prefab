@@ -141,8 +141,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   hatredPersistent: 0
   loseHatredInterval: 0
-  detectDist: 6.44
-  groupDetectDist: 4.03
+  detectDist: 4.5
+  groupDetectDist: 4
   chaseSpd: 4
   inHatred: 0
   prevInHatred: 0
