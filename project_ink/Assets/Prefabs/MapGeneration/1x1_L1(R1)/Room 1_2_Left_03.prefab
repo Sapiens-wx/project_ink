@@ -2916,14 +2916,6 @@ PrefabInstance:
       value: E_Carrot
       objectReference: {fileID: 0}
     - target: {fileID: 2480547767632701656, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2480547767632701656, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2480547767632701656, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.1074557
       objectReference: {fileID: 0}
@@ -2962,14 +2954,6 @@ PrefabInstance:
     - target: {fileID: 2480547767632701656, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4591002748578650986, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 43e45d8974ee5404e8bdb43e2108c763, type: 3}
-    - target: {fileID: 4591002748578650986, guid: 2da3ebc3d9bc0524b962dabd1daa1c88, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

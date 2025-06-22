@@ -49,16 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dff9550d494b0d74180725fa53d73f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spr: {fileID: 8045166634301643383}
   damageBox: {fileID: 0}
   healthBar: {fileID: 3653263903987661059}
   maxHealth: 50
   id: 0
-  bc: {fileID: 0}
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
-  loseHatredInterval: 1.2
+  loseHatredInterval: 1
   detectDist: 6.45
   groupDetectDist: 3
   chaseSpd: 7
@@ -67,6 +65,7 @@ MonoBehaviour:
   playerInAttack: 0
   prevPlayerInAttack: 0
   attackTriggerDist: 5.06
+  attackRecoverTime: 0
   restDir: 1
   idle2_radius: 1
   idle2_flyAngularSpd: 1

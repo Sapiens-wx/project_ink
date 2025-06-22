@@ -57,9 +57,9 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 0
-  loseHatredInterval: 1.2
-  detectDist: 6
-  groupDetectDist: 2.98
+  loseHatredInterval: 1
+  detectDist: 4.5
+  groupDetectDist: 4.8
   chaseSpd: 6
   inHatred: 0
   prevInHatred: 0
@@ -75,7 +75,7 @@ MonoBehaviour:
   onGround: 0
   prevOnGround: 0
   attackRange: 1
-  jumpHeight: 3
+  jumpHeight: 2.5
 --- !u!212 &6697556225842994589
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -140,21 +140,21 @@ MonoBehaviour:
   rgb: {fileID: 0}
   animator: {fileID: 0}
   hatredPersistent: 1
-  loseHatredInterval: 0
-  detectDist: 4.8
-  groupDetectDist: 9
+  loseHatredInterval: 1
+  detectDist: 5.14
+  groupDetectDist: 4
   chaseSpd: 2.5
   inHatred: 0
   prevInHatred: 0
   playerInAttack: 0
   prevPlayerInAttack: 0
-  attackTriggerDist: 3.31
+  attackTriggerDist: 4.43
   attackRecoverTime: 0
   restDir: 1
   idle2_radius: 0
   idle2_flyAngularSpd: 0
   flySpd: 0
-  flyDuration: 2
+  flyDuration: 0.75
 --- !u!50 &6333793889757791431
 Rigidbody2D:
   serializedVersion: 4

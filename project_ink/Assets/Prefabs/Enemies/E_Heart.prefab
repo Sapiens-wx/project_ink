@@ -58,7 +58,7 @@ MonoBehaviour:
   hatredPersistent: 0
   loseHatredInterval: 1.2
   detectDist: 5.75
-  groupDetectDist: 3.03
+  groupDetectDist: 3.68
   chaseSpd: 1.5
   inHatred: 0
   prevInHatred: 0
