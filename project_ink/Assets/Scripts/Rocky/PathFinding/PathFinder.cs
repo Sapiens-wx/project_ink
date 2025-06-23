@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {
+    [SerializeField] PathFindingConfig config;
     [SerializeField] Bounds bounds;
     [SerializeField] Vector2 gridSize;
     public LayerMask layerMask;
@@ -157,8 +158,7 @@ public class PathFinder : MonoBehaviour
     [ContextMenu("create nodes_g")]
     public void CreateNodes_g(){
         nodes_g=null; //clear the array that stores all the previous nodes
-        int jumpXmin=2, jumpXmax=3, jumpY=4, horizontalJumpXMax=4;
-        int jumpDownX=3;
+        //int jumpDownX=3;
 
         int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
         int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
@@ -213,7 +213,7 @@ public class PathFinder : MonoBehaviour
                     //---jump down---
                     int leftWallY=h; //the topmost y pos that has wall.
                     int rightWallY=h;
-                    for(int xOffset=1;xOffset<=jumpXmax;++xOffset){
+                    for(int xOffset=1;xOffset<=config.jumpXmax;++xOffset){
                         int leftx=i-xOffset, rightx=i+xOffset;
                         if(leftx>=0){
                             //if there is a wall, then cannot jump down
@@ -243,8 +243,8 @@ public class PathFinder : MonoBehaviour
                         }
                     }
                     //---vertically---
-                    int endX_right=Mathf.Min(w-1, i+jumpXmax);
-                    int endX_left=Mathf.Max(0,i-jumpXmax);
+                    int endX_right=Mathf.Min(w-1, i+config.jumpXmax);
+                    int endX_left=Mathf.Max(0,i-config.jumpXmax);
                     //update endX_right and left first on its horizontal floor
                     //right
                     for(int x=i+1;x<=endX_right;++x){
@@ -261,7 +261,7 @@ public class PathFinder : MonoBehaviour
                         }
                     }
                     //start the loop to check for jump
-                    int ymax=Mathf.Max(0,j-jumpY);
+                    int ymax=Mathf.Max(0,j-config.jumpY);
                     for(int y=j-1;y>=ymax;--y){
                         if(walls[i,y]) break;
                         //right
@@ -270,7 +270,7 @@ public class PathFinder : MonoBehaviour
                                 endX_right=x;
                                 break;
                             }
-                            if(x-i>=jumpXmin && grid_g[x,y]!=null){ //can jump to this position
+                            if(x-i>=config.jumpXmin && grid_g[x,y]!=null){ //can jump to this position
                                 grid_g[i,j].ConnectBothNode(grid_g[x,y]);
                             }
                         }
@@ -280,7 +280,7 @@ public class PathFinder : MonoBehaviour
                                 endX_left=x;
                                 break;
                             }
-                            if(i-x>=jumpXmin && grid_g[x,y]!=null){ //can jump to this position
+                            if(i-x>=config.jumpXmin && grid_g[x,y]!=null){ //can jump to this position
                                 grid_g[i,j].ConnectBothNode(grid_g[x,y]);
                             }
                         }
@@ -294,13 +294,13 @@ public class PathFinder : MonoBehaviour
                 if(grid_g[i,j]!=null){
                     //---horizontal jump---
                     if(i<w-1&&j<h-1&&!walls[i+1,j+1]){ //make sure the node is on the right edge of a platform
-                        int hjumpMaxX=Mathf.Min(w,i+horizontalJumpXMax);
+                        int hjumpMaxX=Mathf.Min(w,i+config.horizontalJumpXMax);
                         int x=i+1;
-                        for(int y=Mathf.Max(j-jumpY+1,0);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
+                        for(int y=Mathf.Max(j-config.jumpY+1,0);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
                             if(walls[x,y]) hjumpMaxX=-1;
                         }
                         for(x=i+2;x<hjumpMaxX;++x){
-                            for(int y=Mathf.Max(0,j-jumpY+1);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
+                            for(int y=Mathf.Max(0,j-config.jumpY+1);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
                                 if(walls[x,y]){
                                     hjumpMaxX=-1;
                                     break;
