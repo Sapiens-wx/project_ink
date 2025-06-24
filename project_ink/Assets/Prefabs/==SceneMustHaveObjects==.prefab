@@ -688,6 +688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81af92c979503e94aaecc8ae7eb55971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 80c7252fcac529641a4526c6529f5bab, type: 2}
   bounds:
     m_Center: {x: 0, y: 1, z: 0}
     m_Extent: {x: 9, y: 4, z: 0}
