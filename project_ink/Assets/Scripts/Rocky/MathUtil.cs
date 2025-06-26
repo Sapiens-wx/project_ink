@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -8,6 +9,16 @@ public static class MathUtil{
     /// In order to detect if a collider [a] is standing on collider [b], we use Ray2D(a.topLeft+new Vector2(0, [y_offset]), Vector2.right) with distance a.bounds.size.x; y_offset=colliderMinGap
     /// </summary>
     public static readonly float colliderMinGap=0.04f;
+    public static void RemoveAt<T>(List<T> list, int idx){
+        if(idx>=list.Count)
+            return;
+        if(idx==list.Count-1){
+            list.RemoveAt(idx);
+            return;
+        }
+        list[idx]=list[^1];
+        list.RemoveAt(list.Count-1);
+    }
     /// <summary>
     /// get an array of length n. the array contains elements from 0 to n-1
     /// </summary>
