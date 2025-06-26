@@ -48,7 +48,7 @@ public class PlayerCtrl : MonoBehaviour
     [NonSerialized][HideInInspector] public bool hittable;
     [NonSerialized][HideInInspector] public bool onGround, prevOnGround;
     [NonSerialized][HideInInspector] public float jumpKeyDown, lastJumpKeyDown, secondToLastJumpKeyDown; //jumpKeyDown will be set to -100 when detected. lastJumpKeyDown stores the last JumpKeyDown time. (before setting jumpKeyDown to -100, jumpKeyDown=lastJumpKeyDown)
-    [NonSerialized][HideInInspector] public bool jumpKeyUp;
+    [NonSerialized][HideInInspector] public bool jumpKeyUp, jumpDownKey;
     [NonSerialized][HideInInspector] public float onGroundTime; //onGroundTime is used for coyote time
     [NonSerialized][HideInInspector] public bool dashing, canDash;
     [NonSerialized][HideInInspector] public float dashKeyDown, allowDashTime;
@@ -65,7 +65,7 @@ public class PlayerCtrl : MonoBehaviour
     [NonSerialized][HideInInspector] public bool blackDashTriggered; // if black dash is used.
     Coroutine disableBlackDashCoro;
     //ignore collision
-    [NonSerialized] public List<Collider2D> ignoredColliders;
+    [NonSerialized] public List<Collider2D> jumpUpIgnoredColliders, jumpDownIgnoredColliders;
     //read input
     bool readInput;
     //movable platform
@@ -122,7 +122,8 @@ public class PlayerCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ignoredColliders=new List<Collider2D>();
+        jumpUpIgnoredColliders=new List<Collider2D>();
+        jumpDownIgnoredColliders=new List<Collider2D>();
 
         readInput=true;
         hittable=true;
@@ -200,6 +201,10 @@ public class PlayerCtrl : MonoBehaviour
             else if(Input.GetKeyUp(KeyCode.Space)){ //jump key up
                 jumpKeyUp=true;
             }
+            if(Input.GetKeyDown(KeyCode.S))
+                jumpDownKey=true;
+            else if(Input.GetKeyUp(KeyCode.S))
+                jumpDownKey=false;
         }
     }
     void FixedUpdate(){
@@ -207,6 +212,7 @@ public class PlayerCtrl : MonoBehaviour
         HandleInputs();
         CheckOnGround();
         UpdateVelocity();
+        RemoveJumpDownIgnoredColliders();
     }
     void HandleInputs(){
         if(readInput)
@@ -225,10 +231,13 @@ public class PlayerCtrl : MonoBehaviour
     void CheckOnGround(){
         prevOnGround=onGround;
         Collider2D hit = Physics2D.OverlapArea((Vector2)transform.position+leftBot, (Vector2)transform.position+rightBot, GameManager.inst.groundMixLayer);
-        foreach(Collider2D cd in ignoredColliders){
+        foreach(Collider2D cd in jumpUpIgnoredColliders){
             if(hit==cd){
-                hit=null;
-                break;
+                hit=null; break;
+        }}
+        foreach(Collider2D cd in jumpDownIgnoredColliders){
+            if(hit==cd){
+                hit=null; break;
         }}
         onGround=hit;
         if(onGround){
@@ -236,6 +245,23 @@ public class PlayerCtrl : MonoBehaviour
             onGroundTime=Time.time;
             if(!prevOnGround)
                 v_trap.y=0; //if touches ground, trap veocity will be set to zero
+        }
+    }
+    void RemoveJumpDownIgnoredColliders(){
+        if(jumpDownKey==false){
+            if(jumpDownIgnoredColliders.Count>0){
+                Collider2D[] cds=Physics2D.OverlapAreaAll((Vector2)transform.position+leftTop, (Vector2)transform.position+rightBot,GameManager.inst.platformLayer);
+                for(int i=jumpDownIgnoredColliders.Count-1;i>-1;--i){
+                    bool shouldStillIgnoreCollider=false;
+                    foreach(Collider2D cd in cds){
+                        shouldStillIgnoreCollider|=cd==jumpDownIgnoredColliders[i];
+                    }
+                    if(!shouldStillIgnoreCollider){
+                        Physics2D.IgnoreCollision(bc, jumpDownIgnoredColliders[i], false);
+                        MathUtil.RemoveAt(jumpDownIgnoredColliders, i);
+                    }
+                }
+            }
         }
     }
     void UpdateMousePos(){
@@ -267,7 +293,7 @@ public class PlayerCtrl : MonoBehaviour
     /// <summary>
     /// ignore the collision between 'collider' and the player collider
     /// </summary>
-    public void IgnoreCollision(Collider2D collider){
+    public void IgnoreCollision(Collider2D collider, List<Collider2D> ignoredColliders){
         if(ignoredColliders.Contains(collider)) return;
         ignoredColliders.Add(collider);
         Physics2D.IgnoreCollision(bc, collider);
@@ -275,7 +301,7 @@ public class PlayerCtrl : MonoBehaviour
     /// <summary>
     /// cancel all ignores of collision between the player and the colliders in 'ignoredColliders'.
     /// </summary>
-    public void ClearIgnoredCollision(){
+    public void ClearIgnoredCollision(List<Collider2D> ignoredColliders){
         foreach(Collider2D cd in ignoredColliders){
             Physics2D.IgnoreCollision(bc, cd, false);
         }

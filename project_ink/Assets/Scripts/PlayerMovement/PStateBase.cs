@@ -53,6 +53,15 @@ public class PStateBase : StateMachineBehaviour
             } 
         }
     }
+    protected virtual void JumpDown(){
+        if(player.jumpDownKey){
+            Collider2D[] cds=Physics2D.OverlapAreaAll((Vector2)player.transform.position+player.leftBot, (Vector2)player.transform.position+player.rightBot, GameManager.inst.platformLayer);
+            if(cds!=null){
+                foreach(Collider2D cd in cds)
+                    player.IgnoreCollision(cd, player.jumpDownIgnoredColliders);
+            }
+        }
+    }
     virtual internal void Jump(){
         if(Time.time-player.onGroundTime<player.coyoteTime && Time.time-player.jumpKeyDown<=player.jumpBufferTime){
             player.jumpKeyDown=-100;

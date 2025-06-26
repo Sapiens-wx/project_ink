@@ -179,7 +179,7 @@ MonoBehaviour:
   theme: 0
   sprites:
   - {fileID: 1499520146809070057}
-  height: 4
+  height: 5
 --- !u!50 &1547047992009568123
 Rigidbody2D:
   serializedVersion: 4
