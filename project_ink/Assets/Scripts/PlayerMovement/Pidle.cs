@@ -36,6 +36,7 @@ public class Pidle : PStateBase
             player.UpdateDir();
             //jump
             Jump();
+            JumpDown();
             //dash
             Dash();
             //apply gravity

@@ -26,16 +26,16 @@ public class Pjump_up : PStateBase
     {
         player.StopCoroutine(coro);
         coro=null;
-        int j=player.ignoredColliders.Count;
+        int j=player.jumpUpIgnoredColliders.Count;
         for(int i=0;i<j;){
             //if player is touching the platform when starts to jump down, then still ignore the collision
-            if(!IsTouching(player.bc, player.ignoredColliders[i])){
+            if(!IsTouching(player.bc, player.jumpUpIgnoredColliders[i])){
                 //cancel collision ignore
-                Physics2D.IgnoreCollision(player.bc, player.ignoredColliders[i], false);
-                player.ignoredColliders[i]=player.ignoredColliders[--j];
+                Physics2D.IgnoreCollision(player.bc, player.jumpUpIgnoredColliders[i], false);
+                player.jumpUpIgnoredColliders[i]=player.jumpUpIgnoredColliders[--j];
             } else i++;
         }
-        player.ignoredColliders.RemoveRange(j, player.ignoredColliders.Count-j);
+        player.jumpUpIgnoredColliders.RemoveRange(j, player.jumpUpIgnoredColliders.Count-j);
     }
     IEnumerator m_FixedUpdate(){
         WaitForFixedUpdate wait=new WaitForFixedUpdate();
@@ -57,9 +57,9 @@ public class Pjump_up : PStateBase
                 player.animator.SetTrigger("jump_down");
             } 
         }
-        Collider2D platform=Physics2D.OverlapArea(lt, rt, GameManager.inst.platformLayer);
+        Collider2D platform=Physics2D.OverlapArea(player.bc.bounds.min, player.bc.bounds.max, GameManager.inst.platformLayer);
         if(platform) //ignore the collision of the platform to enable the player to go through the platform
-            player.IgnoreCollision(platform);
+            player.IgnoreCollision(platform, player.jumpUpIgnoredColliders);
     }
     override internal void ApplyGravity(){
         player.v.y+=player.gravity*Time.fixedDeltaTime;
