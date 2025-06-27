@@ -8,7 +8,6 @@ public class PathFinder : MonoBehaviour
     [SerializeField] PathFindingConfig config;
     [SerializeField] Bounds bounds;
     [SerializeField] Vector2 gridSize;
-    public LayerMask layerMask;
     //debug params
     public Vector2 _start, _to;
     public bool showGroundNodes,showAirNodes;
@@ -157,6 +156,7 @@ public class PathFinder : MonoBehaviour
     }
     [ContextMenu("create nodes_g")]
     public void CreateNodes_g(){
+        LayerMask layerMask=GameManager.inst.groundMixLayer;
         nodes_g=null; //clear the array that stores all the previous nodes
         //int jumpDownX=3;
 
@@ -350,6 +350,7 @@ public class PathFinder : MonoBehaviour
     /// </summary>
     [ContextMenu("create nodes_a")]
     public void CreateNodes_a(){
+        LayerMask layerMask=GameManager.inst.platformLayer;
         int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
         int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
         grid_a=new Node[w,h];

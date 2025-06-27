@@ -48,12 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7ad16218cfcc741806f08f10397cae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spr: {fileID: 8475652535937689173}
   damageBox: {fileID: 0}
   healthBar: {fileID: 3859576506537659178}
   maxHealth: 5
   id: 0
-  bc: {fileID: 0}
   rgb: {fileID: 0}
   animator: {fileID: 0}
 --- !u!212 &8475652535937689173
