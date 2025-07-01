@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpXmin: 2
   jumpXmax: 3
-  jumpY: 4
+  jumpY: 5
   horizontalJumpXMax: 4
