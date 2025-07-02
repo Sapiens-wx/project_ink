@@ -357,7 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f90d6dfcdf84944aba4c1caff499f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 1
+  theme: 0
   sprites:
   - {fileID: 2572107729634281651}
   - {fileID: 7704381289326525538}
