@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3a2f7a03b8b86c49a7bd3d21f6f27d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 0
-  sprites:
-  - {fileID: 8264432440454918481}
+  sprite: {fileID: 3010725360811839378}
   spd: 6
   start: {x: -3.76, y: 2.41}
   end: {x: 2.78, y: 1}
@@ -63,7 +61,7 @@ GameObject:
   - component: {fileID: 3010725360811839378}
   - component: {fileID: 8307096613183194189}
   m_Layer: 7
-  m_Name: Forest
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -10,10 +10,8 @@ public class Trap_DisappearingPlatform : TrapBase
     Vector2 rayOrigin;
     float rayLength;
     bool trapActivated;
-    public override void ChangeTheme(Theme theme){
-        base.ChangeTheme(theme);
-        //update rayOrigin and rayLength for collision detection
-        bc=activeSprite.GetComponent<Collider2D>();
+    void Awake(){
+        bc=sprite.GetComponent<Collider2D>();
         rayOrigin=new Vector2(bc.bounds.min.x,bc.bounds.max.y+MathUtil.colliderMinGap);
         rayLength=bc.bounds.size.x;
     }
@@ -29,9 +27,9 @@ public class Trap_DisappearingPlatform : TrapBase
     }
     IEnumerator Disappear(){
         yield return new WaitForSeconds(duration);
-        activeSprite.SetActive(false);
+        sprite.gameObject.SetActive(false);
         yield return new WaitForSeconds(disappearDuration);
-        activeSprite.SetActive(true);
+        sprite.gameObject.SetActive(true);
         trapActivated=false;
     }
 }

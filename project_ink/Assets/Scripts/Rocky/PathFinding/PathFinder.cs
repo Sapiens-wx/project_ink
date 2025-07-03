@@ -8,7 +8,6 @@ public class PathFinder : MonoBehaviour
     [SerializeField] PathFindingConfig config;
     [SerializeField] Bounds bounds;
     [SerializeField] Vector2 gridSize;
-    public LayerMask layerMask;
     //debug params
     public Vector2 _start, _to;
     public bool showGroundNodes,showAirNodes;
@@ -157,6 +156,7 @@ public class PathFinder : MonoBehaviour
     }
     [ContextMenu("create nodes_g")]
     public void CreateNodes_g(){
+        LayerMask layerMask=GameManager.inst.groundMixLayer;
         nodes_g=null; //clear the array that stores all the previous nodes
         //int jumpDownX=3;
 
@@ -350,6 +350,7 @@ public class PathFinder : MonoBehaviour
     /// </summary>
     [ContextMenu("create nodes_a")]
     public void CreateNodes_a(){
+        LayerMask layerMask=GameManager.inst.platformLayer;
         int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
         int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
         grid_a=new Node[w,h];
@@ -592,12 +593,12 @@ public class PathNavigator {
             return Vector2.zero;
         }
         //calculate the exact [to] position: just when the ctrller's corner touches the platform's corner
-        Vector2 min=hit.collider.bounds.min, max=hit.collider.bounds.max;
         Vector2 bcExtents=ctrller.bc.bounds.extents, bcOffset=ctrller.bc.offset;
         if(ctrller.Dir==1){ //jump right up
-            to=new Vector2(min.x-bcExtents.x+bcOffset.x, max.y+bcExtents.y+bcOffset.y);
+            to.x-=PathFinder.inst.GridSize.x;
         } else //jump left up
-            to=new Vector2(max.x+bcExtents.x+bcOffset.x, max.y+bcExtents.y+bcOffset.y);
+            to.x+=PathFinder.inst.GridSize.x;
+        to.y=hit.point.y+bcExtents.y;
         //calculate velocity
         Vector2 v=Vector2.zero;
         float jumpTime=.5f;
@@ -605,7 +606,7 @@ public class PathNavigator {
         float gravity=ctrller.rgb.gravityScale*9.8f;
         v.y=h/jumpTime+.5f*gravity*jumpTime; //v=h/t+.5*gt
         v.x=(to.x-from.x)/jumpTime+.1f;
-        v.y+=.3f/Mathf.Max(v.y,1); //even with exact value, the enemy still jumps lower than desired height
+        v.y+=1; //even with exact value, the enemy still jumps lower than desired height
         return v;
     }
     PathFinder.Node NearestNodeToTarget(Transform target){

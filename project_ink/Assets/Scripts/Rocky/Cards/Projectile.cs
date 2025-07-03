@@ -12,15 +12,19 @@ public class Projectile : MonoBehaviour
     [HideInInspector] public Card card;
     [HideInInspector] public Vector2 velocity, trap_v_fan;
 
+    ProjectileType projectileType;
     Rigidbody2D rgb;
+    Collider2D bc;
     Coroutine coro;
-    // Start is called before the first frame update
-    void Start()
-    {
-        if(rgb==null) rgb=GetComponent<Rigidbody2D>();
+    void Awake(){
+        rgb=GetComponent<Rigidbody2D>();
+        bc=GetComponent<Collider2D>();
+        if(bc==null||!(bc is BoxCollider2D))
+            Debug.LogWarning("projectile's collider2D component is not box. might cause errors");
         //detech fire effect game object from its parent
         fireEffect.transform.SetParent(null);
     }
+    // Start is called before the first frame update
     void OnEnable(){
         StartCoroutine(DelayDestroy(5));
     }
@@ -31,6 +35,11 @@ public class Projectile : MonoBehaviour
     }
     void FixedUpdate(){
         rgb.velocity=velocity+trap_v_fan;
+        //if is not auto fired card, destroy it when colliding with groundLayer walls
+        if(projectileType!=ProjectileType.AutoFire&&Physics2D.OverlapBox(bc.bounds.center, bc.bounds.size, transform.eulerAngles.z, GameManager.inst.groundLayer)){
+            ProjectileManager.inst.HitAnim(this);
+            M_Destroy();
+        }
     }
     public void AdjustRotation(Vector2 dir){
         transform.rotation=Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.right, dir), Vector3.forward);
@@ -47,6 +56,7 @@ public class Projectile : MonoBehaviour
         this.card=card;
         damage=card.damage;
         this.velocity=velocity;
+        this.projectileType=type;
         transform.position=pos;
         if(coro!=null) StopCoroutine(coro);
         if(type==ProjectileType.AutoChase) coro=StartCoroutine(AutoChase());
@@ -65,6 +75,7 @@ public class Projectile : MonoBehaviour
         if(rgb==null) rgb=GetComponent<Rigidbody2D>();
         this.damage=damage;
         this.velocity=velocity;
+        this.projectileType=type;
         transform.position=pos;
         if(coro!=null) StopCoroutine(coro);
         if(type==ProjectileType.AutoChase) coro=StartCoroutine(AutoChase());

@@ -9,11 +9,7 @@ public class Trap_MagicFire : TrapBase
     void Awake(){
         if(instances==null)
             instances=new List<Trap_MagicFire>();
-    }
-    public override void ChangeTheme(Theme theme)
-    {
-        base.ChangeTheme(theme);
-        bc=activeSprite.GetComponent<Collider2D>();
+        bc=sprite.GetComponent<Collider2D>();
     }
     void OnEnable(){
         instances.Add(this);

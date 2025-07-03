@@ -19,7 +19,7 @@ public class Trap_Shooter : TrapBase{
         while(EnemyBulletManager.inst==null)
             yield return null;
         while(true){
-            EnemyBulletManager.InstantiateBullet_dir(EnemyBulletManager.inst.trap_shooter[(int)theme], transform.position, shootDir);
+            EnemyBulletManager.InstantiateBullet_dir(EnemyBulletManager.inst.trap_shooter, transform.position, shootDir);
             yield return wait;
         }
     }

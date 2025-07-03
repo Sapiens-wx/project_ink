@@ -16,16 +16,11 @@ public class Trap_Fan : TrapBase
     void OnValidate(){
         fanDir=MathUtil.Rad2Dir(Mathf.Deg2Rad*fanAngle);
     }
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
         OnValidate();
         layerMask=GameManager.GetLayerMask(GameManager.inst.playerLayer,GameManager.inst.enemyLayer,GameManager.inst.enemyBulletLayer,GameManager.inst.projectileLayer);
-    }
-    public override void ChangeTheme(Theme theme)
-    {
-        base.ChangeTheme(theme);
-        bc=activeSprite.GetComponent<Collider2D>();
+        bc=sprite.GetComponent<Collider2D>();
     }
     void OnDrawGizmosSelected(){
         Gizmos.color=Color.red;

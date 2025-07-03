@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8811072308265630343}
   - component: {fileID: 1232882797098268611}
   m_Layer: 9
-  m_Name: Forest
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,9 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020d195c87efbce4abdf08751b9a567e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 0
-  sprites:
-  - {fileID: 5666919979052276522}
+  sprite: {fileID: 6882561582844228954}
   xspd: 6
   trail:
     m_Center: {x: 0, y: -0.37, z: 0}

@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6333793889757791431}
   - component: {fileID: 1360427606047730688}
   - component: {fileID: 5702462132570503559}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: E_Monkey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
