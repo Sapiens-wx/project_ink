@@ -49,7 +49,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 8140211327506106727}
   shootDir: {x: 0, y: -1}
-  shootInterval: 1.5
+  shootInterval: 2
 --- !u!1 &8140211327506106727
 GameObject:
   m_ObjectHideFlags: 0
