@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f7f05700d3622a49b7b669ef5c2c723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 0
-  sprites:
-  - {fileID: 8140211327506106727}
+  sprite: {fileID: 5765767518185141140}
   shootDir: {x: 0, y: -1}
   shootInterval: 2
 --- !u!1 &8140211327506106727
@@ -63,7 +61,7 @@ GameObject:
   - component: {fileID: 8513617914055713181}
   - component: {fileID: 3476086798003436166}
   m_Layer: 9
-  m_Name: ForestTheme
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

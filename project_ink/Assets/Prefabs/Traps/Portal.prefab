@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1789752545959481037}
   - component: {fileID: 3488419211627926809}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,9 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23cd4de069a07fd4bae9ac3123806d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 0
-  sprites:
-  - {fileID: 1612771133817343134}
+  sprite: {fileID: 1789752545959481037}
   linkedPortal: {fileID: 0}
   angle: 180
   upDir: 1

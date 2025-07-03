@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 914a38661a25bfc4f9853c7805a23731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 0
-  sprites:
-  - {fileID: 4809053980475621091}
+  sprite: {fileID: 8082240628600836487}
   length: 0.97
   activateLatency: 0.5
   activateDuration: 0.6
@@ -65,7 +63,7 @@ GameObject:
   - component: {fileID: 3148934366097467616}
   - component: {fileID: 8596398844523011059}
   m_Layer: 9
-  m_Name: Forest
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

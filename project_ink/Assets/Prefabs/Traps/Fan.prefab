@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a746b86e70caee47bb1b08a7f2f195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 0
-  sprites:
-  - {fileID: 4475621775148843896}
+  sprite: {fileID: 1811927867707513172}
   fanSpd: 3
   fanAngle: 180
 --- !u!1 &4475621775148843896
@@ -62,7 +60,7 @@ GameObject:
   - component: {fileID: 1811927867707513172}
   - component: {fileID: 6294736341910559018}
   m_Layer: 0
-  m_Name: Forest
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

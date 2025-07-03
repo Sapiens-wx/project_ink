@@ -21,10 +21,7 @@ public class Trap_Portal : TrapBase{
         portalDir=MathUtil.Rad2Dir(angle*Mathf.Deg2Rad);
         portalUpDir.x=upDir==1?-portalDir.y:portalDir.y;
         portalUpDir.y=upDir==1?portalDir.x:-portalDir.x;
-        //update sprite rotation
-        foreach(GameObject go in sprites){
-            go.transform.localRotation=Quaternion.Euler(new Vector3(0,0,angle));
-        }
+        sprite.transform.localRotation=Quaternion.Euler(new Vector3(0,0,angle));
     }
     void OnDrawGizmosSelected(){
         Gizmos.color=Color.red;
@@ -32,10 +29,10 @@ public class Trap_Portal : TrapBase{
         Gizmos.color=Color.green;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position+portalUpDir);
     }
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
         OnValidate();
+        bc=sprite.GetComponent<Collider2D>();
         teleportedObjs=new Queue<Rigidbody2D>();
         UpdatePortalTransformMatrix();
     }
@@ -49,11 +46,6 @@ public class Trap_Portal : TrapBase{
         if(Vector2.Dot(portalDir,rgb.velocity)>.02f){
             TeleportObj(collider);
         }
-    }
-    public override void ChangeTheme(Theme theme)
-    {
-        base.ChangeTheme(theme);
-        bc=activeSprite.GetComponent<Collider2D>();
     }
     void UpdatePortalTransformMatrix(){
         //x-axis: portalDir

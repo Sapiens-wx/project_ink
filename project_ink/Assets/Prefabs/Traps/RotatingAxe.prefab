@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 544698167610445347}
   - component: {fileID: 8772689531274847479}
   m_Layer: 9
-  m_Name: Forest
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +189,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 230f3d44a8591ab4196b683473a88e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theme: 0
-  sprites:
-  - {fileID: 6234102883564613707}
+  sprite: {fileID: 3587074787412377304}
   angularSpd: 180

@@ -22,7 +22,7 @@ public class Trap_Cannon : TrapBase
                 int xindex=xindices[i];
                 float xrangeStart=rangexmin+rangexInterval*xindex;
                 //intantiate bullet
-                EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet(EnemyBulletManager.inst.trap_cannon[(int)theme]);
+                EnemyBulletBase bullet=EnemyBulletManager.InstantiateBullet(EnemyBulletManager.inst.trap_cannon);
                 bullet.transform.position=transform.position;
                 //x position of the bullet when hit the ground
                 float g=9.8f, y1=RoomManager.inst.RoomBounds.min.y;

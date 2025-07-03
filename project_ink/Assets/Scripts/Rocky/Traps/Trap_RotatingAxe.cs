@@ -10,8 +10,7 @@ public class Trap_RotatingAxe : TrapBase
     [SerializeField] float angularSpd;
 
     Quaternion rotQuat;
-    protected override void Start(){
-        base.Start();
+    protected void Start(){
         rotQuat=Quaternion.Euler(new Vector3(0,0,angularSpd*Time.fixedDeltaTime));
     }
     void FixedUpdate(){

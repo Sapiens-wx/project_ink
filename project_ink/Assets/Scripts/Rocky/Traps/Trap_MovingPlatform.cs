@@ -13,8 +13,8 @@ public class Trap_MovingPlatform : TrapBase
         Gizmos.color=Color.green;
         Gizmos.DrawLine(start,end);
     }
-    protected override void Start(){
-        base.Start();
+    protected void Start(){
+        bc=sprite.GetComponent<Collider2D>();
         transform.position=start;
         Sequence s=DOTween.Sequence();
         float dist=Vector2.Distance(start,end);
@@ -35,10 +35,5 @@ public class Trap_MovingPlatform : TrapBase
         }
         prevHit=hit;
         prevPos=transform.position;
-    }
-    public override void ChangeTheme(Theme theme)
-    {
-        base.ChangeTheme(theme);
-        bc=activeSprite.GetComponent<Collider2D>();
     }
 }

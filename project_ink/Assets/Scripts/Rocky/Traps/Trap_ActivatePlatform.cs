@@ -15,11 +15,11 @@ public class Trap_ActivatePlatform : TrapBase
         Gizmos.color=Color.green;
         Gizmos.DrawLine(start,end);
     }
-    protected override void Start(){
-        base.Start();
+    protected void Start(){
         transform.position=start;
         prevPos=start;
         atStartingPoint=true;
+        bc=sprite.GetComponent<Collider2D>();
     }
     void FixedUpdate(){
         //ray origin: top left of the bounds. distance: bounds.size.x
@@ -43,10 +43,5 @@ public class Trap_ActivatePlatform : TrapBase
         }
         prevHit=hit;
         prevPos=transform.position;
-    }
-    public override void ChangeTheme(Theme theme)
-    {
-        base.ChangeTheme(theme);
-        bc=activeSprite.GetComponent<Collider2D>();
     }
 }

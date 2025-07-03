@@ -16,8 +16,7 @@ public class Trap_ActivateSpike : TrapBase
         Gizmos.DrawLine(rayOrigin, rayOrigin+new Vector2(length,0));
         Gizmos.DrawWireSphere((Vector2)transform.position+moveToPos,.3f);
     }
-    override protected void Start(){
-        base.Start();
+    protected void Start(){
         OnValidate();
     }
     void FixedUpdate(){
@@ -32,6 +31,6 @@ public class Trap_ActivateSpike : TrapBase
     }
     IEnumerator ShowSpike(){
         yield return new WaitForSeconds(activateLatency);
-        activeSprite.transform.DOMove((Vector2)transform.position+moveToPos, activateDuration);
+        sprite.transform.DOMove((Vector2)transform.position+moveToPos, activateDuration);
     }
 }
