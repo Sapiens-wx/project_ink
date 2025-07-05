@@ -71,13 +71,25 @@ public abstract class EnemyBase : MonoBehaviour
     }
     public bool PlayerInRange(float dist){
         Vector2 dir=PlayerShootingController.inst.transform.position-transform.position;
-        return dir.x*dir.x+dir.y*dir.y<=dist*dist;
+        //not in the range
+        if(!(dir.x*dir.x+dir.y*dir.y<=dist*dist))
+            return false;
+        //is in the range, but enemy's view is blocked by the wall
+        if(Physics2D.Linecast(transform.position, PlayerCtrl.inst.transform.position, GameManager.inst.groundMixLayer))
+            return false;
+        return true;
     }
     public bool PlayerInRange(Bounds b){
         b.center+=transform.position;
         Vector2 min=b.min, max=b.max;
         Vector2 pos=PlayerShootingController.inst.transform.position;
-        return !(pos.x<min.x||pos.x>max.x||pos.y<min.y||pos.y>max.y);
+        //not in the range
+        if(pos.x<min.x||pos.x>max.x||pos.y<min.y||pos.y>max.y)
+            return false;
+        //is in the range, but enemy's view is blocked by the wall
+        if(Physics2D.Linecast(transform.position, PlayerCtrl.inst.transform.position, GameManager.inst.groundMixLayer))
+            return false;
+        return true;
     }
     /// <summary>
     /// make the enemy stick to the ground by changing the y pos (raycast downward)
