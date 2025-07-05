@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {
+    public enum WallType{
+        None, Platform, Ground
+    }
     [SerializeField] PathFindingConfig config;
     [SerializeField] Bounds bounds;
     [SerializeField] Vector2 gridSize;
@@ -16,7 +19,7 @@ public class PathFinder : MonoBehaviour
 
     public static PathFinder inst;
     Node[,] grid_g;
-    bool[,] walls;
+    WallType[,] walls;
     private List<Node> nodes_g;
     public List<Node> Nodes_g{
         get{
@@ -156,32 +159,39 @@ public class PathFinder : MonoBehaviour
     }
     [ContextMenu("create nodes_g")]
     public void CreateNodes_g(){
-        LayerMask layerMask=GameManager.inst.groundMixLayer;
+        #if UNITY_EDITOR
+        GameManager gameManagerInst=FindObjectOfType<GameManager>();
+        #else
+        GameManager gameManagerInst=GameManager.inst;
+        #endif
+        LayerMask layerMask=gameManagerInst.groundMixLayer;
         nodes_g=null; //clear the array that stores all the previous nodes
         //int jumpDownX=3;
 
         int w=(int)((bounds.size.x+gridSize.x-1)/gridSize.x);
         int h=(int)((bounds.size.y+gridSize.y-1)/gridSize.y);
         grid_g=new Node[w,h];
-        walls=new bool[w,h];
+        walls=new WallType[w,h];
 
         //add points above ground
         Vector2 startPos=bounds.center;
         startPos.x+=gridSize.x/2-bounds.extents.x;
         startPos.y+=bounds.extents.y-gridSize.y/2;
         Vector2 pos=startPos;
+        Collider2D cd=null;
         for(int i=0;i<w;++i){
             pos.x=startPos.x+i*gridSize.x;
             //bottom most row
             int j=h-1;
             pos.y=startPos.y-j*gridSize.y;
-            bool hasWallHere=Physics2D.OverlapPoint(pos, layerMask);
-            walls[i,j]=hasWallHere;
+            cd=Physics2D.OverlapPoint(pos, layerMask);
+            walls[i,j]=cd?GameManager.IsLayer(gameManagerInst.platformLayer, cd.gameObject.layer)?WallType.Platform:WallType.Ground:WallType.None;
             for(--j;j>=0;--j){
                 pos.y=startPos.y-j*gridSize.y;
-                walls[i,j]=Physics2D.OverlapPoint(pos, layerMask);
-                bool down=walls[i,j+1];
-                if(! walls[i,j] && down){
+                cd=Physics2D.OverlapPoint(pos, layerMask);
+                walls[i,j]=cd?GameManager.IsLayer(gameManagerInst.platformLayer, cd.gameObject.layer)?WallType.Platform:WallType.Ground:WallType.None;
+                WallType down=walls[i,j+1];
+                if(walls[i,j]==WallType.None && (down!=WallType.None)){
                     grid_g[i,j]=new Node(new Vector2Int(i,j));
                     grid_g[i,j].worldPos=pos;
                 }
@@ -200,27 +210,27 @@ public class PathFinder : MonoBehaviour
                         grid_g[i,j].ConnectBothNode(grid_g[i+1,j]);
                         hasRightNode=true;
                     }
-                    //if hasRightnode && is not connected by nodes with different y pos && is connected by a left node,
-                    //then this node can be eliminated
-                    if(hasRightNode&&!isNodeConnected[i,j]&&grid_g[i,j].nodes.Count>=2){
-                        grid_g[i,j].nodes[^1].RemoveConnectedNode(grid_g[i,j]);
-                        grid_g[i,j].nodes[^1].ConnectNode(grid_g[i,j].nodes[^2]);
-                        grid_g[i,j].nodes[^2].RemoveConnectedNode(grid_g[i,j]);
-                        grid_g[i,j].nodes[^2].ConnectNode(grid_g[i,j].nodes[^1]);
-                        grid_g[i,j]=null;
-                        continue;
-                    }
                     //---jump down---
                     int leftWallY=h; //the topmost y pos that has wall.
                     int rightWallY=h;
+                    //jump down directly
+                    for(int y=j+1, wallY=h;y<wallY;++y){
+                        if(walls[i,y]==WallType.Ground) wallY=y;
+                        else if(grid_g[i,y]!=null){
+                            isNodeConnected[i,y]=true;
+                            grid_g[i,j].ConnectNode(grid_g[i,y]);
+                            leftWallY=y+1; //the y+1 pos must be a wall. so terminate the loop
+                        }
+                    }
+                    //jump down to left or right
                     for(int xOffset=1;xOffset<=config.jumpXmax;++xOffset){
                         int leftx=i-xOffset, rightx=i+xOffset;
                         if(leftx>=0){
                             //if there is a wall, then cannot jump down
-                            if(walls[leftx,j]) leftWallY=j;
+                            if(walls[leftx,j]!=WallType.None) leftWallY=j;
                             //left side
                             for(int y=j+1;y<leftWallY;++y){
-                                if(walls[leftx,y])
+                                if(walls[leftx,y]!=WallType.None)
                                     leftWallY=y;
                                 else if(grid_g[leftx,y]!=null){
                                     isNodeConnected[leftx,y]=true;
@@ -230,9 +240,9 @@ public class PathFinder : MonoBehaviour
                             }
                         }
                         if(rightx<w){
-                            if(walls[rightx,j]) rightWallY=j;
+                            if(walls[rightx,j]!=WallType.None) rightWallY=j;
                             for(int y=j+1;y<rightWallY;++y){
-                                if(walls[rightx,y])
+                                if(walls[rightx,y]!=WallType.None)
                                     rightWallY=y;
                                 else if(grid_g[rightx,y]!=null){
                                     isNodeConnected[rightx,y]=true;
@@ -248,14 +258,14 @@ public class PathFinder : MonoBehaviour
                     //update endX_right and left first on its horizontal floor
                     //right
                     for(int x=i+1;x<=endX_right;++x){
-                        if(walls[x,j]){
+                        if(walls[x,j]==WallType.Ground){
                             endX_right=x;
                             break;
                         }
                     }
                     //left
                     for(int x=i-1;x>=endX_left;--x){
-                        if(walls[x,j]){
+                        if(walls[x,j]==WallType.Ground){
                             endX_left=x;
                             break;
                         }
@@ -263,10 +273,10 @@ public class PathFinder : MonoBehaviour
                     //start the loop to check for jump
                     int ymax=Mathf.Max(0,j-config.jumpY);
                     for(int y=j-1;y>=ymax;--y){
-                        if(walls[i,y]) break;
+                        if(walls[i,y]==WallType.Ground) break;
                         //right
                         for(int x=i+1;x<=endX_right;++x){
-                            if(walls[x,y]){
+                            if(walls[x,y]==WallType.Ground){
                                 endX_right=x;
                                 break;
                             }
@@ -276,7 +286,7 @@ public class PathFinder : MonoBehaviour
                         }
                         //left
                         for(int x=i-1;x>=endX_left;--x){
-                            if(walls[x,y]){
+                            if(walls[x,y]==WallType.Ground){
                                 endX_left=x;
                                 break;
                             }
@@ -293,15 +303,15 @@ public class PathFinder : MonoBehaviour
             for(int i=0;i<w;++i){
                 if(grid_g[i,j]!=null){
                     //---horizontal jump---
-                    if(i<w-1&&j<h-1&&!walls[i+1,j+1]){ //make sure the node is on the right edge of a platform
+                    if(i<w-1&&j<h-1&&walls[i+1,j+1]==WallType.None){ //make sure the node is on the right edge of a platform
                         int hjumpMaxX=Mathf.Min(w,i+config.horizontalJumpXMax);
                         int x=i+1;
                         for(int y=Mathf.Max(j-config.jumpY+1,0);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
-                            if(walls[x,y]) hjumpMaxX=-1;
+                            if(walls[x,y]!=WallType.None) hjumpMaxX=-1;
                         }
                         for(x=i+2;x<hjumpMaxX;++x){
                             for(int y=Mathf.Max(0,j-config.jumpY+1);y<=j;++y){ //make sure there is no walls blocking the enemy from jumping
-                                if(walls[x,y]){
+                                if(walls[x,y]!=WallType.None){
                                     hjumpMaxX=-1;
                                     break;
                                 }
@@ -482,7 +492,7 @@ public class PathFinder : MonoBehaviour
         int x;
         if(to.gridPos.x>from.gridPos.x) x=from.gridPos.x+1;
         else x=from.gridPos.x-1;
-        return !walls[x,from.gridPos.y+1];
+        return walls[x,from.gridPos.y+1]==WallType.None;
     }
     public class Node{
         public Vector2Int gridPos;
@@ -685,7 +695,15 @@ public class PathNavigator {
                     v=new Vector2(ctrller.Dir==1?chaseSpd:-chaseSpd, ctrller.rgb.velocity.y);
                     ctrller.rgb.velocity=v;
                     float edgeXPos;
-                    if(ctrller.Dir==1){ //edge is on the right
+                    if(ctrller.DirectlyJumpDownIfCan()){ //jump down directly from a platform (by ignoring collision)
+                        for(;!onGround()||ctrller.jumpDownCoro!=null;){
+                            yield return detectInterval;
+                            if(CheckStucked(moveStartTime)){
+                                Debug.LogWarning("the enemy might be stucked in jump down. restart path finding");
+                                break;
+                            }
+                        }
+                    } else if(ctrller.Dir==1){ //edge is on the right
                         float boundsLeft=ctrller.bc.bounds.min.x;
                         edgeXPos=Mathf.Max(prev.worldPos.x+PathFinder.inst.GridSize.x/2, cur.worldPos.x-ctrller.bc.bounds.size.x/2);
                         bool wasInAir=false;

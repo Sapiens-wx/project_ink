@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
@@ -38,6 +39,7 @@ public abstract class EnemyBase : MonoBehaviour
     [NonSerialized] public Collider2D bc;
     [HideInInspector] public Rigidbody2D rgb;
     [HideInInspector] public Animator animator;
+    public Coroutine jumpDownCoro;
     /// <summary>
     /// called when the enemy gets hit.
     /// </summary>
@@ -104,5 +106,31 @@ public abstract class EnemyBase : MonoBehaviour
     /// </summary>
     public void UpdateDir(){
         Dir=(int)Mathf.Sign(PlayerCtrl.inst.transform.position.x-transform.position.x);
+    }
+    public bool DirectlyJumpDownIfCan(){
+        Vector2 startPos=bc.bounds.center;
+        Vector2 lineToPos=startPos-new Vector2(0, bc.bounds.extents.y+.2f);
+        //use a line to detect the ground's collider that the enemy is stand on.
+        RaycastHit2D hit=Physics2D.Linecast(startPos, lineToPos, GameManager.inst.platformLayer);
+        if(!hit) return false;
+        if(jumpDownCoro!=null) return false;
+        jumpDownCoro=StartCoroutine(JumpDown(hit));
+        return true;
+    }
+    IEnumerator JumpDown(RaycastHit2D hit){
+        WaitForSeconds wait=new WaitForSeconds(.2f);
+        Vector2 startPos,lineToPos;
+        //ignore the collision until the enemy is completely under the platform
+        Physics2D.IgnoreCollision(hit.collider, bc);
+        yield return new WaitForSeconds(.5f);
+        for(float startT=Time.time, t=startT;t-startT<20; t=Time.time){
+            startPos=new Vector2(bc.bounds.center.x, bc.bounds.max.y);
+            lineToPos=startPos-new Vector2(0, bc.bounds.size.y-.1f);
+            if(!Physics2D.Linecast(startPos,lineToPos, GameManager.inst.platformLayer))
+                break;
+            yield return wait;
+        }
+        Physics2D.IgnoreCollision(hit.collider, bc, false);
+        jumpDownCoro=null;
     }
 }

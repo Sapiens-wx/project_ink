@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class EnemyBase_Ground : MobBase
@@ -16,6 +17,7 @@ public abstract class EnemyBase_Ground : MobBase
     [HideInInspector] public bool onGround, prevOnGround;
     float nextAttackTime;
     bool animatorAttackBool, canAttack;
+    List<Collider2D> ignoredColliders;
     bool AnimatorAttackBool{
         get=>animatorAttackBool;
         set{
@@ -33,6 +35,7 @@ public abstract class EnemyBase_Ground : MobBase
     internal override void Start()
     {
         base.Start();
+        ignoredColliders=new List<Collider2D>();
         canAttack=false;
         animatorAttackBool=false;
         nextAttackTime=-1;
@@ -69,6 +72,11 @@ public abstract class EnemyBase_Ground : MobBase
     }
     internal void CheckOnGround(){
         prevOnGround=onGround;
+        //this is in collaboration with CeilingCheck. to avoid set onground to true as soon as the enemy jumps directly onto the platform
+        if(rgb.velocity.y>0){
+            onGround=false;
+            return;
+        }
         Bounds bounds=bc.bounds;
         Vector2 leftBot=bounds.min;
         Vector2 rightBot=leftBot;
@@ -76,8 +84,27 @@ public abstract class EnemyBase_Ground : MobBase
         leftBot.x+=bounds.size.x*.1f;
         onGround = Physics2D.OverlapArea(leftBot,rightBot,GameManager.inst.groundMixLayer);
     }
+    //if collides with a ceiling (platform layer && velocity.y>0), then ignore the collision
+    //and if velocity.y is going down, clear all ignored colliders
+    protected void CeilingCheck(){
+        Vector2 boundMin=bc.bounds.min, boundMax=bc.bounds.max;
+        Vector2 lt=new Vector2(boundMin.x, boundMax.y), rt=boundMax;
+        lt.y+=.1f;
+        rt.y+=.1f;
+        if(rgb.velocity.y>0){
+            Collider2D cd = Physics2D.OverlapArea(lt, rt, GameManager.inst.groundMixLayer);
+            if(cd!=null){
+                Physics2D.IgnoreCollision(bc, cd);
+                ignoredColliders.Add(cd);
+            }
+        } else if(ignoredColliders.Count!=0){
+            foreach(Collider2D cd in ignoredColliders)
+                Physics2D.IgnoreCollision(bc, cd, false);
+        }
+    }
     internal override void FixedUpdate(){
         base.FixedUpdate();
+        CeilingCheck();
         //attack trigger detection
         prevPlayerInAttack=playerInAttack;
         playerInAttack=PlayerInRange(attackTriggerBounds);
